@@ -1,0 +1,7 @@
+---
+name: bolo
+dependencies:
+  - rrdtool
+  - libvigor
+files:
+  - bolo/bolo-*

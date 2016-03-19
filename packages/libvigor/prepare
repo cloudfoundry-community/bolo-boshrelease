@@ -1,0 +1,22 @@
+#!/bin/bash
+ROOT=$(cd $(dirname $BASH_SOURCE[0])/../.. ; pwd)
+
+package="libvigor"
+
+download() {
+  file=$1
+  url=${2//(( file ))/$file}
+  cd ${ROOT}/blobs
+  if [[ ! -s "${package}/${file}" ]]
+  then
+    mkdir -p ${package}
+    echo ">> downloading ${package}/${file}"
+    curl -Ls "${url}" -o "${package}/${file}"
+  fi
+}
+
+download "pcre-8.37.tar.gz"         "ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/(( file ))"
+download "zeromq-4.1.3.tar.gz"      "http://download.zeromq.org/(( file ))"
+download "libsodium-1.0.3.tar.gz"   "https://github.com/jedisct1/libsodium/releases/download/1.0.3/(( file ))"
+download "ctap-2.0.0.tar.gz"        "https://github.com/jhunt/ctap/releases/download/v2.0.0/(( file ))"
+download "libvigor-1.2.10.tar.gz"   "https://github.com/jhunt/libvigor/releases/download/v1.2.10/(( file ))"

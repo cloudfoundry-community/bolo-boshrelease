@@ -1,0 +1,44 @@
+#!/bin/bash
+set -e
+
+package="rrdtool"
+
+LD_LIBRARY_PATH="/var/vcap/packages/${package}/lib"
+PKG_CONFIG_PATH="/var/vcap/packages/${package}/lib/pkgconfig"
+LDFLAGS="-L/var/vcap/packages/${package}/lib"
+CFLAGS="-I/var/vcap/packages/${package}/include"
+CPPFLAGS=${CFLAGS}
+PATH="${PATH}:/var/vcap/packages/${package}/bin"
+export LD_LIBRARY_PATH PKG_CONFIG_PATH LDFLAGS CFLAGS CPPFLAGS PATH
+
+package() {
+  file=$1 ; shift
+
+  if [[ "${file%xz}" != "${file}" ]]; then
+    tar -xJf ${package}/${file}
+  else
+    tar -xzf ${package}/${file}
+  fi
+
+  (cd ${file//.tar*}
+   ./configure --prefix=${BOSH_INSTALL_TARGET} $*
+   make
+   make install)
+}
+
+package "pcre-8.37.tar.gz"
+#(unset CFLAGS ; package "zlib-1.2.3.tar.gz" --shared)
+package "libxml2-2.9.2.tar.gz" --without-python
+package "libpng-1.6.18.tar.gz"
+package "expat-2.1.0.tar.gz"
+package "freetype-2.6.tar.gz"
+package "fontconfig-2.11.94.tar.gz"
+package "pixman-0.32.6.tar.gz"
+package "libffi-3.2.1.tar.gz" --disable-builddir
+package "gettext-0.19.6.tar.gz"
+package "glib-2.45.8.tar.xz"
+package "cairo-1.14.2.tar.xz" --enable-pthread
+package "pango-1.28.4.tar.gz"
+# waiting for 1.5.6 that has the rrdc_* exports we need...
+# for now using git @e41d73e [origin/1.5] as 1.5.6-jrh
+package "rrdtool-1.5.6-jrh.tar.gz" --disable-perl --enable-pthread

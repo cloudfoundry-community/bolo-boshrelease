@@ -1,0 +1,18 @@
+---
+name: rrdtool
+dependencies: []
+files:
+  - rrdtool/cairo-*
+  - rrdtool/expat-*
+  - rrdtool/fontconfig-*
+  - rrdtool/freetype-*
+  - rrdtool/gettext-*
+  - rrdtool/glib-*
+  - rrdtool/libffi-*
+  - rrdtool/libpng-*
+  - rrdtool/libxml2-*
+  - rrdtool/pango-*
+  - rrdtool/pcre-*
+  - rrdtool/pixman-*
+  - rrdtool/rrdtool-*
+  - rrdtool/zlib-*

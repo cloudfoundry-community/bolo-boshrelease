@@ -1,0 +1,5 @@
+check process bolo
+  with pidfile /var/vcap/sys/run/bolo/bolo.pid
+  start program "/var/vcap/jobs/bolo/bin/monit_debugger bolo_ctl '/var/vcap/jobs/bolo/bin/ctl start'"
+  stop program "/var/vcap/jobs/bolo/bin/monit_debugger bolo_ctl '/var/vcap/jobs/bolo/bin/ctl stop'"
+  group vcap

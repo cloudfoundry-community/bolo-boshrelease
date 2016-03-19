@@ -1,0 +1,28 @@
+#!/bin/bash
+set -e
+
+package="bolo-collectors"
+version="0.4.11"
+
+LD_LIBRARY_PATH="/var/vcap/packages/${package}/lib"
+PKG_CONFIG_PATH="/var/vcap/packages/${package}/lib/pkgconfig"
+LDFLAGS="-L/var/vcap/packages/${package}/lib"
+CFLAGS="-I/var/vcap/packages/${package}/include"
+PATH="${PATH}:/var/vcap/packages/${package}/bin"
+for x in libvigor rrdtool; do
+  LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/var/vcap/packages/${x}/lib"
+  PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:/var/vcap/packages/${x}/lib/pkgconfig"
+  LDFLAGS="${LDFLAGS} -L/var/vcap/packages/${x}/lib"
+  CFLAGS="${CFLAGS} -I/var/vcap/packages/${x}/include"
+  PATH="${PATH}:/var/vcap/packages/${x}/bin"
+done
+CPPFLAGS=${CFLAGS}
+export LD_LIBRARY_PATH PKG_CONFIG_PATH LDFLAGS CFLAGS CPPFLAGS PATH
+
+file="${package}-${version}.tar.gz"
+tar zxvf ${package}/${file}
+cd ${file//.tar*}
+
+./configure --prefix=${BOSH_INSTALL_TARGET}
+make
+make install

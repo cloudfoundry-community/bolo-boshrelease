@@ -1,0 +1,5 @@
+check process rrd
+  with pidfile /var/vcap/sys/run/rrd/rrd.pid
+  start program "/var/vcap/jobs/rrd/bin/monit_debugger rrd_ctl '/var/vcap/jobs/rrd/bin/ctl start'"
+  stop program "/var/vcap/jobs/rrd/bin/monit_debugger rrd_ctl '/var/vcap/jobs/rrd/bin/ctl stop'"
+  group vcap

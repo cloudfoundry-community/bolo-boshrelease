@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e
+
+package="bolo"
+version="0.2.17"
+file="${package}-${version}.tar.gz"
+
+tar zxvf ${package}/${file}
+
+cd ${file//.tar*}
+
+for pkg in ctap libvigor pcre rrdtool; do
+  [ -z "${LD_LIBRARY_PATH}" ] || LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:"
+  LD_LIBRARY_PATH="${LD_LIBRARY_PATH}/var/vcap/packages/${pkg}/lib"
+
+  [ -z "${LDFLAGS}" ] || LDFLAGS="${LDFLAGS} "
+  LDFLAGS="${LDFLAGS}-L/var/vcap/packages/${pkg}/lib"
+
+  [ -z "${CPPFLAGS}" ] || CPPFLAGS="${CPPFLAGS} "
+  CPPFLAGS="${CPPFLAGS}-I/var/vcap/packages/${pkg}/include"
+done
+export LD_LIBRARY_PATH LDFLAGS CPPFLAGS
+
+./configure --prefix=${BOSH_INSTALL_TARGET} \
+    --with-rrd-subscriber
+
+make
+
+make install

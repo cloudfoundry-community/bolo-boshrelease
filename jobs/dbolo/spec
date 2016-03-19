@@ -1,0 +1,32 @@
+---
+name: dbolo
+packages:
+  - bolo
+  - bolo-collectors
+  - libvigor
+templates:
+  bin/ctl: bin/ctl
+  bin/monit_debugger: bin/monit_debugger
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+
+  config/dbolo.conf: config/dbolo.conf
+
+properties:
+  dbolo.debug:
+    description: "Turn on extra debugging / verbose logging where appropriate"
+    default: false
+
+  dbolo.submission.address:
+    description: "Address of the Bolo Listener, for submitting monitoring data"
+  dbolo.submission.port:
+    description: "Port of the Bolo Listener, for submitting monitoring data"
+    default: 2999
+
+  dbolo.prefix:
+    description: "The prefix to prepend to submmitted metrics.  The keywords (job) and (index) will be replaced by the configured job name and instance index (i.e. 'worker' and '3')"
+    default: "(job)-(index)"
+  dbolo.collectors:
+    description: "What collectors to run, and how frequently.  A list of maps with 'every' and 'run' keys"
+    default: []

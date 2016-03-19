@@ -1,0 +1,7 @@
+---
+name: bolo-collectors
+dependencies:
+  - libvigor
+  - rrdtool
+files:
+  - bolo-collectors/bolo-collectors-*

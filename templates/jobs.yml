@@ -1,5 +1,6 @@
 meta:
-  environment: ~
+  bolo:
+    address: (( grab jobs.bolo.networks.bolo1.static_ips[0] ))
 
 update:
   canaries: 1
@@ -9,14 +10,23 @@ update:
   serial: false
 
 jobs:
-  - name: just_install_packages
+  - name: bolo
     templates:
-    - name: just_install_packages
-      release: bolo
+    - { release: bolo, name: bolo  }
+    - { release: bolo, name: dbolo }
+    - { release: bolo, name: rrd   }
     instances: 1
     persistent_disk: 0
     resource_pool: small_z1
-    networks: (( param "please set just_install_package networks" ))
+    networks: (( param "please set bolo networks" ))
+    properties:
+      dbolo:
+        submission: (( grab meta.bolo ))
+      bolo:
+        debug: true
+        rrd:
+          subscription: (( grab meta.bolo ))
+          submission:   (( grab meta.bolo ))
 
 networks: (( param "please set networks" ))
 

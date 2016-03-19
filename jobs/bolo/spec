@@ -1,0 +1,54 @@
+---
+name: bolo
+packages:
+  - bolo
+  - rrdtool
+  - libvigor
+templates:
+  bin/ctl: bin/ctl
+  bin/monit_debugger: bin/monit_debugger
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+
+  config/bolo.conf: config/bolo.conf
+
+properties:
+  bolo.debug:
+    description: "Turn on extra debugging / verbose logging where appropriate"
+    default: false
+
+  bolo.listener.address:
+    description: "Address to bind the Bolo Listener to, for submission of metrics"
+    default: '*'
+  bolo.listener.port:
+    description: "Port to bind the Bolo Listener to, for submission of metrics"
+    default: 2999
+
+  bolo.controller.address:
+    description: "Address to bind the Bolo Controller to, for management"
+    default: '*'
+  bolo.controller.port:
+    description: "Port to bind the Bolo Controller to, for management"
+    default: 2998
+
+  bolo.broadcast.address:
+    description: "Address to broadcast aggregated monitoring information on"
+    default: '*'
+  bolo.broadcast.port:
+    description: "Port to broadcast aggregated monitoring information on"
+    default: 2997
+
+  bolo.window:
+    description: "Aggregation window for metrics (in seconds)"
+    default: 60
+
+  bolo.freshness.threshold:
+    description: "Freshness threshold for all states (in seconds)"
+    default: 300
+  bolo.freshness.status:
+    description: "Status of stale states (one of: warning, critical or unknown)"
+    default: warning
+  bolo.freshness.message:
+    description: "Summary message for stale states"
+    default: no result from monitoring system

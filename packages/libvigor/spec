@@ -1,0 +1,9 @@
+---
+name: libvigor
+dependencies: []
+files:
+  - libvigor/ctap-*
+  - libvigor/libsodium-*
+  - libvigor/libvigor-*
+  - libvigor/pcre-*
+  - libvigor/zeromq-*

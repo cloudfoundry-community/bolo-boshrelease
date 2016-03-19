@@ -1,0 +1,17 @@
+#!/bin/bash
+ROOT=$(cd $(dirname $BASH_SOURCE[0])/../.. ; pwd)
+
+org="bolo"
+package="bolo"
+version="0.2.17"
+file="${package}-${version}.tar.gz"
+url="https://github.com/${org}/${package}/releases/download/v${version}/${file}"
+
+
+cd ${ROOT}/blobs
+if [[ ! -s "${package}/${file}" ]]
+then
+  mkdir -p ${package}
+  echo ">> downloading ${package}/${file}"
+  curl -Ls "${url}" -o "${package}/${file}"
+fi
