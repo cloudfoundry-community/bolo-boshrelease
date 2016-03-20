@@ -1,1 +1,81 @@
---- {}
+---
+bolo/bolo-0.2.17.tar.gz:
+  object_id: 50f8d521-690d-40a2-b4c0-b1aa9adcd6a0
+  sha: b5c8f9a5c25c073ba650429956ab0dc4e9d02789
+  size: 202553
+bolo-collectors/bolo-collectors-0.4.11.tar.gz:
+  object_id: 1a6f0b04-1619-48c7-85ec-74114ebf7581
+  sha: e4bd74dbc064b277f123f3f45f37a7699c1e9e4e
+  size: 113923
+libvigor/ctap-2.0.0.tar.gz:
+  object_id: a769d443-9cdb-45b9-b92b-7e76d6ebdb25
+  sha: 291b60749b2b78c96e0764d3a78f384d2404cc67
+  size: 92424
+libvigor/libsodium-1.0.3.tar.gz:
+  object_id: fb63e54d-e99c-4132-ab4b-91e2f7bdb418
+  sha: e44ed485842966d4e2d8f58e74a5fd78fbfbe4b0
+  size: 1679664
+libvigor/libvigor-1.2.10.tar.gz:
+  object_id: 99a2e57b-30b1-4956-8e4a-4dc9b527ddf3
+  sha: c6d5d78847c47b39922c49c83a3dabf6227c7713
+  size: 386059
+libvigor/pcre-8.37.tar.gz:
+  object_id: 05939c70-cb84-45f1-916e-7801ebcab353
+  sha: 4a24a20c61347d8da4edc86d5475aaf70ac146bb
+  size: 2041593
+libvigor/zeromq-4.1.3.tar.gz:
+  object_id: 540e1d6f-3602-4fb2-a973-cb7aa44d90ce
+  sha: b7185724f2fd56d0face50047757ac2a04d26ca4
+  size: 1372069
+rrdtool/cairo-1.14.2.tar.xz:
+  object_id: 8332217e-98bf-4530-9107-705ac07aca76
+  sha: c8da68aa66ca0855b5d0ff552766d3e8679e1d24
+  size: 35376404
+rrdtool/expat-2.1.0.tar.gz:
+  object_id: 0ce3ba98-6707-45ca-832d-01537f346009
+  sha: b08197d146930a5543a7b99e871cba3da614f6f0
+  size: 562616
+rrdtool/fontconfig-2.11.94.tar.gz:
+  object_id: 30d22244-1dc1-493d-a6aa-2bf56cd9f693
+  sha: 3748d8a2b9cf8052dbd003f524d829157f1ead83
+  size: 1853376
+rrdtool/freetype-2.6.tar.gz:
+  object_id: 3d322e99-f62b-4198-952a-b1c93cdf6499
+  sha: 12dd3267af62cccc32045ed99984f3d8a8ddbf90
+  size: 2272462
+rrdtool/gettext-0.19.6.tar.gz:
+  object_id: 7bde8a31-6bea-46d0-948e-b7864f86afd0
+  sha: 4d236852bd8d63e14d09eb6fc1f4da20a99f568b
+  size: 18619659
+rrdtool/glib-2.45.8.tar.xz:
+  object_id: 0e18934a-1ff8-40b4-b303-a3bc1f5254f7
+  sha: a25590b540251f9ed4a56ea2837d28071bddfa5a
+  size: 7188216
+rrdtool/libffi-3.2.1.tar.gz:
+  object_id: 679ef95c-dd8f-4d6f-a6e6-d9e3da3b9461
+  sha: 280c265b789e041c02e5c97815793dfc283fb1e6
+  size: 940837
+rrdtool/libpng-1.6.18.tar.gz:
+  object_id: f9d5699a-86e2-4596-a6ad-26e14af5d330
+  sha: c936eaa83fcd65c3c0eb696fd1f0ecc8c04f241f
+  size: 1400221
+rrdtool/libxml2-2.9.2.tar.gz:
+  object_id: 6adc59cc-50c7-4eba-b635-029e98a75295
+  sha: f46a37ea6d869f702e03f393c376760f3cbee673
+  size: 5444991
+rrdtool/pango-1.28.4.tar.gz:
+  object_id: dc07cbe4-c3d8-49c9-b8db-d1e42ae57488
+  sha: 1619380b9a6681633462f7d52201007d4d1bfafe
+  size: 2098991
+rrdtool/pcre-8.37.tar.gz:
+  object_id: bb0acc98-924d-4d1a-a01f-229f1c0148b9
+  sha: 4a24a20c61347d8da4edc86d5475aaf70ac146bb
+  size: 2041593
+rrdtool/pixman-0.32.6.tar.gz:
+  object_id: 76efa1d8-15ed-433f-98a8-5f687bcb4f22
+  sha: 8791343cbf6d99451f4d08e8209d6ac11bf96df2
+  size: 816702
+rrdtool/rrdtool-1.5.6-jrh.tar.gz:
+  object_id: 02391c53-77be-4667-9f74-7a47c5b54360
+  sha: 6d334bebc9c09a4f8969bcd969c4e0b2cb43f56b
+  size: 2082206
