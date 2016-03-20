@@ -15,4 +15,3 @@ files:
   - rrdtool/pcre-*
   - rrdtool/pixman-*
   - rrdtool/rrdtool-*
-  - rrdtool/zlib-*
