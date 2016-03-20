@@ -1,0 +1,47 @@
+---
+packages:
+- name: bolo
+  version: 25d8ebec71d3620fad0fb596b82a3be43f744430
+  fingerprint: 25d8ebec71d3620fad0fb596b82a3be43f744430
+  sha1: 58ae2ac4682c3164cd448118a0929474cc83d418
+  dependencies:
+  - libvigor
+  - rrdtool
+- name: bolo-collectors
+  version: a62745ef88290c50077de1797a207fb045125da6
+  fingerprint: a62745ef88290c50077de1797a207fb045125da6
+  sha1: 0ae1d97b493885eff13c5a08622c2c37358b2e3d
+  dependencies:
+  - libvigor
+  - rrdtool
+- name: libvigor
+  version: 5519817c969b845ed4b512818cf8a85e0647695a
+  fingerprint: 5519817c969b845ed4b512818cf8a85e0647695a
+  sha1: 5f12c07c4a55cf58a0ba42cec643b3597769dd63
+  dependencies: []
+- name: rrdtool
+  version: 2b287b63509f1a8817b3819a3d73dfb6a5dd099a
+  fingerprint: 2b287b63509f1a8817b3819a3d73dfb6a5dd099a
+  sha1: 0ab1b589fca09346c85e81ec87fac560518e9b9d
+  dependencies: []
+jobs:
+- name: bolo
+  version: 0c501f6fb03d0773124cedecb3d80b41d9eadce3
+  fingerprint: 0c501f6fb03d0773124cedecb3d80b41d9eadce3
+  sha1: ed4f901d37d03804c1f2664b3a83fec05a0f90a9
+- name: dbolo
+  version: 2ee274c64ea683bb7f311c4d44c0adc80143521a
+  fingerprint: 2ee274c64ea683bb7f311c4d44c0adc80143521a
+  sha1: a61fcd0eaca8449649b3e27e07aa4b87ff5723cb
+- name: rrd
+  version: 0f79156d7eb6105beb5af37c52a22a04aba596eb
+  fingerprint: 0f79156d7eb6105beb5af37c52a22a04aba596eb
+  sha1: fa91269ed11aca541598e0d299143807305ebfed
+license:
+  version: ec16b6c95de5c9122dcf472815239a76d1b6c9ea
+  fingerprint: ec16b6c95de5c9122dcf472815239a76d1b6c9ea
+  sha1: 8e940b6e82f19f8eca3ddb87d71e6b25eae6c6ed
+commit_hash: 6b9761bd
+uncommitted_changes: true
+name: bolo
+version: 0.0.1
