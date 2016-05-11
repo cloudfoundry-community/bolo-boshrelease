@@ -1,0 +1,60 @@
+---
+name: gnossis
+packages:
+- gnossis
+- spruce
+templates:
+  bin/ctl: bin/ctl
+  bin/monit_debugger: bin/monit_debugger
+  config/default_graphs.yml: config/default_graphs.yml
+  config/custom_graphs.yml.erb: config/custom_graphs.yml
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+properties:
+  bolo.rrd.root:
+    description: "Root directory where RRD files should be stored. Must match the `bolo.rrd.root` directory of the `rrd` job"
+    default: "/var/vcap/store/rrd/data"
+  bolo.gnossis.port:
+    description: "Port to listen on for the Gnossis dashboard"
+    default: 80
+  bolo.gnossis.log_level:
+    description: "Log level for Gnossis dashboard app"
+    default: info
+
+  bolo.gnossis.colors:
+    description: "Color mappings for graphs, human-friendly name to hex RGB value, in addition to the default colors"
+    default: {}
+    example: |
+      colors:
+        darkblue:    003366
+        blue:        004c99
+        lightblue:   66b2ff
+  bolo.gnossis.graphs:
+    description: "Map of graphs following the bolo graph config format, in addition to the default graphs"
+    default: {}
+    example: |
+      regexp-<ITEM>:
+        match: (example)
+        dps:
+          sample:  <HOST>:example:sample:n
+          counter:  <HOST>:example:counter:x
+          rate:  <HOST>:example:rate:value
+        script: |
+          --lower-limit 0
+          --upper-limit 100
+          --title "<HOSTNAME> Regex based graph - <ITEM>"
+          --vertical-label Bytes
+          DEF:sample=<DP sample>
+          DEF:counter=<DP counter>
+          DEF:rate=<DP rate>
+          LINE:sample<lightcyan>:"Sample\g"
+          GPRINT:sample:LAST:"  %6.2lf %sB now\g"
+          GPRINT:sample:MIN:"  %6.2lf %sB min\g"
+          GPRINT:sample:MAX:"  %6.2lf %sB max\n"
+          LINE:counter<green>:"Counter\g"
+          GPRINT:counter:LAST:"    %6.2lf %sB now\g"
+          GPRINT:counter:MIN:"  %6.2lf %sB min\g"
+          GPRINT:counter:MAX:"  %6.2lf %sB max\n"
+          LINE2:rate#000000:"Rate\g"
+          GPRINT:rate:LAST:"   %6.2lf %sB\n"

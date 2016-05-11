@@ -4,6 +4,7 @@ dependencies: []
 files:
   - rrdtool/cairo-*
   - rrdtool/expat-*
+  - rrdtool/freefont-*
   - rrdtool/fontconfig-*
   - rrdtool/freetype-*
   - rrdtool/gettext-*

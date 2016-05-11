@@ -26,6 +26,8 @@ package() {
    make install)
 }
 
+tar -xzf rrdtool/freefont-otf-20120503.tar.gz
+
 package "pcre-8.37.tar.gz"
 package "libxml2-2.9.2.tar.gz" --without-python
 package "libpng-1.6.18.tar.gz"
@@ -41,3 +43,14 @@ package "pango-1.28.4.tar.gz"
 # waiting for 1.5.6 that has the rrdc_* exports we need...
 # for now using git @e41d73e [origin/1.5] as 1.5.6-jrh
 package "rrdtool-1.5.6-jrh.tar.gz" --disable-perl --enable-pthread
+
+mkdir -p ${BOSH_INSTALL_TARGET}/freefont
+cp -a ${BOSH_COMPILE_TARGET}/freefont-20120503/* ${BOSH_INSTALL_TARGET}/freefont
+
+cat <<EOF >${BOSH_INSTALL_TARGET}/etc/fonts/conf.d/09-bosh-font-dir.conf
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+	<dir>/var/vcap/packages/rrdtool/freefont</dir>
+</fontconfig>
+EOF

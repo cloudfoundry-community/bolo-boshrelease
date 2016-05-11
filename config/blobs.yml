@@ -79,3 +79,19 @@ rrdtool/rrdtool-1.5.6-jrh.tar.gz:
   object_id: 02391c53-77be-4667-9f74-7a47c5b54360
   sha: 6d334bebc9c09a4f8969bcd969c4e0b2cb43f56b
   size: 2082206
+spruce/spruce:
+  object_id: 601f5f8a-1c5d-40c7-8432-5904988863a5
+  sha: 30d726a971715788211c221ad1274e13c9947f33
+  size: 9190008
+rrdtool/freefont-otf-20120503.tar.gz:
+  object_id: fce8ed90-ea21-415a-963a-3b417f65a5a9
+  sha: dad7600fa9eed4116c2aaa561228e3879565f7aa
+  size: 4487813
+gnossis/gnossis-linux-amd64-v0.2:
+  object_id: 75f6ed39-ba86-4206-94e3-6497ca966bda
+  sha: 9ce1fb28c2462492e86f5658373044f433a6ae8d
+  size: 10424872
+gnossis/gnossis-v0.2.tar.gz:
+  object_id: 782c6c3b-1d7f-4766-91ee-d1727fa52c67
+  sha: bf7ee2fb2f4f0b64f6e62c5b2173f1b96983b744
+  size: 1072422
