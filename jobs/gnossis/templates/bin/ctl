@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Setup env vars and folders for the webapp_ctl script
+source /var/vcap/jobs/gnossis/helpers/ctl_setup.sh 'gnossis'
+
+export LANG=en_US.UTF-8
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE $JOB_NAME
+
+    export LOG_LEVEL="<%= p("bolo.gnossis.log_level") %>"
+    export CF_INSTANCE_ADDR=":<%= p("bolo.gnossis.port") %>"
+    export RRD_DIR="<%= p("bolo.rrd.root") %>"
+    export GRAPH_CFG="/var/vcap/jobs/gnossis/config/graphs.yml"
+
+    spruce merge /var/vcap/jobs/gnossis/config/default_graphs.yml /var/vcap/jobs/gnossis/config/custom_graphs.yml > ${GRAPH_CFG}
+
+    # store pid in $PIDFILE
+    echo $$ > $PIDFILE
+
+    cd /var/vcap/packages/gnossis
+
+    exec gnossis >>$LOG_DIR/$JOB_NAME.log 2>&1
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+  *)
+    echo "Usage: gnossis_ctl {start|stop}"
+
+    ;;
+
+esac
+exit 0

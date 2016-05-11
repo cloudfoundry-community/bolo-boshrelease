@@ -15,6 +15,7 @@ jobs:
     - { release: bolo, name: bolo  }
     - { release: bolo, name: dbolo }
     - { release: bolo, name: rrd   }
+    - { release: bolo, name: gnossis }
     instances: 1
     persistent_disk: 0
     resource_pool: small_z1

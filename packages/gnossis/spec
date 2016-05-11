@@ -1,0 +1,5 @@
+---
+name: gnossis
+dependencies: []
+files:
+- gnossis/gnossis-*

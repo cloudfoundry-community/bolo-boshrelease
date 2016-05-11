@@ -1,0 +1,494 @@
+---
+colors:
+  darkblue:    003366
+  blue:        004c99
+  lightblue:   66b2ff
+
+  darkred:     660000
+  red:         990000
+  lightred:    ff6666
+
+  darkgreen:   006633
+  green:       00994c
+  lightgreen:  66ffb2
+
+  darkyellow:  999900
+  yellow:      cccc00
+  lightyellow: ffff66
+
+  darkorange:  99fc00
+  orange:      ff8000
+  lightorange: ffb266
+
+  darkcyan:    009999
+  cyan:        00cccc
+  lightcyan:   66ffff
+
+  darkpurple:  330066
+  purple:      6600cc
+  lightpurple: b266ff
+
+  darkpink:    660033
+  pink:        cc0066
+  lightpink:   ff66b2
+
+  darkgrey:    202020
+  grey:        808080
+  lightgrey:   c0c0c0
+
+graphs:
+  memory:
+    dps:
+      buffer: <HOST>:memory:buffers:mean
+      cache:  <HOST>:memory:cached:mean
+      used:   <HOST>:memory:used:mean
+      free:   <HOST>:memory:free:mean
+    script: |
+      --lower-limit 0
+      --title 'Memory Usage for <HOSTNAME>'
+      --vertical-label 'Bytes'
+      DEF:buffer=<DP buffer>
+      DEF:cache=<DP cache>
+      DEF:used=<DP used>
+      DEF:free=<DP free>
+      CDEF:total=buffer,cache,+,free,+,used,+
+      AREA:buffer<yellow>:"Buffers\\g"
+      GPRINT:buffer:LAST:" %6.2lf %sB now\\g"
+      GPRINT:buffer:MIN:"  %6.2lf %sB min\\g"
+      GPRINT:buffer:MAX:"  %6.2lf %sB max\\n"
+      STACK:cache<lightcyan>:"Caches\\g"
+      GPRINT:cache:LAST:"  %6.2lf %sB now\\g"
+      GPRINT:cache:MIN:"  %6.2lf %sB min\\g"
+      GPRINT:cache:MAX:"  %6.2lf %sB max\\n"
+      STACK:used<green>:"Used\\g"
+      GPRINT:used:LAST:"    %6.2lf %sB now\\g"
+      GPRINT:used:MIN:"  %6.2lf %sB min\\g"
+      GPRINT:used:MAX:"  %6.2lf %sB max\\n"
+      LINE2:total#000000:"Total\\g"
+      GPRINT:total:LAST:"   %6.2lf %sB\\n"
+  swap:
+    dps:
+      cache: <HOST>:swap:cached:mean
+      used:  <HOST>:swap:used:mean
+      free:  <HOST>:swap:free:mean
+    script: |
+      --lower-limit 0
+      --title 'Swap Usage for <HOSTNAME>'
+      --vertical-label 'Bytes'
+      DEF:cache=<DP cache>
+      DEF:used=<DP used>
+      DEF:free=<DP free>
+      CDEF:total=cache,free,+,used,+
+      AREA:cache<lightcyan>:"Caches\\g"
+      GPRINT:cache:LAST:"  %6.2lf %sB now\\g"
+      GPRINT:cache:MIN:"  %6.2lf %sB min\\g"
+      GPRINT:cache:MAX:"  %6.2lf %sB max\\n"
+      STACK:used<green>:"Used\\g"
+      GPRINT:used:LAST:"    %6.2lf %sB now\\g"
+      GPRINT:used:MIN:"  %6.2lf %sB min\\g"
+      GPRINT:used:MAX:"  %6.2lf %sB max\\n"
+      LINE2:total#000000:"Total\\g"
+      GPRINT:total:LAST:"   %6.2lf %sB\\n"
+
+  df-<ITEM>:
+    match: "df:(.*?):"
+    dps:
+      free:     <HOST>:df:<ITEM>:bytes.free:mean
+      total:    <HOST>:df:<ITEM>:bytes.total:mean
+    script: |
+      --lower-limit 0
+      --upper-limit 100
+      --title "<HOSTNAME> Disk Usage - <ITEM>"
+      --vertical-label Bytes
+      DEF:free=<DP free>
+      DEF:total=<DP total>
+      CDEF:used=total,free,-
+      CDEF:upperlimit=total,1.05,*
+      AREA:used<lightblue>
+      LINE2:used<blue>:"Used"
+      GPRINT:used:LAST:"     %6.2lf %sB now\\g"
+      GPRINT:used:MIN:"  %6.2lf %sB min\\g"
+      GPRINT:used:MAX:"  %6.2lf %sB max\\n"
+      LINE2:total#000000:"Total"
+      GPRINT:total:LAST:"    %6.2lf %sB\\n"
+      LINE:upperlimit#00000000
+
+  contextswitches:
+    match: ^ctxt
+    dps:
+      switches: <HOST>:ctxt:cswch-s:value
+    script: |
+      --lower-limit 0
+      --title "Context Switches for <HOSTNAME>"
+      --vertical-label "Switches"
+      DEF:switches=<DP switches>
+      LINE2:switches<blue>:"Context Switches\\g"
+      GPRINT:switches:LAST:" %5.1lf%s now\\g"
+      GPRINT:switches:MIN:" %5.1lf%s min\\g"
+      GPRINT:switches:MAX:" %5.1lf%s max\\n"
+
+  fork_rate:
+    match: ^ctxt
+    dps:
+      fork_rate: <HOST>:ctxt:forks-s:value
+    script: |
+      --lower-limit 0
+      --title "Fork Rate for <HOSTNAME>"
+      --vertical-label "Forks"
+      DEF:fr=<DP fork_rate>
+      LINE2:fr<blue>:"Forks\\g"
+      GPRINT:fr:LAST:" %5.1lf%s now\\g"
+      GPRINT:fr:MIN:" %5.1lf%s min\\g"
+      GPRINT:fr:MAX:" %5.1lf%s max\\n"
+
+  processes:
+    match: ^procs
+    dps:
+      blocked:  <HOST>:procs:blocked:mean
+      paging:   <HOST>:procs:paging:mean
+      running:  <HOST>:procs:running:mean
+      sleeping: <HOST>:procs:sleeping:mean
+      stopped:  <HOST>:procs:stopped:mean
+      zombies : <HOST>:procs:zombies:mean
+    script: |
+      --lower-limit 0
+      --title "Process Count on <HOSTNAME>"
+      --vertical-label "Processes"
+      DEF:blocked=<DP blocked>
+      DEF:paging=<DP paging>
+      DEF:running=<DP running>
+      DEF:sleeping=<DP sleeping>
+      DEF:stopped=<DP stopped>
+      DEF:zombies=<DP zombies>
+      CDEF:total=blocked,paging,+,running,+,sleeping,+,stopped,+,zombies,+
+      AREA:blocked<yellow>:"Blocked  "
+      GPRINT:blocked:LAST:"%6.2lf%s now"
+      GPRINT:blocked:MIN:"%6.2lf%s min"
+      GPRINT:blocked:MAX:"%6.2lf%s max\\n"
+      STACK:paging<lightpink>:"Paging   "
+      GPRINT:paging:LAST:"%6.2lf%s now"
+      GPRINT:paging:MIN:"%6.2lf%s min"
+      GPRINT:paging:MAX:"%6.2lf%s max\\n"
+      STACK:stopped<blue>:"Stopped  "
+      GPRINT:stopped:LAST:"%6.2lf%s now"
+      GPRINT:stopped:MIN:"%6.2lf%s min"
+      GPRINT:stopped:MAX:"%6.2lf%s max\\n"
+      STACK:sleeping<lightblue>:"Sleeping "
+      GPRINT:sleeping:LAST:"%6.2lf%s now"
+      GPRINT:sleeping:MIN:"%6.2lf%s min"
+      GPRINT:sleeping:MAX:"%6.2lf%s max\\n"
+      STACK:running<green>:"Running  "
+      GPRINT:running:LAST:"%6.2lf%s now"
+      GPRINT:running:MIN:"%6.2lf%s min"
+      GPRINT:running:MAX:"%6.2lf%s max\\n"
+      STACK:zombies<red>:"Zombified"
+      GPRINT:zombies:LAST:"%6.2lf%s now"
+      GPRINT:zombies:MIN:"%6.2lf%s min"
+      GPRINT:zombies:MAX:"%6.2lf%s max\\n"
+      LINE2:total<black>:"Total    "
+      GPRINT:total:LAST:"%6.2lf%s now"
+      GPRINT:total:MIN:"%6.2lf%s min"
+      GPRINT:total:MAX:"%6.2lf%s max\\n"
+
+  <ITEM>_disk_io:
+    match: "diskio:(.*?):"
+    dps:
+      read:  <HOST>:diskio:<ITEM>:rd-bytes:value
+      write: <HOST>:diskio:<ITEM>:wr-bytes:value
+    script: |
+      --lower-limit -1000
+      --upper-limit 1000
+      --title "<ITEM> throughput for <HOSTNAME>"
+      --vertical-label "Bytes/sec"
+      DEF:read=<DP read>
+      DEF:write=<DP write>
+      CDEF:iwrite=write,-1,*
+      AREA:read<lightblue>
+      LINE2:read<blue>:"read\\g"
+      GPRINT:read:LAST:"   %6.2lf %sB now\\g"
+      GPRINT:read:MIN:"  %6.2lf %sB min\\g"
+      GPRINT:read:MAX:"  %6.2lf %sB max\\n"
+      AREA:iwrite<lightgreen>
+      LINE2:iwrite<green>:"write\\g"
+      GPRINT:write:LAST:"  %6.2lf %sB now\\g"
+      GPRINT:write:MIN:"  %6.2lf %sB min\\g"
+      GPRINT:write:MAX:"  %6.2lf %sB max\\n"
+
+  <ITEM>_disk_iops:
+    match: "diskio:(.*?):"
+    dps:
+      read:  <HOST>:diskio:<ITEM>:rd-iops:value
+      write: <HOST>:diskio:<ITEM>:wr-iops:value
+    script: |
+      --lower-limit -100
+      --upper-limit 100
+      --title "<ITEM> IOPSfor <HOSTNAME>"
+      --vertical-label "IO Operations/sec"
+      DEF:read=<DP read>
+      DEF:write=<DP write>
+      CDEF:iwrite=write,-1,*
+      AREA:read<lightblue>
+      LINE2:read<blue>:"read\\g"
+      GPRINT:read:LAST:"   %6.2lf%s now\\g"
+      GPRINT:read:MIN:"  %6.2lf%s min\\g"
+      GPRINT:read:MAX:"  %6.2lf%s max\\n"
+      AREA:iwrite<lightgreen>
+      LINE2:iwrite<green>:"write\\g"
+      GPRINT:write:LAST:"  %6.2lf%s now\\g"
+      GPRINT:write:MIN:"  %6.2lf%s min\\g"
+      GPRINT:write:MAX:"  %6.2lf%s max\\n"
+
+  <ITEM>_disk_await:
+    match: "diskio:(.*?):"
+    dps:
+      read:  <HOST>:diskio:<ITEM>:rd-msec:value
+      write: <HOST>:diskio:<ITEM>:wr-msec:value
+    script: |
+      --lower-limit -10
+      --upper-limit 10
+      --title "Average time waiting on IO for <ITEM> on <HOSTNAME>"
+      --vertical-label "Seconds"
+      DEF:read=<DP read>
+      DEF:write=<DP write>
+      CDEF:w=write,1000,/
+      CDEF:r=read,1000,/
+      CDEF:iwrite=w,-1,*
+      AREA:r<lightblue>
+      LINE2:r<blue>:"read\\g"
+      GPRINT:r:LAST:"   %6.2lf %ssec now\\g"
+      GPRINT:r:MIN:"  %6.2lf %ssec min\\g"
+      GPRINT:r:MAX:"  %6.2lf %ssec max\\n"
+      AREA:iwrite<lightgreen>
+      LINE2:iwrite<green>:"write\\g"
+      GPRINT:w:LAST:"  %6.2lf %ssec now\\g"
+      GPRINT:w:MIN:"  %6.2lf %ssec min\\g"
+      GPRINT:w:MAX:"  %6.2lf %ssec max\\n"
+
+  <ITEM>_inet_packets:
+    match: "net:(.*?):"
+    dps:
+      rx: <HOST>:net:<ITEM>:rx.packets:value
+      tx: <HOST>:net:<ITEM>:tx.packets:value
+    script: |
+      --lower-limit -10
+      --upper-limit 10
+      --title "<ITEM> packet rate on <HOSTNAME>"
+      --vertical-label "Packets/ssec"
+      DEF:rx=<DP rx>
+      DEF:tx=<DP tx>
+      CDEF:itx=tx,-1,*
+      AREA:rx<lightblue>
+      LINE2:rx<blue>:"rx\\g"
+      GPRINT:rx:LAST:"  %6.2lf%s now\\g"
+      GPRINT:rx:MIN:"  %6.2lf%s min\\g"
+      GPRINT:rx:MAX:"  %6.2lf%s max\\n"
+      AREA:itx<lightgreen>
+      LINE2:itx<green>:"tx\\g"
+      GPRINT:tx:LAST:"  %6.2lf%s now\\g"
+      GPRINT:tx:MIN:"  %6.2lf%s min\\g"
+      GPRINT:tx:MAX:"  %6.2lf%s max\\n"
+
+  <ITEM>_inet_errors:
+    match: "net:(.*?):"
+    dps:
+      drop_rx: <HOST>:net:<ITEM>:rx.drops:value
+      drop_tx: <HOST>:net:<ITEM>:tx.drops:value
+      err_rx: <HOST>:net:<ITEM>:rx.errors:value
+      err_tx: <HOST>:net:<ITEM>:tx.errors:value
+    script: |
+      --lower-limit -10
+      --upper-limit 10
+      --title "<ITEM> errors/drops on <HOSTNAME>"
+      --vertical-label "Packets"
+      DEF:drop_rx=<DP drop_rx>
+      DEF:drop_tx=<DP drop_tx>
+      CDEF:drop_itx=drop_tx,-1,*
+      DEF:err_rx=<DP err_rx>
+      DEF:err_tx=<DP err_tx>
+      CDEF:err_itx=err_tx,-1,*
+      LINE2:drop_rx<blue>:"rx\\g"
+      GPRINT:drop_rx:LAST:"  %6.2lf%s now\\g"
+      GPRINT:drop_rx:MIN:"  %6.2lf%s min\\g"
+      GPRINT:drop_rx:MAX:"  %6.2lf%s max\\n"
+      LINE2:drop_itx<green>:"tx\\g"
+      GPRINT:drop_tx:LAST:"  %6.2lf%s now\\g"
+      GPRINT:drop_tx:MIN:"  %6.2lf%s min\\g"
+      GPRINT:drop_tx:MAX:"  %6.2lf%s max\\n"
+      LINE2:err_rx<lightred>:"rx\\g"
+      GPRINT:err_rx:LAST:"  %6.2lf%s now\\g"
+      GPRINT:err_rx:MIN:"  %6.2lf%s min\\g"
+      GPRINT:err_rx:MAX:"  %6.2lf%s max\\n"
+      LINE2:err_itx<magenta>:"tx\\g"
+      GPRINT:err_tx:LAST:"  %6.2lf%s now\\g"
+      GPRINT:err_tx:MIN:"  %6.2lf%s min\\g"
+      GPRINT:err_tx:MAX:"  %6.2lf%s max\\n"
+
+  <ITEM>_inet_traffic:
+    match: "net:(.*?):"
+    dps:
+      rx: <HOST>:net:<ITEM>:rx.bytes:value
+      tx: <HOST>:net:<ITEM>:tx.bytes:value
+    script: |
+      --lower-limit -1000
+      --upper-limit 1000
+      --title "<ITEM> throughput on <HOSTNAME>"
+      --vertical-label "Bytes/sec"
+      DEF:rx=<DP rx>
+      DEF:tx=<DP tx>
+      CDEF:itx=tx,-1,*
+      AREA:rx<lightblue>
+      LINE2:rx<blue>:"rx\\g"
+      GPRINT:rx:LAST:"  %6.2lf %sB now\\g"
+      GPRINT:rx:MIN:"  %6.2lf %sB min\\g"
+      GPRINT:rx:MAX:"  %6.2lf %sB max\\n"
+      AREA:itx<lightgreen>
+      LINE2:itx<green>:"tx\\g"
+      GPRINT:tx:LAST:"  %6.2lf %sB now\\g"
+      GPRINT:tx:MIN:"  %6.2lf %sB min\\g"
+      GPRINT:tx:MAX:"  %6.2lf %sB max\\n"
+  openfiles:
+    dps:
+      used: <HOST>:openfiles:used:mean
+      max:  <HOST>:openfiles:max:mean
+    script: |
+      --lower-limit 0
+      --title "Open Files on <HOSTNAME>"
+      --vertical-label "File Descriptors"
+      DEF:used=<DP used>
+      DEF:max=<DP max>
+      AREA:used<lightblue>:"Used\\g"
+      GPRINT:used:LAST:"  %6.2lf%s now\\g"
+      GPRINT:used:MIN:"  %6.2lf%s min\\g"
+      GPRINT:used:MAX:"  %6.2lf%s max\\n"
+      GPRINT:max:LAST:"  Max   %6.2lf%s\\n"
+  swap_rate:
+    match: ^vm
+    dps:
+      in:  <HOST>:vm:pgpgin:value
+      out: <HOST>:vm:pgpgout:value
+    script: |
+      --lower-limit 0
+      --title 'Swap Paging rate for <HOSTNAME>'
+      --vertical-label 'Pages'
+      DEF:in=<DP in>
+      DEF:out=<DP out>
+      LINE2:in<cyan>:"swap_in\\g"
+      GPRINT:in:LAST:"   %6.2lf %sB now\\g"
+      GPRINT:in:MIN:"  %6.2lf %sB min\\g"
+      GPRINT:in:MAX:"  %6.2lf %sB max\\n"
+      LINE2:out<green>:"swap_out\\g"
+      GPRINT:out:LAST:"  %6.2lf %sB now\\g"
+      GPRINT:out:MIN:"  %6.2lf %sB min\\g"
+      GPRINT:out:MAX:"  %6.2lf %sB max\\n"
+  load:
+    dps:
+      short:  <HOST>:load:1min:mean
+      medium: <HOST>:load:5min:mean
+      long:   <HOST>:load:15min:mean
+      cpus:   <HOST>:load:cpus:mean
+    script: |
+      --lower-limit 0
+      --title 'Load for <HOSTNAME>'
+      --vertical-label 'Load'
+      DEF:short=<DP short>
+      DEF:medium=<DP medium>
+      DEF:long=<DP long>
+      DEF:cpus=<DP cpus>
+      AREA:long<lightblue>:"15min"
+      GPRINT:long:LAST:"%4.2lf now"
+      GPRINT:long:AVERAGE:"%4.2lf avg"
+      GPRINT:long:MIN:"%4.2lf min"
+      GPRINT:long:MAX:"%4.2lf max\\n"
+      AREA:medium<blue>:" 5min"
+      GPRINT:medium:LAST:"%4.2lf now"
+      GPRINT:medium:AVERAGE:"%4.2lf avg"
+      GPRINT:medium:MIN:"%4.2lf min"
+      GPRINT:medium:MAX:"%4.2lf max\\n"
+      AREA:short<DARKBLUE>:" 1min"
+      GPRINT:short:LAST:"%4.2lf now"
+      GPRINT:short:AVERAGE:"%4.2lf avg"
+      GPRINT:short:MIN:"%4.2lf min"
+      GPRINT:short:MAX:"%4.2lf max\\n"
+      LINE:cpus<black>:"# CPU Cores"
+  cpu:
+    dps:
+      user:       <HOST>:cpu:user:value
+      nice:       <HOST>:cpu:nice:value
+      system:     <HOST>:cpu:system:value
+      idle:       <HOST>:cpu:idle:value
+      iowait:     <HOST>:cpu:iowait:value
+      irq:        <HOST>:cpu:irq:value
+      softirq:    <HOST>:cpu:softirq:value
+      steal:      <HOST>:cpu:steal:value
+      guest:      <HOST>:cpu:guest:value
+      guest_nice: <HOST>:cpu:guest-nice:value
+    script: |
+      --lower-limit 0
+      --upper-limit 100
+      --title 'CPU Usage for <HOSTNAME>'
+      --vertical-label 'Percent'
+      DEF:user=<DP user>
+      DEF:nice=<DP nice>
+      DEF:system=<DP system>
+      DEF:idle=<DP idle>
+      DEF:iowait=<DP iowait>
+      DEF:irq=<DP irq>
+      DEF:softirq=<DP softirq>
+      DEF:steal=<DP steal>
+      DEF:guest=<DP guest>
+      DEF:guest_nice=<DP guest_nice>
+      CDEF:total=user,nice,+,system,+,idle,+,iowait,+,irq,+,softirq,+,steal,+,guest,+,guest_nice,+
+      CDEF:user_p=user,total,/,100,*
+      CDEF:nice_p=nice,total,/,100,*
+      CDEF:system_p=system,total,/,100,*
+      CDEF:iowait_p=iowait,total,/,100,*
+      CDEF:irq_p=irq,total,/,100,*
+      CDEF:softirq_p=softirq,total,/,100,*
+      CDEF:steal_p=steal,total,/,100,*
+      CDEF:guest_p=guest,total,/,100,*
+      CDEF:guest_nice_p=guest_nice,total,/,100,*
+      AREA:nice_p<lightgreen>:"nice      "
+      GPRINT:nice_p:LAST:"%4.2lf now"
+      GPRINT:nice_p:AVERAGE:"%4.2lf avg"
+      GPRINT:nice_p:MIN:"%4.2lf min"
+      GPRINT:nice_p:MAX:"%4.2lf max\\n"
+      STACK:system_p<red>:"system    "
+      GPRINT:system_p:LAST:"%4.2lf now"
+      GPRINT:system_p:AVERAGE:"%4.2lf avg"
+      GPRINT:system_p:MIN:"%4.2lf min"
+      GPRINT:system_p:MAX:"%4.2lf max\\n"
+      STACK:iowait_p<yellow>:"iowait    "
+      GPRINT:iowait_p:LAST:"%4.2lf now"
+      GPRINT:iowait_p:AVERAGE:"%4.2lf avg"
+      GPRINT:iowait_p:MIN:"%4.2lf min"
+      GPRINT:iowait_p:MAX:"%4.2lf max\\n"
+      STACK:user_p<blue>:"user      "
+      GPRINT:user_p:LAST:"%4.2lf now"
+      GPRINT:user_p:AVERAGE:"%4.2lf avg"
+      GPRINT:user_p:MIN:"%4.2lf min"
+      GPRINT:user_p:MAX:"%4.2lf max\\n"
+      STACK:steal_p<orange>:"steal     "
+      GPRINT:steal_p:LAST:"%4.2lf now"
+      GPRINT:steal_p:AVERAGE:"%4.2lf avg"
+      GPRINT:steal_p:MIN:"%4.2lf min"
+      GPRINT:steal_p:MAX:"%4.2lf max\\n"
+      STACK:irq_p<lightcyan>:"irq       "
+      GPRINT:irq_p:LAST:"%4.2lf now"
+      GPRINT:irq_p:AVERAGE:"%4.2lf avg"
+      GPRINT:irq_p:MIN:"%4.2lf min"
+      GPRINT:irq_p:MAX:"%4.2lf max\\n"
+      STACK:softirq_p<darkcyan>:"softirq   "
+      GPRINT:softirq_p:LAST:"%4.2lf now"
+      GPRINT:softirq_p:AVERAGE:"%4.2lf avg"
+      GPRINT:softirq_p:MIN:"%4.2lf min"
+      GPRINT:softirq_p:MAX:"%4.2lf max\\n"
+      STACK:guest_p<pink>:"guest     "
+      GPRINT:guest_p:LAST:"%4.2lf now"
+      GPRINT:guest_p:AVERAGE:"%4.2lf avg"
+      GPRINT:guest_p:MIN:"%4.2lf min"
+      GPRINT:guest_p:MAX:"%4.2lf max\\n"
+      STACK:guest_nice_p<purple>:"guest_nice"
+      GPRINT:guest_nice_p:LAST:"%4.2lf now"
+      GPRINT:guest_nice_p:AVERAGE:"%4.2lf avg"
+      GPRINT:guest_nice_p:MIN:"%4.2lf min"
+      GPRINT:guest_nice_p:MAX:"%4.2lf max\\n"
