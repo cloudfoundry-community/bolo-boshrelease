@@ -18,6 +18,9 @@ properties:
   bolo.gnossis.port:
     description: "Port to listen on for the Gnossis dashboard"
     default: 80
+  bolo.gnossis.name:
+    description: "Name of this gnossis/bolo installation - used as title to dashboard pages, to keep track of multiple instances"
+    default: "Gnossis"
   bolo.gnossis.log_level:
     description: "Log level for Gnossis dashboard app"
     default: info

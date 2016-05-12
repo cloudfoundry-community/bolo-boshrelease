@@ -2,7 +2,7 @@
 set -e
 
 package="gnossis"
-version="0.2"
+version="0.4"
 
 tar -xf ${package}/${package}-v${version}.tar.gz
 
