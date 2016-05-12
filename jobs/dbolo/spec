@@ -25,8 +25,8 @@ properties:
     default: 2999
 
   dbolo.prefix:
-    description: "The prefix to prepend to submmitted metrics.  The keywords (job) and (index) will be replaced by the configured job name and instance index (i.e. 'worker' and '3')"
-    default: "(job)-(index)"
+    description: "The prefix to prepend to submmitted metrics.  The keywords (deployment), (job) and (index) will be replaced by the configured deployment, job name, and instance index (i.e. 'concourse', 'worker' and '3')"
+    default: "(deployment)-(job)-(index)"
   dbolo.collectors:
     description: "What collectors to run, and how frequently.  A list of maps with 'every' and 'run' keys"
     default: []
