@@ -17,6 +17,7 @@ case $1 in
     export CF_INSTANCE_ADDR=":<%= p("bolo.gnossis.port") %>"
     export RRD_DIR="<%= p("bolo.rrd.root") %>"
     export GRAPH_CFG="/var/vcap/jobs/gnossis/config/graphs.yml"
+    export GNOSSIS_NAME="<%= p("bolo.gnossis.name") %>"
 
     spruce merge /var/vcap/jobs/gnossis/config/default_graphs.yml /var/vcap/jobs/gnossis/config/custom_graphs.yml > ${GRAPH_CFG}
 

@@ -95,3 +95,11 @@ gnossis/gnossis-v0.2.tar.gz:
   object_id: 782c6c3b-1d7f-4766-91ee-d1727fa52c67
   sha: bf7ee2fb2f4f0b64f6e62c5b2173f1b96983b744
   size: 1072422
+gnossis/gnossis-linux-amd64-v0.4:
+  object_id: 1a0d33f9-6155-46d2-bcbc-f480b9e8c4e6
+  sha: d8bf8d3f1b31969a2d78b69fba1208158a5e530c
+  size: 10425640
+gnossis/gnossis-v0.4.tar.gz:
+  object_id: 3b88e7e5-9a63-4c37-95d9-0a93cd80edb4
+  sha: 7c3def3c29c567d067ed300cc5c27e383f093d2b
+  size: 400164
