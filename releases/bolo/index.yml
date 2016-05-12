@@ -2,4 +2,6 @@
 builds:
   d53d3036-164d-4507-a341-f8c5b7d4b4d3:
     version: 0.0.1
+  ec32fc28-4b7d-4191-9c15-c2526bf22dfb:
+    version: 0.0.2
 format-version: '2'

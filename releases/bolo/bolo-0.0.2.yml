@@ -1,0 +1,61 @@
+---
+packages:
+- name: bolo
+  version: 25d8ebec71d3620fad0fb596b82a3be43f744430
+  fingerprint: 25d8ebec71d3620fad0fb596b82a3be43f744430
+  sha1: 58ae2ac4682c3164cd448118a0929474cc83d418
+  dependencies:
+  - libvigor
+  - rrdtool
+- name: bolo-collectors
+  version: a62745ef88290c50077de1797a207fb045125da6
+  fingerprint: a62745ef88290c50077de1797a207fb045125da6
+  sha1: 0ae1d97b493885eff13c5a08622c2c37358b2e3d
+  dependencies:
+  - libvigor
+  - rrdtool
+- name: gnossis
+  version: 1399cb8bc2d727d4213adbba63537c9aa1b1a00c
+  fingerprint: 1399cb8bc2d727d4213adbba63537c9aa1b1a00c
+  sha1: 894be67780acf0fd5f43195f921b5966b367572e
+  dependencies: []
+- name: libvigor
+  version: 5519817c969b845ed4b512818cf8a85e0647695a
+  fingerprint: 5519817c969b845ed4b512818cf8a85e0647695a
+  sha1: 5f12c07c4a55cf58a0ba42cec643b3597769dd63
+  dependencies: []
+- name: rrdtool
+  version: 089ffc20933e9b883ccdaf356bdaa4b50b41f369
+  fingerprint: 089ffc20933e9b883ccdaf356bdaa4b50b41f369
+  sha1: 7feda954a239ceb41bcf26d00efd628c843e0474
+  dependencies: []
+- name: spruce
+  version: 8515475f5f41262b9b0ccbdfc872930c2db6493d
+  fingerprint: 8515475f5f41262b9b0ccbdfc872930c2db6493d
+  sha1: a25034afafffe00d7a3def99422c355740384c9f
+  dependencies: []
+jobs:
+- name: bolo
+  version: 0c501f6fb03d0773124cedecb3d80b41d9eadce3
+  fingerprint: 0c501f6fb03d0773124cedecb3d80b41d9eadce3
+  sha1: ed4f901d37d03804c1f2664b3a83fec05a0f90a9
+- name: dbolo
+  version: 9bfed4c554d2efbca82ff4b59e8333cef276640f
+  fingerprint: 9bfed4c554d2efbca82ff4b59e8333cef276640f
+  sha1: 304a5c44a830668aa8bcc85c37dbef83cf6acc0c
+- name: gnossis
+  version: 74d7449edb4b1b9abb23701341bf02d7060aa5bb
+  fingerprint: 74d7449edb4b1b9abb23701341bf02d7060aa5bb
+  sha1: 265ee46c9f907686ba1fdf0d15a7dacd26156d0b
+- name: rrd
+  version: 0f79156d7eb6105beb5af37c52a22a04aba596eb
+  fingerprint: 0f79156d7eb6105beb5af37c52a22a04aba596eb
+  sha1: fa91269ed11aca541598e0d299143807305ebfed
+license:
+  version: ec16b6c95de5c9122dcf472815239a76d1b6c9ea
+  fingerprint: ec16b6c95de5c9122dcf472815239a76d1b6c9ea
+  sha1: 8e940b6e82f19f8eca3ddb87d71e6b25eae6c6ed
+commit_hash: b16980fb
+uncommitted_changes: true
+name: bolo
+version: 0.0.2
