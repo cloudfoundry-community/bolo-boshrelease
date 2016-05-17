@@ -30,7 +30,7 @@ redirect_output ${output_label}
 export HOME=${HOME:-/home/vcap}
 
 use_package bolo
-use package libvigor
+use_package libvigor
 
 # Setup log, run and tmp folders
 export RUN_DIR=/var/vcap/sys/run/$JOB_NAME
