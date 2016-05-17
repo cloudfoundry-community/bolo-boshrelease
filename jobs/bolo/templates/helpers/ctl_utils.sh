@@ -153,3 +153,15 @@ check_nfs_mount() {
     fi
   fi
 }
+
+use_package() {
+  pkg=$1
+  if [[ -d /var/vcap/packages/${pkg} ]]; then
+    for bindir in /var/vcap/packages/${pkg}/*bin; do
+      export PATH=${bindir}:${PATH}
+    done
+    for libdir in /var/vcap/packages/${pkg}/lib; do
+      export LD_LIBRARY_PATH=${libdir}:${LD_LIBRARY_PATH:-''}
+    done
+  fi
+}
