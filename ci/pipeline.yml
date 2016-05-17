@@ -142,6 +142,12 @@ jobs:
       - put: version
         params:
           bump: patch
+      - put: github
+        params:
+          name:   gh/name
+          tag:    gh/tag
+          body:   gh/notes.md
+          globs: [gh/artifacts/*]
 
 resource_types:
   - name: slack-notification
@@ -171,6 +177,13 @@ resources:
     type: slack-notification
     source:
       url: (( grab meta.slack.webhook ))
+
+  - name: github
+    type: github-release
+    source:
+      user:         (( grab meta.github.owner ))
+      repository:   (( grab meta.github.repo ))
+      access_token: (( grab meta.github.access_token ))
 
   - name: s3
     type: s3
