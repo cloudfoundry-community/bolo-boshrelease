@@ -1,5 +1,4 @@
----
-colors:
+colors: # {{{
   darkblue:    003366
   blue:        004c99
   lightblue:   66b2ff
@@ -16,7 +15,7 @@ colors:
   yellow:      cccc00
   lightyellow: ffff66
 
-  darkorange:  99fc00
+  darkorange:  ff7b00
   orange:      ff8000
   lightorange: ffb266
 
@@ -35,382 +34,29 @@ colors:
   darkgrey:    202020
   grey:        808080
   lightgrey:   c0c0c0
+# }}}
 
 graphs:
-  memory:
+  data-flow: # {{{
+    match: memory
     dps:
-      buffer: <HOST>:memory:buffers:mean
-      cache:  <HOST>:memory:cached:mean
-      used:   <HOST>:memory:used:mean
-      free:   <HOST>:memory:free:mean
-    script: |
+      n: <HOST>:memory:buffers:n
+    script:
       --lower-limit 0
-      --title 'Memory Usage for <HOSTNAME>'
-      --vertical-label 'Bytes'
-      DEF:buffer=<DP buffer>
-      DEF:cache=<DP cache>
-      DEF:used=<DP used>
-      DEF:free=<DP free>
-      CDEF:total=buffer,cache,+,free,+,used,+
-      AREA:buffer<yellow>:"Buffers\\g"
-      GPRINT:buffer:LAST:" %6.2lf %sB now\\g"
-      GPRINT:buffer:MIN:"  %6.2lf %sB min\\g"
-      GPRINT:buffer:MAX:"  %6.2lf %sB max\\n"
-      STACK:cache<lightcyan>:"Caches\\g"
-      GPRINT:cache:LAST:"  %6.2lf %sB now\\g"
-      GPRINT:cache:MIN:"  %6.2lf %sB min\\g"
-      GPRINT:cache:MAX:"  %6.2lf %sB max\\n"
-      STACK:used<green>:"Used\\g"
-      GPRINT:used:LAST:"    %6.2lf %sB now\\g"
-      GPRINT:used:MIN:"  %6.2lf %sB min\\g"
-      GPRINT:used:MAX:"  %6.2lf %sB max\\n"
-      LINE2:total#000000:"Total\\g"
-      GPRINT:total:LAST:"   %6.2lf %sB\\n"
-  swap:
-    dps:
-      cache: <HOST>:swap:cached:mean
-      used:  <HOST>:swap:used:mean
-      free:  <HOST>:swap:free:mean
-    script: |
-      --lower-limit 0
-      --title 'Swap Usage for <HOSTNAME>'
-      --vertical-label 'Bytes'
-      DEF:cache=<DP cache>
-      DEF:used=<DP used>
-      DEF:free=<DP free>
-      CDEF:total=cache,free,+,used,+
-      AREA:cache<lightcyan>:"Caches\\g"
-      GPRINT:cache:LAST:"  %6.2lf %sB now\\g"
-      GPRINT:cache:MIN:"  %6.2lf %sB min\\g"
-      GPRINT:cache:MAX:"  %6.2lf %sB max\\n"
-      STACK:used<green>:"Used\\g"
-      GPRINT:used:LAST:"    %6.2lf %sB now\\g"
-      GPRINT:used:MIN:"  %6.2lf %sB min\\g"
-      GPRINT:used:MAX:"  %6.2lf %sB max\\n"
-      LINE2:total#000000:"Total\\g"
-      GPRINT:total:LAST:"   %6.2lf %sB\\n"
+      --title 'Data Samples / minute'
+      --vertical-label 'count'
 
-  df-<ITEM>:
-    match: "df:(.*?):"
-    dps:
-      free:     <HOST>:df:<ITEM>:bytes.free:mean
-      total:    <HOST>:df:<ITEM>:bytes.total:mean
-    script: |
-      --lower-limit 0
-      --upper-limit 100
-      --title "<HOSTNAME> Disk Usage - <ITEM>"
-      --vertical-label Bytes
-      DEF:free=<DP free>
-      DEF:total=<DP total>
-      CDEF:used=total,free,-
-      CDEF:upperlimit=total,1.05,*
-      AREA:used<lightblue>
-      LINE2:used<blue>:"Used"
-      GPRINT:used:LAST:"     %6.2lf %sB now\\g"
-      GPRINT:used:MIN:"  %6.2lf %sB min\\g"
-      GPRINT:used:MAX:"  %6.2lf %sB max\\n"
-      LINE2:total#000000:"Total"
-      GPRINT:total:LAST:"    %6.2lf %sB\\n"
-      LINE:upperlimit#00000000
+      DEF:n=<DP n>
 
-  contextswitches:
-    match: ^ctxt
-    dps:
-      switches: <HOST>:ctxt:cswch-s:value
-    script: |
-      --lower-limit 0
-      --title "Context Switches for <HOSTNAME>"
-      --vertical-label "Switches"
-      DEF:switches=<DP switches>
-      LINE2:switches<blue>:"Context Switches\\g"
-      GPRINT:switches:LAST:" %5.1lf%s now\\g"
-      GPRINT:switches:MIN:" %5.1lf%s min\\g"
-      GPRINT:switches:MAX:" %5.1lf%s max\\n"
+      LINE2:n#000000:"samples"
+      GPRINT:n:LAST:"%4.2lf now"
+      GPRINT:n:AVERAGE:"%4.2lf avg"
+      GPRINT:n:MIN:"%4.2lf min"
+      GPRINT:n:MAX:"%4.2lf max\\n"
 
-  fork_rate:
-    match: ^ctxt
-    dps:
-      fork_rate: <HOST>:ctxt:forks-s:value
-    script: |
-      --lower-limit 0
-      --title "Fork Rate for <HOSTNAME>"
-      --vertical-label "Forks"
-      DEF:fr=<DP fork_rate>
-      LINE2:fr<blue>:"Forks\\g"
-      GPRINT:fr:LAST:" %5.1lf%s now\\g"
-      GPRINT:fr:MIN:" %5.1lf%s min\\g"
-      GPRINT:fr:MAX:" %5.1lf%s max\\n"
+  # }}}
 
-  processes:
-    match: ^procs
-    dps:
-      blocked:  <HOST>:procs:blocked:mean
-      paging:   <HOST>:procs:paging:mean
-      running:  <HOST>:procs:running:mean
-      sleeping: <HOST>:procs:sleeping:mean
-      stopped:  <HOST>:procs:stopped:mean
-      zombies : <HOST>:procs:zombies:mean
-    script: |
-      --lower-limit 0
-      --title "Process Count on <HOSTNAME>"
-      --vertical-label "Processes"
-      DEF:blocked=<DP blocked>
-      DEF:paging=<DP paging>
-      DEF:running=<DP running>
-      DEF:sleeping=<DP sleeping>
-      DEF:stopped=<DP stopped>
-      DEF:zombies=<DP zombies>
-      CDEF:total=blocked,paging,+,running,+,sleeping,+,stopped,+,zombies,+
-      AREA:blocked<yellow>:"Blocked  "
-      GPRINT:blocked:LAST:"%6.2lf%s now"
-      GPRINT:blocked:MIN:"%6.2lf%s min"
-      GPRINT:blocked:MAX:"%6.2lf%s max\\n"
-      STACK:paging<lightpink>:"Paging   "
-      GPRINT:paging:LAST:"%6.2lf%s now"
-      GPRINT:paging:MIN:"%6.2lf%s min"
-      GPRINT:paging:MAX:"%6.2lf%s max\\n"
-      STACK:stopped<blue>:"Stopped  "
-      GPRINT:stopped:LAST:"%6.2lf%s now"
-      GPRINT:stopped:MIN:"%6.2lf%s min"
-      GPRINT:stopped:MAX:"%6.2lf%s max\\n"
-      STACK:sleeping<lightblue>:"Sleeping "
-      GPRINT:sleeping:LAST:"%6.2lf%s now"
-      GPRINT:sleeping:MIN:"%6.2lf%s min"
-      GPRINT:sleeping:MAX:"%6.2lf%s max\\n"
-      STACK:running<green>:"Running  "
-      GPRINT:running:LAST:"%6.2lf%s now"
-      GPRINT:running:MIN:"%6.2lf%s min"
-      GPRINT:running:MAX:"%6.2lf%s max\\n"
-      STACK:zombies<red>:"Zombified"
-      GPRINT:zombies:LAST:"%6.2lf%s now"
-      GPRINT:zombies:MIN:"%6.2lf%s min"
-      GPRINT:zombies:MAX:"%6.2lf%s max\\n"
-      LINE2:total<black>:"Total    "
-      GPRINT:total:LAST:"%6.2lf%s now"
-      GPRINT:total:MIN:"%6.2lf%s min"
-      GPRINT:total:MAX:"%6.2lf%s max\\n"
-
-  <ITEM>_disk_io:
-    match: "diskio:(.*?):"
-    dps:
-      read:  <HOST>:diskio:<ITEM>:rd-bytes:value
-      write: <HOST>:diskio:<ITEM>:wr-bytes:value
-    script: |
-      --lower-limit -1000
-      --upper-limit 1000
-      --title "<ITEM> throughput for <HOSTNAME>"
-      --vertical-label "Bytes/sec"
-      DEF:read=<DP read>
-      DEF:write=<DP write>
-      CDEF:iwrite=write,-1,*
-      AREA:read<lightblue>
-      LINE2:read<blue>:"read\\g"
-      GPRINT:read:LAST:"   %6.2lf %sB now\\g"
-      GPRINT:read:MIN:"  %6.2lf %sB min\\g"
-      GPRINT:read:MAX:"  %6.2lf %sB max\\n"
-      AREA:iwrite<lightgreen>
-      LINE2:iwrite<green>:"write\\g"
-      GPRINT:write:LAST:"  %6.2lf %sB now\\g"
-      GPRINT:write:MIN:"  %6.2lf %sB min\\g"
-      GPRINT:write:MAX:"  %6.2lf %sB max\\n"
-
-  <ITEM>_disk_iops:
-    match: "diskio:(.*?):"
-    dps:
-      read:  <HOST>:diskio:<ITEM>:rd-iops:value
-      write: <HOST>:diskio:<ITEM>:wr-iops:value
-    script: |
-      --lower-limit -100
-      --upper-limit 100
-      --title "<ITEM> IOPSfor <HOSTNAME>"
-      --vertical-label "IO Operations/sec"
-      DEF:read=<DP read>
-      DEF:write=<DP write>
-      CDEF:iwrite=write,-1,*
-      AREA:read<lightblue>
-      LINE2:read<blue>:"read\\g"
-      GPRINT:read:LAST:"   %6.2lf%s now\\g"
-      GPRINT:read:MIN:"  %6.2lf%s min\\g"
-      GPRINT:read:MAX:"  %6.2lf%s max\\n"
-      AREA:iwrite<lightgreen>
-      LINE2:iwrite<green>:"write\\g"
-      GPRINT:write:LAST:"  %6.2lf%s now\\g"
-      GPRINT:write:MIN:"  %6.2lf%s min\\g"
-      GPRINT:write:MAX:"  %6.2lf%s max\\n"
-
-  <ITEM>_disk_await:
-    match: "diskio:(.*?):"
-    dps:
-      read:  <HOST>:diskio:<ITEM>:rd-msec:value
-      write: <HOST>:diskio:<ITEM>:wr-msec:value
-    script: |
-      --lower-limit -10
-      --upper-limit 10
-      --title "Average time waiting on IO for <ITEM> on <HOSTNAME>"
-      --vertical-label "Seconds"
-      DEF:read=<DP read>
-      DEF:write=<DP write>
-      CDEF:w=write,1000,/
-      CDEF:r=read,1000,/
-      CDEF:iwrite=w,-1,*
-      AREA:r<lightblue>
-      LINE2:r<blue>:"read\\g"
-      GPRINT:r:LAST:"   %6.2lf %ssec now\\g"
-      GPRINT:r:MIN:"  %6.2lf %ssec min\\g"
-      GPRINT:r:MAX:"  %6.2lf %ssec max\\n"
-      AREA:iwrite<lightgreen>
-      LINE2:iwrite<green>:"write\\g"
-      GPRINT:w:LAST:"  %6.2lf %ssec now\\g"
-      GPRINT:w:MIN:"  %6.2lf %ssec min\\g"
-      GPRINT:w:MAX:"  %6.2lf %ssec max\\n"
-
-  <ITEM>_inet_packets:
-    match: "net:(.*?):"
-    dps:
-      rx: <HOST>:net:<ITEM>:rx.packets:value
-      tx: <HOST>:net:<ITEM>:tx.packets:value
-    script: |
-      --lower-limit -10
-      --upper-limit 10
-      --title "<ITEM> packet rate on <HOSTNAME>"
-      --vertical-label "Packets/ssec"
-      DEF:rx=<DP rx>
-      DEF:tx=<DP tx>
-      CDEF:itx=tx,-1,*
-      AREA:rx<lightblue>
-      LINE2:rx<blue>:"rx\\g"
-      GPRINT:rx:LAST:"  %6.2lf%s now\\g"
-      GPRINT:rx:MIN:"  %6.2lf%s min\\g"
-      GPRINT:rx:MAX:"  %6.2lf%s max\\n"
-      AREA:itx<lightgreen>
-      LINE2:itx<green>:"tx\\g"
-      GPRINT:tx:LAST:"  %6.2lf%s now\\g"
-      GPRINT:tx:MIN:"  %6.2lf%s min\\g"
-      GPRINT:tx:MAX:"  %6.2lf%s max\\n"
-
-  <ITEM>_inet_errors:
-    match: "net:(.*?):"
-    dps:
-      drop_rx: <HOST>:net:<ITEM>:rx.drops:value
-      drop_tx: <HOST>:net:<ITEM>:tx.drops:value
-      err_rx: <HOST>:net:<ITEM>:rx.errors:value
-      err_tx: <HOST>:net:<ITEM>:tx.errors:value
-    script: |
-      --lower-limit -10
-      --upper-limit 10
-      --title "<ITEM> errors/drops on <HOSTNAME>"
-      --vertical-label "Packets"
-      DEF:drop_rx=<DP drop_rx>
-      DEF:drop_tx=<DP drop_tx>
-      CDEF:drop_itx=drop_tx,-1,*
-      DEF:err_rx=<DP err_rx>
-      DEF:err_tx=<DP err_tx>
-      CDEF:err_itx=err_tx,-1,*
-      LINE2:drop_rx<blue>:"rx\\g"
-      GPRINT:drop_rx:LAST:"  %6.2lf%s now\\g"
-      GPRINT:drop_rx:MIN:"  %6.2lf%s min\\g"
-      GPRINT:drop_rx:MAX:"  %6.2lf%s max\\n"
-      LINE2:drop_itx<green>:"tx\\g"
-      GPRINT:drop_tx:LAST:"  %6.2lf%s now\\g"
-      GPRINT:drop_tx:MIN:"  %6.2lf%s min\\g"
-      GPRINT:drop_tx:MAX:"  %6.2lf%s max\\n"
-      LINE2:err_rx<lightred>:"rx\\g"
-      GPRINT:err_rx:LAST:"  %6.2lf%s now\\g"
-      GPRINT:err_rx:MIN:"  %6.2lf%s min\\g"
-      GPRINT:err_rx:MAX:"  %6.2lf%s max\\n"
-      LINE2:err_itx<magenta>:"tx\\g"
-      GPRINT:err_tx:LAST:"  %6.2lf%s now\\g"
-      GPRINT:err_tx:MIN:"  %6.2lf%s min\\g"
-      GPRINT:err_tx:MAX:"  %6.2lf%s max\\n"
-
-  <ITEM>_inet_traffic:
-    match: "net:(.*?):"
-    dps:
-      rx: <HOST>:net:<ITEM>:rx.bytes:value
-      tx: <HOST>:net:<ITEM>:tx.bytes:value
-    script: |
-      --lower-limit -1000
-      --upper-limit 1000
-      --title "<ITEM> throughput on <HOSTNAME>"
-      --vertical-label "Bytes/sec"
-      DEF:rx=<DP rx>
-      DEF:tx=<DP tx>
-      CDEF:itx=tx,-1,*
-      AREA:rx<lightblue>
-      LINE2:rx<blue>:"rx\\g"
-      GPRINT:rx:LAST:"  %6.2lf %sB now\\g"
-      GPRINT:rx:MIN:"  %6.2lf %sB min\\g"
-      GPRINT:rx:MAX:"  %6.2lf %sB max\\n"
-      AREA:itx<lightgreen>
-      LINE2:itx<green>:"tx\\g"
-      GPRINT:tx:LAST:"  %6.2lf %sB now\\g"
-      GPRINT:tx:MIN:"  %6.2lf %sB min\\g"
-      GPRINT:tx:MAX:"  %6.2lf %sB max\\n"
-  openfiles:
-    dps:
-      used: <HOST>:openfiles:used:mean
-      max:  <HOST>:openfiles:max:mean
-    script: |
-      --lower-limit 0
-      --title "Open Files on <HOSTNAME>"
-      --vertical-label "File Descriptors"
-      DEF:used=<DP used>
-      DEF:max=<DP max>
-      AREA:used<lightblue>:"Used\\g"
-      GPRINT:used:LAST:"  %6.2lf%s now\\g"
-      GPRINT:used:MIN:"  %6.2lf%s min\\g"
-      GPRINT:used:MAX:"  %6.2lf%s max\\n"
-      GPRINT:max:LAST:"  Max   %6.2lf%s\\n"
-  swap_rate:
-    match: ^vm
-    dps:
-      in:  <HOST>:vm:pgpgin:value
-      out: <HOST>:vm:pgpgout:value
-    script: |
-      --lower-limit 0
-      --title 'Swap Paging rate for <HOSTNAME>'
-      --vertical-label 'Pages'
-      DEF:in=<DP in>
-      DEF:out=<DP out>
-      LINE2:in<cyan>:"swap_in\\g"
-      GPRINT:in:LAST:"   %6.2lf %sB now\\g"
-      GPRINT:in:MIN:"  %6.2lf %sB min\\g"
-      GPRINT:in:MAX:"  %6.2lf %sB max\\n"
-      LINE2:out<green>:"swap_out\\g"
-      GPRINT:out:LAST:"  %6.2lf %sB now\\g"
-      GPRINT:out:MIN:"  %6.2lf %sB min\\g"
-      GPRINT:out:MAX:"  %6.2lf %sB max\\n"
-  load:
-    dps:
-      short:  <HOST>:load:1min:mean
-      medium: <HOST>:load:5min:mean
-      long:   <HOST>:load:15min:mean
-      cpus:   <HOST>:load:cpus:mean
-    script: |
-      --lower-limit 0
-      --title 'Load for <HOSTNAME>'
-      --vertical-label 'Load'
-      DEF:short=<DP short>
-      DEF:medium=<DP medium>
-      DEF:long=<DP long>
-      DEF:cpus=<DP cpus>
-      AREA:long<lightblue>:"15min"
-      GPRINT:long:LAST:"%4.2lf now"
-      GPRINT:long:AVERAGE:"%4.2lf avg"
-      GPRINT:long:MIN:"%4.2lf min"
-      GPRINT:long:MAX:"%4.2lf max\\n"
-      AREA:medium<blue>:" 5min"
-      GPRINT:medium:LAST:"%4.2lf now"
-      GPRINT:medium:AVERAGE:"%4.2lf avg"
-      GPRINT:medium:MIN:"%4.2lf min"
-      GPRINT:medium:MAX:"%4.2lf max\\n"
-      AREA:short<DARKBLUE>:" 1min"
-      GPRINT:short:LAST:"%4.2lf now"
-      GPRINT:short:AVERAGE:"%4.2lf avg"
-      GPRINT:short:MIN:"%4.2lf min"
-      GPRINT:short:MAX:"%4.2lf max\\n"
-      LINE:cpus<black>:"# CPU Cores"
-  cpu:
+  cpu: # {{{
     dps:
       user:       <HOST>:cpu:user:value
       nice:       <HOST>:cpu:nice:value
@@ -427,6 +73,7 @@ graphs:
       --upper-limit 100
       --title 'CPU Usage for <HOSTNAME>'
       --vertical-label 'Percent'
+
       DEF:user=<DP user>
       DEF:nice=<DP nice>
       DEF:system=<DP system>
@@ -437,6 +84,7 @@ graphs:
       DEF:steal=<DP steal>
       DEF:guest=<DP guest>
       DEF:guest_nice=<DP guest_nice>
+
       CDEF:total=user,nice,+,system,+,idle,+,iowait,+,irq,+,softirq,+,steal,+,guest,+,guest_nice,+
       CDEF:user_p=user,total,/,100,*
       CDEF:nice_p=nice,total,/,100,*
@@ -447,48 +95,1304 @@ graphs:
       CDEF:steal_p=steal,total,/,100,*
       CDEF:guest_p=guest,total,/,100,*
       CDEF:guest_nice_p=guest_nice,total,/,100,*
+
       AREA:nice_p<lightgreen>:"nice      "
       GPRINT:nice_p:LAST:"%4.2lf now"
       GPRINT:nice_p:AVERAGE:"%4.2lf avg"
       GPRINT:nice_p:MIN:"%4.2lf min"
       GPRINT:nice_p:MAX:"%4.2lf max\\n"
+
       STACK:system_p<red>:"system    "
       GPRINT:system_p:LAST:"%4.2lf now"
       GPRINT:system_p:AVERAGE:"%4.2lf avg"
       GPRINT:system_p:MIN:"%4.2lf min"
       GPRINT:system_p:MAX:"%4.2lf max\\n"
+
       STACK:iowait_p<yellow>:"iowait    "
       GPRINT:iowait_p:LAST:"%4.2lf now"
       GPRINT:iowait_p:AVERAGE:"%4.2lf avg"
       GPRINT:iowait_p:MIN:"%4.2lf min"
       GPRINT:iowait_p:MAX:"%4.2lf max\\n"
+
       STACK:user_p<blue>:"user      "
       GPRINT:user_p:LAST:"%4.2lf now"
       GPRINT:user_p:AVERAGE:"%4.2lf avg"
       GPRINT:user_p:MIN:"%4.2lf min"
       GPRINT:user_p:MAX:"%4.2lf max\\n"
+
       STACK:steal_p<orange>:"steal     "
       GPRINT:steal_p:LAST:"%4.2lf now"
       GPRINT:steal_p:AVERAGE:"%4.2lf avg"
       GPRINT:steal_p:MIN:"%4.2lf min"
       GPRINT:steal_p:MAX:"%4.2lf max\\n"
+
       STACK:irq_p<lightcyan>:"irq       "
       GPRINT:irq_p:LAST:"%4.2lf now"
       GPRINT:irq_p:AVERAGE:"%4.2lf avg"
       GPRINT:irq_p:MIN:"%4.2lf min"
       GPRINT:irq_p:MAX:"%4.2lf max\\n"
+
       STACK:softirq_p<darkcyan>:"softirq   "
       GPRINT:softirq_p:LAST:"%4.2lf now"
       GPRINT:softirq_p:AVERAGE:"%4.2lf avg"
       GPRINT:softirq_p:MIN:"%4.2lf min"
       GPRINT:softirq_p:MAX:"%4.2lf max\\n"
+
       STACK:guest_p<pink>:"guest     "
       GPRINT:guest_p:LAST:"%4.2lf now"
       GPRINT:guest_p:AVERAGE:"%4.2lf avg"
       GPRINT:guest_p:MIN:"%4.2lf min"
       GPRINT:guest_p:MAX:"%4.2lf max\\n"
+
       STACK:guest_nice_p<purple>:"guest_nice"
       GPRINT:guest_nice_p:LAST:"%4.2lf now"
       GPRINT:guest_nice_p:AVERAGE:"%4.2lf avg"
       GPRINT:guest_nice_p:MIN:"%4.2lf min"
       GPRINT:guest_nice_p:MAX:"%4.2lf max\\n"
+  # }}}
+  load: # {{{
+    dps:
+      short:  <HOST>:load:1min:mean
+      medium: <HOST>:load:5min:mean
+      long:   <HOST>:load:15min:mean
+      cpus:   <HOST>:load:cpus:mean
+    script: |
+      --lower-limit 0
+      --title 'Load for <HOSTNAME>'
+      --vertical-label 'Load'
+
+      DEF:short=<DP short>
+      DEF:medium=<DP medium>
+      DEF:long=<DP long>
+      DEF:cpus=<DP cpus>
+
+      AREA:long<lightblue>:"15min"
+      GPRINT:long:LAST:"%4.2lf now"
+      GPRINT:long:AVERAGE:"%4.2lf avg"
+      GPRINT:long:MIN:"%4.2lf min"
+      GPRINT:long:MAX:"%4.2lf max\\n"
+
+      AREA:medium<blue>:" 5min"
+      GPRINT:medium:LAST:"%4.2lf now"
+      GPRINT:medium:AVERAGE:"%4.2lf avg"
+      GPRINT:medium:MIN:"%4.2lf min"
+      GPRINT:medium:MAX:"%4.2lf max\\n"
+
+      AREA:short<DARKBLUE>:" 1min"
+      GPRINT:short:LAST:"%4.2lf now"
+      GPRINT:short:AVERAGE:"%4.2lf avg"
+      GPRINT:short:MIN:"%4.2lf min"
+      GPRINT:short:MAX:"%4.2lf max\\n"
+
+      LINE:cpus<BLACK>:"#cpus"
+      GPRINT:cpus:LAST:"%4.2lf\\n"
+  # }}}
+  memory: # {{{
+    dps:
+      buffer: <HOST>:memory:buffers:mean
+      cache:  <HOST>:memory:cached:mean
+      used:   <HOST>:memory:used:mean
+      free:   <HOST>:memory:free:mean
+      total:  <HOST>:memory:total:mean
+    script: |
+      --lower-limit 0
+      --title 'Memory Usage for <HOSTNAME>'
+      --vertical-label 'Bytes'
+      --base 1024
+
+      DEF:buffer=<DP buffer>
+      DEF:cache=<DP cache>
+      DEF:used=<DP used>
+      DEF:free=<DP free>
+      DEF:total=<DP total>
+
+      AREA:buffer<yellow>:"Buffers\\g"
+      GPRINT:buffer:LAST:" %7.2lf %sB now\\g"
+      GPRINT:buffer:MIN:"  %7.2lf %sB min\\g"
+      GPRINT:buffer:MAX:"  %7.2lf %sB max\\n"
+
+      STACK:cache<lightcyan>:"Caches\\g"
+      GPRINT:cache:LAST:"  %7.2lf %sB now\\g"
+      GPRINT:cache:MIN:"  %7.2lf %sB min\\g"
+      GPRINT:cache:MAX:"  %7.2lf %sB max\\n"
+
+      STACK:used<green>:"Used\\g"
+      GPRINT:used:LAST:"    %7.2lf %sB now\\g"
+      GPRINT:used:MIN:"  %7.2lf %sB min\\g"
+      GPRINT:used:MAX:"  %7.2lf %sB max\\n"
+
+      LINE2:total#000000:"Total\\g"
+      GPRINT:total:LAST:"   %7.2lf %sB\\n"
+  # }}}
+  swap: # {{{
+    dps:
+      cache: <HOST>:swap:cached:mean
+      used:  <HOST>:swap:used:mean
+      free:  <HOST>:swap:free:mean
+    script: |
+      --lower-limit 0
+      --title 'Swap Usage for <HOSTNAME>'
+      --vertical-label 'Bytes'
+      --base 1024
+
+      DEF:cache=<DP cache>
+      DEF:used=<DP used>
+      DEF:free=<DP free>
+
+      CDEF:total=cache,free,+,used,+
+
+      AREA:cache<lightcyan>:"Caches\\g"
+      GPRINT:cache:LAST:"  %7.2lf %sB now\\g"
+      GPRINT:cache:MIN:"  %7.2lf %sB min\\g"
+      GPRINT:cache:MAX:"  %7.2lf %sB max\\n"
+
+      STACK:used<green>:"Used\\g"
+      GPRINT:used:LAST:"    %7.2lf %sB now\\g"
+      GPRINT:used:MIN:"  %7.2lf %sB min\\g"
+      GPRINT:used:MAX:"  %7.2lf %sB max\\n"
+
+      LINE2:total#000000:"Total\\g"
+      GPRINT:total:LAST:"   %7.2lf %sB\\n"
+  # }}}
+  paging: # {{{
+    match: ^vm$
+    dps:
+      faults: <HOST>:vm:pgfault:value
+      in:     <HOST>:vm:pgpgin:value
+      out:    <HOST>:vm:pgpgout:value
+    script: |
+      --lower-limit 0
+      --title "Page Faults for <HOSTNAME>"
+      --vertical-label "Faults"
+
+      DEF:total=<DP faults>
+      DEF:in=<DP in>
+      DEF:out=<DP out>
+
+      CDEF:other=total,in,-,out,-
+
+      AREA:in<lightblue>:"page-in"
+      GPRINT:in:LAST:" %7.2lf%s now"
+      GPRINT:in:MIN:"%7.2lf%s min"
+      GPRINT:in:MAX:"%7.2lf%s max\\n"
+
+      STACK:out<lightgreen>:"page-out"
+      GPRINT:out:LAST:" %7.2lf%s now"
+      GPRINT:out:MIN:"%7.2lf%s min"
+      GPRINT:out:MAX:"%7.2lf%s max\\n"
+
+      STACK:other<lightyellow>:"other"
+      GPRINT:other:LAST:"   %7.2lf%s now"
+      GPRINT:other:MIN:"%7.2lf%s min"
+      GPRINT:other:MAX:"%7.2lf%s max\\n"
+
+      LINE:total<black>:"total"
+      GPRINT:total:LAST:"   %7.2lf%s now"
+      GPRINT:total:MIN:"%7.2lf%s min"
+      GPRINT:total:MAX:"%7.2lf%s max\\n"
+  # }}}
+  major-page-faults: # {{{
+    match: ^vm$
+    dps:
+      major: <HOST>:vm:pgmajfault:value
+    script: |
+      --lower-limit 0
+      --title "Major Page Faults for <HOSTNAME>"
+      --vertical-label "Faults"
+
+      DEF:major=<DP major>
+
+      AREA:major<lightblue>:"major faults"
+      GPRINT:major:LAST:"%7.2lf%s now"
+      GPRINT:major:MIN:"%7.2lf%s min"
+      GPRINT:major:MAX:"%7.2lf%s max\\n"
+
+      LINE:major<blue>
+  # }}}
+
+  proc-<ITEM>-cpu: # {{{
+    match: ^proc:(.*)
+    dps:
+      user:   <HOST>:proc:<ITEM>:utime:value
+      system: <HOST>:proc:<ITEM>:stime:value
+      guest:  <HOST>:proc:<ITEM>:guest_time:value
+      iowait: <HOST>:proc:<ITEM>:iowait:value
+    script: |
+      --title "CPU Usage for <ITEM> on <HOSTNAME>"
+      --lower-limit 0
+      --vertical-label "Seconds"
+
+      DEF:user_ms=<DP user>
+      CDEF:user=user_ms,1000,/
+      DEF:system_ms=<DP system>
+      CDEF:system=system_ms,1000,/
+      DEF:guest_ms=<DP guest>
+      CDEF:guest=guest_ms,1000,/
+      DEF:iowait_ms=<DP iowait>
+      CDEF:iowait=iowait_ms,1000,/
+
+      CDEF:user_real=user,guest,-
+      CDEF:total=user_real,system,+,guest,+
+
+      AREA:system<red>:"system"
+      GPRINT:system:LAST:"%4.2lf%ss now"
+      GPRINT:system:AVERAGE:"%4.2lf%ss avg"
+      GPRINT:system:MIN:"%4.2lf%ss min"
+      GPRINT:system:MAX:"%4.2lf%ss max\\n"
+
+      STACK:iowait<yellow>:"iowait"
+      GPRINT:iowait:LAST:"%4.2lf%ss now"
+      GPRINT:iowait:AVERAGE:"%4.2lf%ss avg"
+      GPRINT:iowait:MIN:"%4.2lf%ss min"
+      GPRINT:iowait:MAX:"%4.2lf%ss max\\n"
+
+      STACK:user<blue>:"user  "
+      GPRINT:user:LAST:"%4.2lf%ss now"
+      GPRINT:user:AVERAGE:"%4.2lf%ss avg"
+      GPRINT:user:MIN:"%4.2lf%ss min"
+      GPRINT:user:MAX:"%4.2lf%ss max\\n"
+
+      STACK:guest<pink>:"guest "
+      GPRINT:guest:LAST:"%4.2lf%ss now"
+      GPRINT:guest:AVERAGE:"%4.2lf%ss avg"
+      GPRINT:guest:MIN:"%4.2lf%ss min"
+      GPRINT:guest:MAX:"%4.2lf%ss max\\n"
+
+      LINE2:total
+  # }}}
+  proc-<ITEM>-vmem: # {{{
+    match: ^proc:(.*)
+    dps:
+      rss:      <HOST>:proc:<ITEM>:vmrss:mean
+      peak_rss: <HOST>:proc:<ITEM>:vmhwm:mean
+      vm:       <HOST>:proc:<ITEM>:vmsize:mean
+      peak_vm:  <HOST>:proc:<ITEM>:vmpeak:mean
+    script: |
+      --title "Virtual Memory Usage for <ITEM> on <HOSTNAME>"
+      --lower-limit 0
+      --vertical-label "Bytes"
+
+      DEF:rss=<DP rss>
+      DEF:peak_rss=<DP peak_rss>
+      DEF:vm=<DP vm>
+      DEF:peak_vm=<DP peak_vm>
+
+      AREA:peak_vm#AFEEEE:"VM (peak)\\g"
+      GPRINT:peak_vm:LAST:" %7.2lf %sB now"
+      GPRINT:peak_vm:MIN:"%7.2lf %sB min"
+      GPRINT:peak_vm:MAX:"%7.2lf %sB max\\n"
+
+      AREA:vm#00BFFF:"VM\\g"
+      GPRINT:vm:LAST:"        %7.2lf %sB now"
+      GPRINT:vm:MIN:"%7.2lf %sB min"
+      GPRINT:vm:MAX:"%7.2lf %sB max\\n"
+
+      AREA:peak_rss#D8BFD8:"RSS (peak)\\g"
+      GPRINT:peak_rss:LAST:"%7.2lf %sB now"
+      GPRINT:peak_rss:MIN:"%7.2lf %sB min"
+      GPRINT:peak_rss:MAX:"%7.2lf %sB max\\n"
+
+      AREA:rss#BA55D3:"RSS\\g"
+      GPRINT:rss:LAST:"       %7.2lf %sB now"
+      GPRINT:rss:MIN:"%7.2lf %sB min"
+      GPRINT:rss:MAX:"%7.2lf %sB max\\n"
+
+      LINE2:peak_rss#000000
+      LINE:rss#000000
+      LINE2:peak_vm#000000
+      LINE:vm#000000
+  # }}}
+  proc-<ITEM>-mem: # {{{
+    match: ^proc:(.*)
+    dps:
+      mem_heap:  <HOST>:proc:<ITEM>:mem_heap:mean
+      swp_heap:  <HOST>:proc:<ITEM>:swp_heap:mean
+      mem_anon:  <HOST>:proc:<ITEM>:mem_anon:mean
+      swp_anon:  <HOST>:proc:<ITEM>:swp_anon:mean
+      mem_libs:  <HOST>:proc:<ITEM>:mem_libs:mean
+      swp_libs:  <HOST>:proc:<ITEM>:swp_libs:mean
+      mem_stack: <HOST>:proc:<ITEM>:mem_stack:mean
+      swp_stack: <HOST>:proc:<ITEM>:swp_stack:mean
+      mem_mmap:  <HOST>:proc:<ITEM>:mem_mmap:mean
+      swp_mmap:  <HOST>:proc:<ITEM>:swp_mmap:mean
+    script: |
+      --title "Memory Usage for <ITEM> on <HOSTNAME>"
+      --lower-limit 0
+      --vertical-label "Bytes"
+
+      DEF:heap_m=<DP mem_heap>
+      DEF:heap_s=<DP swp_heap>
+      CDEF:heap=heap_m,heap_s,+
+
+      DEF:anon_m=<DP mem_anon>
+      DEF:anon_s=<DP swp_anon>
+      CDEF:anon=anon_m,anon_s,+
+
+      DEF:libs_m=<DP mem_libs>
+      DEF:libs_s=<DP swp_libs>
+      CDEF:libs=libs_m,libs_s,+
+
+      DEF:stack_m=<DP mem_stack>
+      DEF:stack_s=<DP swp_stack>
+      CDEF:stack=stack_m,stack_s,+
+
+      DEF:mmap_m=<DP mem_mmap>
+      DEF:mmap_s=<DP swp_mmap>
+      CDEF:mmap=mmap_m,mmap_s,+
+
+      CDEF:swap=heap_s,anon_s,+,libs_s,+,stack_s,+,mmap_s,+
+
+      AREA:libs_s<darkblue>
+      STACK:libs_m<lightblue>:"libs\\g"
+      GPRINT:libs:LAST:" %7.2lf %sB now"
+      GPRINT:libs:MIN:"%7.2lf %sB min"
+      GPRINT:libs:MAX:"%7.2lf %sB max\\n"
+
+      STACK:heap_s<darkorange>
+      STACK:heap_m<lightorange>:"heap\\g"
+      GPRINT:heap:LAST:" %7.2lf %sB now"
+      GPRINT:heap:MIN:"%7.2lf %sB min"
+      GPRINT:heap:MAX:"%7.2lf %sB max\\n"
+
+      STACK:stack_s<purple>
+      STACK:stack_m<lightpurple>:"stack\\g"
+      GPRINT:stack:LAST:"%7.2lf %sB now"
+      GPRINT:stack:MIN:"%7.2lf %sB min"
+      GPRINT:stack:MAX:"%7.2lf %sB max\\n"
+
+      STACK:mmap_s<darkcyan>
+      STACK:mmap_m<cyan>:"mmap\\g"
+      GPRINT:mmap:LAST:" %7.2lf %sB now"
+      GPRINT:mmap:MIN:"%7.2lf %sB min"
+      GPRINT:mmap:MAX:"%7.2lf %sB max\\n"
+
+      STACK:anon_s<red>
+      STACK:anon_m<lightred>:"anon\\g"
+      GPRINT:anon:LAST:" %7.2lf %sB now"
+      GPRINT:anon:MIN:"%7.2lf %sB min"
+      GPRINT:anon:MAX:"%7.2lf %sB max\\n"
+
+      LINE2:swap#000000:"swap\\g"
+      GPRINT:swap:LAST:" %7.2lf %sB now"
+      GPRINT:swap:MIN:"%7.2lf %sB min"
+      GPRINT:swap:MAX:"%7.2lf %sB max\\n"
+
+      COMMENT:"dark = swap / light = in-RAM\\l"
+  # }}}
+  proc-<ITEM>-io: # {{{
+    match: ^proc:(.*)
+    dps:
+      all_rd:  <HOST>:proc:<ITEM>:io_all_rd:value
+      all_wr:  <HOST>:proc:<ITEM>:io_all_rd:value
+      disk_rd: <HOST>:proc:<ITEM>:io_disk_rd:value
+      disk_wr: <HOST>:proc:<ITEM>:io_disk_wr:value
+    script: |
+      --title "I/O for <ITEM> on <HOSTNAME>"
+      --lower-limit 0
+      --vertical-label "Bytes"
+
+      DEF:all_rd=<DP all_rd>
+      DEF:all_wr=<DP all_wr>
+      DEF:disk_rd=<DP disk_rd>
+      DEF:disk_wr_=<DP disk_wr>
+
+      CDEF:other_rd=all_rd,disk_rd,-
+      CDEF:other_wr_=all_wr,disk_wr_,-
+
+      CDEF:disk_wr=disk_wr_,-1,*
+      CDEF:other_wr=other_wr_,-1,*
+
+      AREA:disk_rd<blue>:"disk read\\g"
+      GPRINT:disk_rd:LAST:"%7.2lf%s now"
+      GPRINT:disk_rd:MIN:"%7.2lf%s min"
+      GPRINT:disk_rd:MAX:"%7.2lf%s max\\n"
+
+      STACK:other_rd<lightblue>:"misc read\\g"
+      GPRINT:other_rd:LAST:"%7.2lf%s now"
+      GPRINT:other_rd:MIN:"%7.2lf%s min"
+      GPRINT:other_rd:MAX:"%7.2lf%s max\\n"
+
+      AREA:disk_wr<green>:"disk wrtn\\g"
+      GPRINT:disk_wr_:LAST:"%7.2lf%s now"
+      GPRINT:disk_wr_:MIN:"%7.2lf%s min"
+      GPRINT:disk_wr_:MAX:"%7.2lf%s max\\n"
+
+      STACK:other_wr<lightgreen>:"misc wrtn\\g"
+      GPRINT:other_wr_:LAST:"%7.2lf%s now"
+      GPRINT:other_wr_:MIN:"%7.2lf%s min"
+      GPRINT:other_wr_:MAX:"%7.2lf%s max\\n"
+  # }}}
+  proc-<ITEM>-iorate: # {{{
+    match: ^proc:(.*)
+    dps:
+      all_rd: <HOST>:proc:<ITEM>:io_all_rd:value
+      all_wr: <HOST>:proc:<ITEM>:io_all_rd:value
+      reads:  <HOST>:proc:<ITEM>:io_reads:value
+      writes: <HOST>:proc:<ITEM>:io_writes:value
+    script: |
+      --title "IOPs for <ITEM> on <HOSTNAME>"
+      --lower-limit 0
+      --vertical-label "Bytes"
+
+      DEF:all_rd=<DP all_rd>
+      DEF:all_wr=<DP all_wr>
+      DEF:reads=<DP reads>
+      DEF:writes_=<DP writes>
+
+      CDEF:avg_rd=all_rd,reads,/
+      CDEF:avg_wr=all_wr,writes_,/
+      CDEF:writes=writes_,-1,*
+
+      AREA:reads<lightblue>
+      LINE:reads<blue>:"read ops\\g"
+      GPRINT:reads:LAST:" %7.2lf%s now"
+      GPRINT:reads:MIN:"%7.2lf%s min"
+      GPRINT:reads:MAX:"%7.2lf%s max\\n"
+
+      AREA:writes<lightgreen>
+      LINE:writes<green>:"write ops\\g"
+      GPRINT:writes_:LAST:"%7.2lf%s now"
+      GPRINT:writes_:MIN:"%7.2lf%s min"
+      GPRINT:writes_:MAX:"%7.2lf%s max\\n"
+
+      GPRINT:avg_rd:LAST:"(last) average read  op size %7.2lf%sB\\n"
+      GPRINT:avg_wr:LAST:"(last) average write op size %7.2lf%sB\\n"
+  # }}}
+  proc-<ITEM>-processes: # {{{
+    match: ^proc:(.*)
+    dps:
+      procs:   <HOST>:proc:<ITEM>:processes:mean
+      threads: <HOST>:proc:<ITEM>:threads:mean
+    script: |
+      --title "Process count for <ITEM> on <HOSTNAME>"
+      --lower-limit 0
+      --vertical-label "Process/Thread Count"
+
+      DEF:procs=<DP procs>
+      DEF:threads=<DP threads>
+
+      AREA:threads<lightblue>:"threads"
+      LINE:threads<darkblue>
+      GPRINT:threads:LAST:"  %7.2lf%s now"
+      GPRINT:threads:MIN:"%7.2lf%s min"
+      GPRINT:threads:MAX:"%7.2lf%s max\\n"
+
+      AREA:procs<blue>:"processes"
+      LINE:procs<darkblue>
+      GPRINT:procs:LAST:"%7.2lf%s now"
+      GPRINT:procs:MIN:"%7.2lf%s min"
+      GPRINT:procs:MAX:"%7.2lf%s max\\n"
+  # }}}
+  proc-<ITEM>-openfiles: # {{{
+    match: ^proc:(.*)
+    dps:
+      used: <HOST>:proc:<ITEM>:openfiles:mean
+    script: |
+      --title "Open Files for <ITEM> on <HOSTNAME>"
+      --lower-limit 0
+      --vertical-label "File Descriptors"
+
+      DEF:used=<DP used>
+
+      AREA:used<lightblue>:"files"
+
+      LINE:used<blue>
+      GPRINT:used:LAST:"%7.2lf%s now"
+      GPRINT:used:MIN:"%7.2lf%s min"
+      GPRINT:used:MAX:"%7.2lf%s max\\n"
+  # }}}
+
+  df-<ITEM>-bytes: # {{{
+    match: ^df:(.*)
+    dps:
+      free:     <HOST>:df:<ITEM>:bytes.free:mean
+      total:    <HOST>:df:<ITEM>:bytes.total:mean
+      reserved: <HOST>:df:<ITEM>:bytes.rfree:mean
+    script: |
+      --lower-limit 0
+      --upper-limit 100
+      --title "<HOSTNAME> Disk Usage - <ITEM>"
+      --vertical-label Bytes
+      --base 1024
+
+      DEF:free=<DP free>
+      DEF:total=<DP total>
+      DEF:reserved=<DP reserved>
+
+      CDEF:used=total,free,-,reserved,-
+      CDEF:most=free,used,+
+      CDEF:upperlimit=total,1.05,*
+
+      AREA:used<lightblue>
+      LINE2:used<blue>:"Used"
+      GPRINT:used:LAST:"    %7.2lf %sB now\\g"
+      GPRINT:used:MIN:"%7.2lf %sB min\\g"
+      GPRINT:used:MAX:"%7.2lf %sB max\\n"
+
+      AREA:most#00000000
+      STACK:reserved<lightpink>:"Reserved"
+      GPRINT:reserved:LAST:"%7.2lf %sB now\\g"
+      GPRINT:reserved:MIN:"%7.2lf %sB min\\g"
+      GPRINT:reserved:MAX:"%7.2lf %sB max\\n"
+
+      LINE2:total#000000:"Total"
+      GPRINT:total:LAST:"   %7.2lf %sB\\n"
+
+      LINE:upperlimit#00000000
+  # }}}
+  df-<ITEM>-inodes: # {{{
+    match: ^df:(.*)
+    dps:
+      free:     <HOST>:df:<ITEM>:inodes.free:mean
+      total:    <HOST>:df:<ITEM>:inodes.total:mean
+      reserved: <HOST>:df:<ITEM>:inodes.rfree:mean
+    script: |
+      --lower-limit 0
+      --upper-limit 100
+      --title "<HOSTNAME> Disk Usage - <ITEM>"
+      --vertical-label Inodes
+      --base 1024
+
+      DEF:free=<DP free>
+      DEF:total=<DP total>
+      DEF:reserved=<DP reserved>
+
+      CDEF:used=total,free,-,reserved,-
+      CDEF:most=free,used,+
+      CDEF:upperlimit=total,1.05,*
+
+      AREA:used<lightblue>
+      LINE2:used<blue>:"Used"
+      GPRINT:used:LAST:"    %7.2lf %s now\\g"
+      GPRINT:used:MIN:"%7.2lf %s min\\g"
+      GPRINT:used:MAX:"%7.2lf %s max\\n"
+
+      AREA:most#00000000
+      STACK:reserved<lightpink>:"Reserved"
+      GPRINT:reserved:LAST:"%7.2lf %s now\\g"
+      GPRINT:reserved:MIN:"%7.2lf %s min\\g"
+      GPRINT:reserved:MAX:"%7.2lf %s max\\n"
+
+      LINE2:total#000000:"Total"
+      GPRINT:total:LAST:"   %7.2lf %s\\n"
+
+      LINE:upperlimit#00000000
+  # }}}
+
+  contextswitch: # {{{
+    match: ^ctxt$
+    dps:
+      switches: <HOST>:ctxt:cswch-s:value
+    script: |
+      --lower-limit 0
+      --title "Context Switches for <HOSTNAME>"
+      --vertical-label "Switches"
+
+      DEF:switches=<DP switches>
+
+      LINE2:switches<blue>:"Context Switches\\g"
+      GPRINT:switches:LAST:"%5.1lf%s now\\g"
+      GPRINT:switches:MIN:"%5.1lf%s min\\g"
+      GPRINT:switches:MAX:"%5.1lf%s max\\n"
+  # }}}
+  fork_rate: # {{{
+    match: ^ctxt$
+    dps:
+      fork_rate: <HOST>:ctxt:fork-s:value
+    script: |
+      --lower-limit 0
+      --title "Fork Rate for <HOSTNAME>"
+      --vertical-label "Forks"
+
+      DEF:fr=<DP fork_rate>
+
+      LINE2:fr<blue>:"Forks\\g"
+      GPRINT:fr:LAST:"%5.1lf%s now\\g"
+      GPRINT:fr:MIN:"%5.1lf%s min\\g"
+      GPRINT:fr:MAX:"%5.1lf%s max\\n"
+  # }}}
+  processes: # {{{
+    match: ^procs$
+    dps:
+      blocked:  <HOST>:procs:blocked:mean
+      paging:   <HOST>:procs:paging:mean
+      running:  <HOST>:procs:running:mean
+      sleeping: <HOST>:procs:sleeping:mean
+      stopped:  <HOST>:procs:stopped:mean
+      zombies : <HOST>:procs:zombies:mean
+    script: |
+      --lower-limit 0
+      --title "Process Count on <HOSTNAME>"
+      --vertical-label "Processes"
+
+      DEF:blocked=<DP blocked>
+      DEF:paging=<DP paging>
+      DEF:running=<DP running>
+      DEF:sleeping=<DP sleeping>
+      DEF:stopped=<DP stopped>
+      DEF:zombies=<DP zombies>
+
+      CDEF:total=blocked,paging,+,running,+,sleeping,+,stopped,+,zombies,+
+
+      AREA:blocked<yellow>:"Blocked  "
+      GPRINT:blocked:LAST:"%7.2lf%s now"
+      GPRINT:blocked:MIN:"%7.2lf%s min"
+      GPRINT:blocked:MAX:"%7.2lf%s max\\n"
+
+      STACK:paging<lightpink>:"Paging   "
+      GPRINT:paging:LAST:"%7.2lf%s now"
+      GPRINT:paging:MIN:"%7.2lf%s min"
+      GPRINT:paging:MAX:"%7.2lf%s max\\n"
+
+      STACK:stopped<blue>:"Stopped  "
+      GPRINT:stopped:LAST:"%7.2lf%s now"
+      GPRINT:stopped:MIN:"%7.2lf%s min"
+      GPRINT:stopped:MAX:"%7.2lf%s max\\n"
+
+      STACK:sleeping<lightblue>:"Sleeping "
+      GPRINT:sleeping:LAST:"%7.2lf%s now"
+      GPRINT:sleeping:MIN:"%7.2lf%s min"
+      GPRINT:sleeping:MAX:"%7.2lf%s max\\n"
+
+      STACK:running<green>:"Running  "
+      GPRINT:running:LAST:"%7.2lf%s now"
+      GPRINT:running:MIN:"%7.2lf%s min"
+      GPRINT:running:MAX:"%7.2lf%s max\\n"
+
+      STACK:zombies<red>:"Zombified"
+      GPRINT:zombies:LAST:"%7.2lf%s now"
+      GPRINT:zombies:MIN:"%7.2lf%s min"
+      GPRINT:zombies:MAX:"%7.2lf%s max\\n"
+
+      LINE2:total<black>:"Total    "
+      GPRINT:total:LAST:"%7.2lf%s now"
+      GPRINT:total:MIN:"%7.2lf%s min"
+      GPRINT:total:MAX:"%7.2lf%s max\\n"
+  # }}}
+
+  <ITEM>-disk-io: # {{{
+    match: ^diskio:(.*)
+    dps:
+      read:  <HOST>:diskio:<ITEM>:rd-bytes:value
+      write: <HOST>:diskio:<ITEM>:wr-bytes:value
+    script: |
+      --lower-limit -1000
+      --upper-limit 1000
+      --base 1024
+      --title "<ITEM> throughput for <HOSTNAME>"
+      --vertical-label "Bytes/sec"
+
+      DEF:read=<DP read>
+      DEF:write=<DP write>
+
+      CDEF:iwrite=write,-1,*
+
+      AREA:read<lightblue>
+      LINE2:read<blue>:"read\\g"
+      GPRINT:read:LAST:" %7.2lf %sB now\\g"
+      GPRINT:read:MIN:"%7.2lf %sB min\\g"
+      GPRINT:read:MAX:"%7.2lf %sB max\\n"
+
+      AREA:iwrite<lightgreen>
+      LINE2:iwrite<green>:"write\\g"
+      GPRINT:write:LAST:"%7.2lf %sB now\\g"
+      GPRINT:write:MIN:"%7.2lf %sB min\\g"
+      GPRINT:write:MAX:"%7.2lf %sB max\\n"
+  # }}}
+  <ITEM>-disk-iops: # {{{
+    match: ^diskio:(.*)
+    dps:
+      read:  <HOST>:diskio:<ITEM>:rd-iops:value
+      write: <HOST>:diskio:<ITEM>:wr-iops:value
+    script: |
+      --lower-limit -100
+      --upper-limit 100
+      --title "<ITEM> IOPS for <HOSTNAME>"
+      --vertical-label "IO Operations/sec"
+
+      DEF:read=<DP read>
+      DEF:write=<DP write>
+
+      CDEF:iwrite=write,-1,*
+
+      AREA:read<lightblue>
+      LINE2:read<blue>:"read\\g"
+      GPRINT:read:LAST:" %7.2lf%s now\\g"
+      GPRINT:read:MIN:"%7.2lf%s min\\g"
+      GPRINT:read:MAX:"%7.2lf%s max\\n"
+
+      AREA:iwrite<lightgreen>
+      LINE2:iwrite<green>:"write\\g"
+      GPRINT:write:LAST:"%7.2lf%s now\\g"
+      GPRINT:write:MIN:"%7.2lf%s min\\g"
+      GPRINT:write:MAX:"%7.2lf%s max\\n"
+  # }}}
+  <ITEM>-disk-await: # {{{
+    match: diskio:(.*)
+    dps:
+      read:  <HOST>:diskio:<ITEM>:rd-msec:value
+      write: <HOST>:diskio:<ITEM>:wr-msec:value
+    script: |
+      --lower-limit -1
+      --upper-limit 1
+      --title "Average time waiting on IO for <ITEM> on <HOSTNAME>"
+      --vertical-label "Seconds"
+
+      DEF:read_ms=<DP read>
+      DEF:write_ms=<DP write>
+
+      CDEF:read=read_ms,1024,/
+      CDEF:write=write_ms,1024,/
+
+      CDEF:iwrite=write,-1,*
+
+      AREA:read<lightblue>
+      LINE2:read<blue>:"read\\g"
+      GPRINT:read:LAST:" %7.2lf %ss now\\g"
+      GPRINT:read:MIN:"%7.2lf %ss min\\g"
+      GPRINT:read:MAX:"%7.2lf %ss max\\n"
+
+      AREA:iwrite<lightgreen>
+      LINE2:iwrite<green>:"write\\g"
+      GPRINT:write:LAST:"%7.2lf %ss now\\g"
+      GPRINT:write:MIN:"%7.2lf %ss min\\g"
+      GPRINT:write:MAX:"%7.2lf %ss max\\n"
+  # }}}
+  <ITEM>-inet-packets: # {{{
+    match: ^net:(.*)
+    dps:
+      rx: <HOST>:net:<ITEM>:rx.packets:value
+      tx: <HOST>:net:<ITEM>:tx.packets:value
+    script: |
+      --lower-limit -10
+      --upper-limit 10
+      --title "<ITEM> packet rate on <HOSTNAME>"
+      --vertical-label "Packets/sec"
+
+      DEF:rx=<DP rx>
+      DEF:tx=<DP tx>
+
+      CDEF:itx=tx,-1,*
+
+      AREA:rx<lightblue>
+      LINE2:rx<blue>:"rx\\g"
+      GPRINT:rx:LAST:"%7.2lf%s now\\g"
+      GPRINT:rx:MIN:"%7.2lf%s min\\g"
+      GPRINT:rx:MAX:"%7.2lf%s max\\n"
+
+      AREA:itx<lightgreen>
+      LINE2:itx<green>:"tx\\g"
+      GPRINT:tx:LAST:"%7.2lf%s now\\g"
+      GPRINT:tx:MIN:"%7.2lf%s min\\g"
+      GPRINT:tx:MAX:"%7.2lf%s max\\n"
+  # }}}
+  <ITEM>-inet-errors: # {{{
+    match: net:(.*)
+    dps:
+      rx: <HOST>:net:<ITEM>:rx.errors:value
+      tx: <HOST>:net:<ITEM>:tx.errors:value
+    script: |
+      --lower-limit -10
+      --upper-limit 10
+      --title "<ITEM> errors on <HOSTNAME>"
+      --vertical-label "Errors"
+
+      DEF:rx=<DP rx>
+      DEF:tx=<DP tx>
+
+      CDEF:itx=tx,-1,*
+
+      AREA:rx<lightblue>
+      LINE2:rx<blue>:"rx\\g"
+      GPRINT:rx:LAST:"%7.2lf%s now\\g"
+      GPRINT:rx:MIN:"%7.2lf%s min\\g"
+      GPRINT:rx:MAX:"%7.2lf%s max\\n"
+
+      AREA:itx<lightgreen>
+      LINE2:itx<green>:"tx\\g"
+      GPRINT:tx:LAST:"%7.2lf%s now\\g"
+      GPRINT:tx:MIN:"%7.2lf%s min\\g"
+      GPRINT:tx:MAX:"%7.2lf%s max\\n"
+  # }}}
+  <ITEM>-inet-traffic: # {{{
+    match: net:(.*)
+    dps:
+      rx: <HOST>:net:<ITEM>:rx.bytes:value
+      tx: <HOST>:net:<ITEM>:tx.bytes:value
+    script: |
+      --lower-limit -1000
+      --upper-limit 1000
+      --title "<ITEM> throughput on <HOSTNAME>"
+      --vertical-label "Bytes/sec"
+      --base 1024
+
+      DEF:rx=<DP rx>
+      DEF:tx=<DP tx>
+
+      CDEF:itx=tx,-1,*
+
+      AREA:rx<lightblue>
+      LINE2:rx<blue>:"rx\\g"
+      GPRINT:rx:LAST:"%7.2lf %sB now\\g"
+      GPRINT:rx:MIN:"%7.2lf %sB min\\g"
+      GPRINT:rx:MAX:"%7.2lf %sB max\\n"
+
+      AREA:itx<lightgreen>
+      LINE2:itx<green>:"tx\\g"
+      GPRINT:tx:LAST:"%7.2lf %sB now\\g"
+      GPRINT:tx:MIN:"%7.2lf %sB min\\g"
+      GPRINT:tx:MAX:"%7.2lf %sB max\\n"
+  # }}}
+
+  openfiles: # {{{
+    dps:
+      used: <HOST>:openfiles:used:mean
+      max:  <HOST>:openfiles:max:mean
+    script: |
+      --lower-limit 0
+      --title "Open Files on <HOSTNAME>"
+      --vertical-label "File Descriptors"
+
+      DEF:used=<DP used>
+      DEF:max=<DP max>
+
+      AREA:used<lightblue>:"Used\\g"
+      GPRINT:used:LAST:"%7.2lf%s now\\g"
+      GPRINT:used:MIN:"%7.2lf%s min\\g"
+      GPRINT:used:MAX:"%7.2lf%s max\\n"
+      GPRINT:max:LAST:"Max   %7.2lf%s\\n"
+  # }}}
+
+  nginx-connections: # {{{
+    match: ^nginx$
+    dps:
+      active:  <HOST>:nginx:connections.active:mean
+      reading: <HOST>:nginx:connections.reading:mean
+      writing: <HOST>:nginx:connections.writing:mean
+      waiting: <HOST>:nginx:connections.waiting:mean
+    script: |
+      --lower-limit 0
+      --title "<HOSTNAME> nginx status"
+      --vertical-label "Connections"
+
+      DEF:active=<DP active>
+      DEF:reading=<DP reading>
+      DEF:waiting=<DP waiting>
+      DEF:writing=<DP writing>
+
+      AREA:reading<blue>:"reading\\g"
+      GPRINT:reading:LAST:"%7.2lf%s now\\g"
+      GPRINT:reading:MIN:"%7.2lf%s min\\g"
+      GPRINT:reading:MAX:"%7.2lf%s max\\n"
+      STACK:writing<green>:"writing\\g"
+      GPRINT:writing:LAST:"%7.2lf%s now\\g"
+      GPRINT:writing:MIN:"%7.2lf%s min\\g"
+      GPRINT:writing:MAX:"%7.2lf%s max\\n"
+      STACK:waiting<yellow>:"waiting\\g"
+      GPRINT:waiting:LAST:"%7.2lf%s now\\g"
+      GPRINT:waiting:MIN:"%7.2lf%s min\\g"
+      GPRINT:waiting:MAX:"%7.2lf%s max\\n"
+      LINE:active<black>:"total\\g"
+      GPRINT:active:LAST:"  %7.2lf%s now\\g"
+      GPRINT:active:MIN:"%7.2lf%s min\\g"
+      GPRINT:active:MAX:"%7.2lf%s max\\n"
+  # }}}
+  nginx-throughput: #{{{
+    match: ^nginx$
+    dps:
+      requests: <HOST>:nginx:requests.total:value
+    script: |
+      --lower-limit 0
+      --title "<HOSTNAME> nginx throughput"
+      --vertical-label "Requests"
+
+      DEF:requests=<DP requests>
+      AREA:requests<lightblue>:"requests\\g"
+      LINE:requests<blue>
+      GPRINT:requests:LAST:" %7.2lf%s now\\g"
+      GPRINT:requests:MIN:"%7.2lf%s min\\g"
+      GPRINT:requests:MAX:"%7.2lf%s max\\n"
+  # }}}
+  nginx-connection-issues: # {{{
+    match: ^nginx$
+    dps:
+      accepted: <HOST>:nginx:requests.accepted:value
+      handled:  <HOST>:nginx:requests.handled:value
+    script: |
+      --lower-limit 0
+      --title "<HOSTNAME> dropped nginx connections"
+      --vertical-label "Connections"
+
+      DEF:accepted=<DP accepted>
+      DEF:handled=<DP handled>
+      CDEF:dropped=accepted,handled,-
+
+      AREA:dropped<lightred>:"dropped\\g"
+      GPRINT:accepted:LAST:"%7.2lf%s now\\g"
+      GPRINT:accepted:MIN:"%7.2lf%s min\\g"
+      GPRINT:accepted:MAX:"%7.2lf%s max\\n"
+      LINE:dropped<red>
+  # }}}
+  nginx-connection-reuse: # {{{
+    match: ^nginx$
+    dps:
+      accepted: <HOST>:nginx:requests.accepted:value
+      requests: <HOST>:nginx:requests.total:value
+    script: |
+      --lower-limit 0
+      --title "<HOSTNAME> nginx connection reuse"
+      --vertical-label "Requests / Connection"
+
+      DEF:accepted=<DP accepted>
+      DEF:requests=<DP requests>
+      CDEF:ratio=requests,accepted,/
+
+      AREA:ratio<lightblue>:"req/conn\\g"
+      GPRINT:ratio:LAST:"   %7.2lf%s now\\g"
+      GPRINT:ratio:MIN:"  %7.2lf%s min\\g"
+      GPRINT:ratio:MAX:"  %7.2lf%s max\\n"
+      LINE:ratio<blue>
+  # }}}
+
+  pg-queries: # {{{
+    match: ^postgres:queries$
+    dps:
+      deletes:     <HOST>:postgres:queries:delete:value
+      inserts:     <HOST>:postgres:queries:insert:value
+      updates:     <HOST>:postgres:queries:update:value
+      hot_updates: <HOST>:postgres:queries:hot.update:value
+    script: |
+      --lower-limit 0
+      --title "<ITEM> db queries"
+      --vertical-label "Queries"
+      --base 1024
+
+      DEF:deletes=<DP deletes>
+      DEF:inserts=<DP inserts>
+      DEF:updates=<DP updates>
+      DEF:hot_updates=<DP hot_updates>
+
+      AREA:deletes<red>:"deletes\\g"
+      GPRINT:deletes:LAST:"    %7.2lf%s now\\g"
+      GPRINT:deletes:MIN:"%7.2lf%s min\\g"
+      GPRINT:deletes:MAX:"%7.2lf%s max\\n"
+      STACK:inserts<green>:"inserts\\g"
+      GPRINT:inserts:LAST:"    %7.2lf%s now\\g"
+      GPRINT:inserts:MIN:"%7.2lf%s min\\g"
+      GPRINT:inserts:MAX:"%7.2lf%s max\\n"
+      STACK:updates<blue>:"updates\\g"
+      GPRINT:updates:LAST:"    %7.2lf%s now\\g"
+      GPRINT:updates:MIN:"%7.2lf%s min\\g"
+      GPRINT:updates:MAX:"%7.2lf%s max\\n"
+      STACK:hot_updates<cyan>:"hot_updates\\g"
+      GPRINT:hot_updates:LAST:"%7.2lf%s now\\g"
+      GPRINT:hot_updates:MIN:"%7.2lf%s min\\g"
+      GPRINT:hot_updates:MAX:"%7.2lf%s max\\n"
+  # }}}
+  pg-query-plans: # {{{
+    match: ^postgres:plan$
+    dps:
+      seq_scan:  <HOST>:postgres:plan:seq:value
+      seq_fetch: <HOST>:postgres:plan:seq.tup.read:value
+      idx_scan:  <HOST>:postgres:plan:idx:value
+      idx_fetch: <HOST>:postgres:plan:idx.tup.fetch:value
+    script: |
+      --lower-limit 0
+      --title "<ITEM> db table scans"
+      --vertical-label "Scans"
+      --base 1024
+
+      DEF:seq_scan=<DP seq_scan>
+      DEF:seq_fetch=<DP seq_fetch>
+      DEF:idx_scan=<DP idx_scan>
+      DEF:idx_fetch=<DP idx_fetch>
+      LINE:seq_scan<darkblue>:"seq_scans\\g"
+      GPRINT:seq_scan:LAST:"  %7.2lf%s now\\g"
+      GPRINT:seq_scan:MIN:"%7.2lf%s min\\g"
+      GPRINT:seq_scan:MAX:"%7.2lf%s max\\n"
+      LINE:seq_fetch<blue>:"seq_fetches\\g"
+      GPRINT:seq_fetch:LAST:"%7.2lf%s now\\g"
+      GPRINT:seq_fetch:MIN:"%7.2lf%s min\\g"
+      GPRINT:seq_fetch:MAX:"%7.2lf%s max\\n"
+      LINE:idx_scan<darkgreen>:"idx_scans\\g"
+      GPRINT:idx_scan:LAST:"  %7.2lf%s now\\g"
+      GPRINT:idx_scan:MIN:"%7.2lf%s min\\g"
+      GPRINT:idx_scan:MAX:"%7.2lf%s max\\n"
+      LINE:idx_fetch<green>:"idx_fetches\\g"
+      GPRINT:idx_fetch:LAST:"%7.2lf%s now\\g"
+      GPRINT:idx_fetch:MIN:"%7.2lf%s min\\g"
+      GPRINT:idx_fetch:MAX:"%7.2lf%s max\\n"
+  # }}}
+  pg-io: # {{{
+    match: ^postgres:io$
+    dps:
+      heap_reads:              <HOST>:postgres:io:heap.read:value
+      heap_buffer_hits:        <HOST>:postgres:io:heap.hit:value
+      index_reads:             <HOST>:postgres:io:idx.read:value
+      index_buffer_hits:       <HOST>:postgres:io:idx.hit:value
+      toast_reads:             <HOST>:postgres:io:toast.read:value
+      toast_buffer_hits:       <HOST>:postgres:io:toast.hit:value
+      toast_index_reads:       <HOST>:postgres:io:tidx.read:value
+      toast_index_buffer_hits: <HOST>:postgres:io:tidx.hit:value
+    script: |
+      --lower-limit 0
+      --title "db disk io"
+      --vertical-label "Blocks"
+      --base 1024
+
+      DEF:heap_reads=<DP heap_reads>
+      DEF:index_reads=<DP index_reads>
+      DEF:toast_reads=<DP toast_reads>
+      DEF:toast_index_reads=<DP toast_index_reads>
+      DEF:heap_buffer_hits=<DP heap_buffer_hits>
+      DEF:index_buffer_hits=<DP index_buffer_hits>
+      DEF:toast_buffer_hits=<DP toast_buffer_hits>
+      DEF:toast_index_buffer_hits=<DP toast_index_buffer_hits>
+
+      LINE:heap_reads<darkblue>:"heap reads\\g"
+      GPRINT:heap_reads:LAST:"   %7.2lf%s now\\g"
+      GPRINT:heap_reads:MIN:"%7.2lf%s min\\g"
+      GPRINT:heap_reads:MAX:"%7.2lf%s max\\n"
+      LINE:heap_buffer_hits<blue>:"heap hits\\g"
+      GPRINT:heap_buffer_hits:LAST:"    %7.2lf%s now\\g"
+      GPRINT:heap_buffer_hits:MIN:"%7.2lf%s min\\g"
+      GPRINT:heap_buffer_hits:MAX:"%7.2lf%s max\\n"
+      LINE:index_reads<darkgreen>:"index reads\\g"
+      GPRINT:index_reads:LAST:"  %7.2lf%s now\\g"
+      GPRINT:index_reads:MIN:"%7.2lf%s min\\g"
+      GPRINT:index_reads:MAX:"%7.2lf%s max\\n"
+      LINE:index_buffer_hits<green>:"index hits\\g"
+      GPRINT:index_buffer_hits:LAST:"   %7.2lf%s now\\g"
+      GPRINT:index_buffer_hits:MIN:"%7.2lf%s min\\g"
+      GPRINT:index_buffer_hits:MAX:"%7.2lf%s max\\n"
+      LINE:toast_reads<darkpurple>:"heap reads\\g"
+      GPRINT:toast_reads:LAST:"   %7.2lf%s now\\g"
+      GPRINT:toast_reads:MIN:"%7.2lf%s min\\g"
+      GPRINT:toast_reads:MAX:"%7.2lf%s max\\n"
+      LINE:toast_buffer_hits<purple>:"heap hits\\g"
+      GPRINT:toast_buffer_hits:LAST:"    %7.2lf%s now\\g"
+      GPRINT:toast_buffer_hits:MIN:"%7.2lf%s min\\g"
+      GPRINT:toast_buffer_hits:MAX:"%7.2lf%s max\\n"
+      LINE:toast_index_reads<darkyellow>:"t_index reads\\g"
+      GPRINT:toast_index_reads:LAST:"%7.2lf%s now\\g"
+      GPRINT:toast_index_reads:MIN:"%7.2lf%s min\\g"
+      GPRINT:toast_index_reads:MAX:"%7.2lf%s max\\n"
+      LINE:toast_index_buffer_hits<yellow>:"t_index hits\\g"
+      GPRINT:toast_index_buffer_hits:LAST:" %7.2lf%s now\\g"
+      GPRINT:toast_index_buffer_hits:MIN:"%7.2lf%s min\\g"
+      GPRINT:toast_index_buffer_hits:MAX:"%7.2lf%s max\\n"
+  # }}}
+  pg-table-states: # {{{
+    match: ^postgres:tables$
+    dps:
+      live: <HOST>:postgres:tables:live:mean
+      dead: <HOST>:postgres:tables:dead:mean
+    script: |
+      --lower-limit 0
+      --title "<ITEM> db table states"
+      --vertical-label "Rows"
+      --base 1024
+
+      DEF:live=<DP live>
+      DEF:dead=<DP dead>
+      AREA:dead<red>:"dead\\g"
+      GPRINT:dead:LAST:"%7.2lf%s now\\g"
+      GPRINT:dead:MIN:"%7.2lf%s min\\g"
+      GPRINT:dead:MAX:"%7.2lf%s max\\n"
+      STACK:live<green>:"live\\g"
+      GPRINT:live:LAST:"%7.2lf%s now\\g"
+      GPRINT:live:MIN:"%7.2lf%s min\\g"
+      GPRINT:live:MAX:"%7.2lf%s max\\n"
+  # }}}
+  pg-<ITEM>-dbsize: # {{{
+    match: ^postgres:(.*):db$
+    dps:
+      size: <HOST>:postgres:<ITEM>:db:size:mean
+    script: |
+      --lower-limit 0
+      --title "<ITEM> db size"
+      --vertical-label "Bytes"
+      --base 1024
+
+      DEF:size=<DP size>
+      AREA:size<lightblue>:"dbsize\\g"
+      GPRINT:size:LAST:"%7.2lf%s now\\g"
+      GPRINT:size:MIN:"%7.2lf%s min\\g"
+      GPRINT:size:MAX:"%7.2lf%s max\\n"
+      LINE:size<blue>
+  # }}}
+  pg-<ITEM>-transactions: # {{{
+    match: ^postgres:(.*):db:txn$
+    dps:
+      commit:   <HOST>:postgres:<ITEM>:db:txn:commits:value
+      rollback: <HOST>:postgres:<ITEM>:db:txn:rollbacks:value
+    script: |
+      --lower-limit 0
+      --title "<ITEM> db transactions"
+      --vertical-label "Transactions"
+      --base 1024
+
+      DEF:commit=<DP commit>
+      DEF:rollback=<DP rollback>
+      LINE:commit<green>:"commits\\g"
+      GPRINT:commit:LAST:"  %7.2lf%s now\\g"
+      GPRINT:commit:MIN:"%7.2lf%s min\\g"
+      GPRINT:commit:MAX:"%7.2lf%s max\\n"
+      LINE:rollback<red>:"rollbacks\\g"
+      GPRINT:rollback:LAST:"%7.2lf%s now\\g"
+      GPRINT:rollback:MIN:"%7.2lf%s min\\g"
+      GPRINT:rollback:MAX:"%7.2lf%s max\\n"
+  # }}}
+  pg-<ITEM>-backends: # {{{
+    match: ^postgres:(.*):db$
+    dps:
+      backends: <HOST>:postgres:<ITEM>:db:backends:mean
+    script: |
+      --lower-limit 0
+      --title "<ITEM> db backends"
+      --vertical-label "Connections"
+      --base 1024
+
+      DEF:conn=<DP backends>
+      AREA:conn<lightblue>:"backends\\g"
+      GPRINT:conn:LAST:"%7.2lf%s now\\g"
+      GPRINT:conn:MIN:"%7.2lf%s min\\g"
+      GPRINT:conn:MAX:"%7.2lf%s max\\n"
+      LINE:conn<blue>
+  # }}}
+
+  rrdcached-disk-writes: # {{{
+    match: ^rrdcache$
+    dps:
+      writes: <HOST>:rrdcache:UpdatesWritten:value
+    script: |
+      --lower-limit 0
+      --title "rrdcache disk writes"
+      --vertical-label "Ops/min"
+      --base 1000
+
+      DEF:writes=<DP writes>
+      LINE:writes<lightblue>:"writes\\g"
+      GPRINT:writes:LAST:"%7.2lf%s now\\g"
+      GPRINT:writes:MIN:"%7.2lf%s min\\g"
+      GPRINT:writes:MAX:"%7.2lf%s max\\n"
+  # }}}
+  rrdcached-flush-requests: # {{{
+    match: ^rrdcache$
+    dps:
+      flushes: <HOST>:rrdcache:FlushesReceived:value
+    script: |
+      --lower-limit 0
+      --title "rrdcache flushes"
+      --vertical-label "Ops/min"
+      --base 1000
+
+      DEF:flushes=<DP flushes>
+      LINE:flushes<lightblue>:"flushes\\g"
+      GPRINT:flushes:LAST:"%7.2lf%s now\\g"
+      GPRINT:flushes:MIN:"%7.2lf%s min\\g"
+      GPRINT:flushes:MAX:"%7.2lf%s max\\n"
+  # }}}
+  rrdcached-updates-requests: # {{{
+    match: ^rrdcache$
+    dps:
+      writes:   <HOST>:rrdcache:DataSetsWritten:value
+      requests: <HOST>:rrdcache:UpdatesReceived:value
+    script: |
+      --lower-limit 0
+      --title "rrdcache updates"
+      --vertical-label "Ops/min"
+      --base 1000
+
+      DEF:writes=<DP writes>
+      DEF:requests=<DP requests>
+      LINE:writes<lightblue>:"write requests\\g"
+      GPRINT:writes:LAST:" %7.2lf%s now\\g"
+      GPRINT:writes:MIN:"%7.2lf%s min\\g"
+      GPRINT:writes:MAX:"%7.2lf%s max\\n"
+      LINE:requests<lightred>:"update requests\\g"
+      GPRINT:requests:LAST:"%7.2lf%s now\\g"
+      GPRINT:requests:MIN:"%7.2lf%s min\\g"
+      GPRINT:requests:MAX:"%7.2lf%s max\\n"
+  # }}}
+  rrdcached-journal-size: # {{{
+    match: ^rrdcache$
+    dps:
+      journal: <HOST>:rrdcache:JournalBytes:value
+    script: |
+      --lower-limit 0
+      --title "rrdcache journal size"
+      --vertical-label "Bytes"
+      --base 1024
+
+      DEF:journal=<DP journal>
+      LINE:journal<lightblue>:"journal size\\g"
+      GPRINT:journal:LAST:"%7.2lf%sB now\\g"
+      GPRINT:journal:MIN:"%7.2lf%sB min\\g"
+      GPRINT:journal:MAX:"%7.2lf%sB max\\n"
+  # }}}
+  rrdcached-journal-rotates: # {{{
+    match: ^rrdcache$
+    dps:
+      journal: <HOST>:rrdcache:JournalRotate:value
+    script: |
+      --lower-limit 0
+      --title "rrdcache journal rotates"
+      --vertical-label "Operations"
+      --base 1000
+
+      DEF:journal=<DP journal>
+      LINE:journal<lightblue>:"rotates\\g"
+      GPRINT:journal:LAST:"%7.2lf%s now\\g"
+      GPRINT:journal:MIN:"%7.2lf%s min\\g"
+      GPRINT:journal:MAX:"%7.2lf%s max\\n"
+  # }}}
+  rrdcached-rrds-cached: # {{{
+    match: ^rrdcache$
+    dps:
+      nodes: <HOST>:rrdcache:TreeNodesNumber:mean
+    script: |
+      --lower-limit 0
+      --title "rrdcache files cached"
+      --vertical-label "RRDs"
+      --base 1000
+
+      DEF:nodes=<DP nodes>
+      LINE:nodes<lightblue>:"rrds cached\\g"
+      GPRINT:nodes:LAST:"%7.2lf%s now\\g"
+      GPRINT:nodes:MIN:"%7.2lf%s min\\g"
+      GPRINT:nodes:MAX:"%7.2lf%s max\\n"
+  # }}}
+  rrdcached-tree-depth: # {{{
+    match: ^rrdcache$
+    dps:
+      depth: <HOST>:rrdcache:TreeDepth:mean
+    script: |
+      --lower-limit 0
+      --title "rrdcache search tree depth"
+      --vertical-label "Levels"
+      --base 1024
+
+      DEF:depth=<DP depth>
+      LINE:depth<lightblue>:"depth\\g"
+      GPRINT:depth:LAST:"%7.2lf%s now\\g"
+      GPRINT:depth:MIN:"%7.2lf%s min\\g"
+      GPRINT:depth:MAX:"%7.2lf%s max\\n"
+  # }}}
+  rrdcached-queue-length: # {{{
+    match: ^rrdcache$
+    dps:
+      queued: <HOST>:rrdcache:QueueLength:mean
+    script: |
+      --lower-limit 0
+      --title "rrdcache cache queue"
+      --vertical-label "DataSets"
+      --base 1000
+
+      DEF:queued=<DP queued>
+      LINE:queued<lightblue>:"queued writes\\g"
+      GPRINT:queued:LAST:"%7.2lf%s now\\g"
+      GPRINT:queued:MIN:"%7.2lf%s min\\g"
+      GPRINT:queued:MAX:"%7.2lf%s max\\n"
+  # }}}
+# vim:ft=yaml:et:ts=2:sts=2:sw=2

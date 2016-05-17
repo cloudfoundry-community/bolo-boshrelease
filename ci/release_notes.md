@@ -1,3 +1,10 @@
+## New Features
+
+- Renamed all default graphs to use hyphens instead of underscores
+  to separate name components.
+- Added new graphs for process, nginx, rrdcached and postgres
+  metrics.
+
 ## Bug Fixes
 
 - Custom Graphs work again!
