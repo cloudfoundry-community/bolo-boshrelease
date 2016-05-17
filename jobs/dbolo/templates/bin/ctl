@@ -22,7 +22,7 @@ case $1 in
     # store pid in $PIDFILE
     echo $$ > $PIDFILE
 
-    exec chpst -u vcap:vcap dbolo \
+    exec dbolo \
          -F<% if p('dbolo.debug') %>vvvv<% end %> \
          -c ${JOB_DIR}/config/dbolo.conf \
          -e tcp://<%= p('dbolo.submission.address') %>:<%= p('dbolo.submission.port') %> \
