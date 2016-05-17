@@ -139,12 +139,6 @@ jobs:
       - put: s3
         params:
           from:  gh/artifacts/.*-(.*).tgz
-      - put: github
-        params:
-          name:   gh/name
-          tag:    gh/tag
-          body:   gh/notes.md
-          globs: [gh/artifacts/*]
       - put: version
         params:
           bump: patch
@@ -177,13 +171,6 @@ resources:
     type: slack-notification
     source:
       url: (( grab meta.slack.webhook ))
-
-  - name: github
-    type: github-release
-    source:
-      user:         (( grab meta.github.owner ))
-      repository:   (( grab meta.github.repo ))
-      access_token: (( grab meta.github.access_token ))
 
   - name: s3
     type: s3
