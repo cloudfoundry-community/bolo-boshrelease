@@ -1,1 +1,11 @@
-<%= {"colors" => properties.bolo.gnossis.colors.to_h, "graphs" => properties.bolo.gnossis.graphs.to_h }.to_yaml %>
+<%
+def mapify(v)
+	return v unless v.is_a? OpenStruct
+	return Hash[v.marshal_dump.map { |k,v| [k.to_s, mapify(v)] }]
+end
+%><%=
+{
+	"colors" => mapify(properties.bolo.gnossis.colors),
+	"graphs" => mapify(properties.bolo.gnossis.graphs)
+}.to_yaml
+%>
