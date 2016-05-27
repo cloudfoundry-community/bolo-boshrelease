@@ -2,12 +2,10 @@
 set -e
 
 package="gnossis"
-version="0.4"
+version="0.5"
 
-tar -xf ${package}/${package}-v${version}.tar.gz
+tar -C $BOSH_INSTALL_TARGET -xzf ${package}/${package}-ui-v${version}.tar.gz
 
-mkdir ${package}-${version}/bin
-cp ${package}/$package-linux-amd64-v${version}  ${package}-${version}/bin/gnossis
-chmod 0755 ${package}-${version}/bin/gnossis
-
-cp -R ${package}-${version}/* $BOSH_INSTALL_TARGET
+mkdir ${BOSH_INSTALL_TARGET}/bin
+cp ${package}/$package-linux-amd64-v${version}  ${BOSH_INSTALL_TARGET}/bin/gnossis
+chmod 0755 ${BOSH_INSTALL_TARGET}/bin/gnossis
