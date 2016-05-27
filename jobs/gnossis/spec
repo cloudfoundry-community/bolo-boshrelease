@@ -25,6 +25,10 @@ properties:
     description: "Log level for Gnossis dashboard app"
     default: info
 
+  bolo.gnossis.cached:
+    description: "Whether or not to enable RRDcached (via the rrdcached job)"
+    default: false
+
   bolo.gnossis.colors:
     description: "Color mappings for graphs, human-friendly name to hex RGB value, in addition to the default colors"
     default: {}

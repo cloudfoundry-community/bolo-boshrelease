@@ -30,6 +30,8 @@ jobs:
           cached: true
           subscription: (( grab meta.bolo ))
           submission:   (( grab meta.bolo ))
+        gnossis:
+          cached: true
 
 networks: (( param "please set networks" ))
 
