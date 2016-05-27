@@ -962,6 +962,116 @@ graphs:
       GPRINT:tx:MAX:"%7.2lf %sB max\\n"
   # }}}
 
+  bolo-bogons: # {{{
+    match: '^sys:bolo'
+    dps:
+      counters:    <HOST>:sys:bolo:bogon.counter:x
+      events:      <HOST>:sys:bolo:bogon.event:x
+      rates:       <HOST>:sys:bolo:bogon.rate:x
+      samples:     <HOST>:sys:bolo:bogon.sample:x
+      states:      <HOST>:sys:bolo:bogon.state:x
+      transitions: <HOST>:sys:bolo:bogon.transition:x
+      unknown:     <HOST>:sys:bolo:bogon.unknown:x
+    script: |
+      --lower-limit 0
+      --title "<HOSTNAME> Bogons & Martians"
+      --vertical-label "# PDUs"
+
+      DEF:counters=<DP counters>
+      DEF:events=<DP events>
+      DEF:rates=<DP rates>
+      DEF:samples=<DP samples>
+      DEF:states=<DP states>
+      DEF:transitions=<DP transitions>
+      DEF:unknown=<DP unknown>
+
+      AREA:counters<blue>:"counter\\g"
+      GPRINT:counters:LAST:"   %7.2lf%s now\\g"
+      GPRINT:counters:MIN:"  %7.2lf%s min\\g"
+      GPRINT:counters:MAX:"  %7.2lf%s max\\n"
+
+      STACK:rates<lightgreen>:"rate\\g"
+      GPRINT:rates:LAST:"      %7.2lf%s now\\g"
+      GPRINT:rates:MIN:"  %7.2lf%s min\\g"
+      GPRINT:rates:MAX:"  %7.2lf%s max\\n"
+
+      STACK:samples<red>:"sample\\g"
+      GPRINT:samples:LAST:"    %7.2lf%s now\\g"
+      GPRINT:samples:MIN:"  %7.2lf%s min\\g"
+      GPRINT:samples:MAX:"  %7.2lf%s max\\n"
+
+      STACK:events<orange>:"event\\g"
+      GPRINT:events:LAST:"     %7.2lf%s now\\g"
+      GPRINT:events:MIN:"  %7.2lf%s min\\g"
+      GPRINT:events:MAX:"  %7.2lf%s max\\n"
+
+      STACK:states<purple>:"state\\g"
+      GPRINT:states:LAST:"     %7.2lf%s now\\g"
+      GPRINT:states:MIN:"  %7.2lf%s min\\g"
+      GPRINT:states:MAX:"  %7.2lf%s max\\n"
+
+      STACK:transitions<pink>:"trans.\\g"
+      GPRINT:transitions:LAST:"    %7.2lf%s now\\g"
+      GPRINT:transitions:MIN:"  %7.2lf%s min\\g"
+      GPRINT:transitions:MAX:"  %7.2lf%s max\\n"
+
+      STACK:unknown<grey>:"(unknown)\\g"
+      GPRINT:unknown:LAST:" %7.2lf%s now\\g"
+      GPRINT:unknown:MIN:"  %7.2lf%s min\\g"
+      GPRINT:unknown:MAX:"  %7.2lf%s max\\n"
+  # }}}
+  bolo-throughput: # {{{
+    match: '^sys:bolo'
+    dps:
+      counters:    <HOST>:sys:bolo:counter:x
+      events:      <HOST>:sys:bolo:event:x
+      rates:       <HOST>:sys:bolo:rate:x
+      samples:     <HOST>:sys:bolo:sample:x
+      states:      <HOST>:sys:bolo:state:x
+      transitions: <HOST>:sys:bolo:transition:x
+    script: |
+      --lower-limit 0
+      --title "<HOSTNAME> Throughput"
+      --vertical-label "# PDUs"
+
+      DEF:counters=<DP counters>
+      DEF:events=<DP events>
+      DEF:rates=<DP rates>
+      DEF:samples=<DP samples>
+      DEF:states=<DP states>
+      DEF:transitions=<DP transitions>
+
+      AREA:counters<lightblue>:"counter\\g"
+      GPRINT:counters:LAST:"  %7.2lf%s now\\g"
+      GPRINT:counters:MIN:"  %7.2lf%s min\\g"
+      GPRINT:counters:MAX:"  %7.2lf%s max\\n"
+
+      STACK:rates<lightgreen>:"rate\\g"
+      GPRINT:rates:LAST:"     %7.2lf%s now\\g"
+      GPRINT:rates:MIN:"  %7.2lf%s min\\g"
+      GPRINT:rates:MAX:"  %7.2lf%s max\\n"
+
+      STACK:samples<red>:"sample\\g"
+      GPRINT:samples:LAST:"   %7.2lf%s now\\g"
+      GPRINT:samples:MIN:"  %7.2lf%s min\\g"
+      GPRINT:samples:MAX:"  %7.2lf%s max\\n"
+
+      STACK:events<orange>:"event\\g"
+      GPRINT:events:LAST:"    %7.2lf%s now\\g"
+      GPRINT:events:MIN:"  %7.2lf%s min\\g"
+      GPRINT:events:MAX:"  %7.2lf%s max\\n"
+
+      STACK:states<purple>:"state\\g"
+      GPRINT:states:LAST:"    %7.2lf%s now\\g"
+      GPRINT:states:MIN:"  %7.2lf%s min\\g"
+      GPRINT:states:MAX:"  %7.2lf%s max\\n"
+
+      STACK:transitions<pink>:"trans.\\g"
+      GPRINT:transitions:LAST:"   %7.2lf%s now\\g"
+      GPRINT:transitions:MIN:"  %7.2lf%s min\\g"
+      GPRINT:transitions:MAX:"  %7.2lf%s max\\n"
+  # }}}
+
   nginx-connections: # {{{
     match: ^nginx$
     dps:

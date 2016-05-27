@@ -5,7 +5,8 @@ packages:
   - rrdtool
   - libvigor
 templates:
-  bin/ctl: bin/ctl
+  bin/bolo: bin/bolo
+  bin/meta: bin/meta
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
@@ -52,3 +53,15 @@ properties:
   bolo.freshness.message:
     description: "Summary message for stale states"
     default: no result from monitoring system
+
+  bolo.submission.address:
+    description: "Address of the Bolo Listener, for submitting monitoring data (meta stats)"
+  bolo.submission.port:
+    description: "Port of the Bolo Listener, for submitting monitoring data (meta stats)"
+    default: 2999
+
+  bolo.subscription.address:
+    description: "Address to subscribe to for broadcast monitoring information (meta stats)"
+  bolo.subscription.port:
+    description: "Port to subscribe on for broadcast monitoring information (meta stats)"
+    default: 2997

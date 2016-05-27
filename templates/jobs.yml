@@ -26,6 +26,8 @@ jobs:
         submission: (( grab meta.bolo ))
       bolo:
         debug: true
+        subscription: (( grab meta.bolo ))
+        submission:   (( grab meta.bolo ))
         rrd:
           cached: true
           subscription: (( grab meta.bolo ))

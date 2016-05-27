@@ -1,5 +1,11 @@
 check process bolo
   with pidfile /var/vcap/sys/run/bolo/bolo.pid
-  start program "/var/vcap/jobs/bolo/bin/monit_debugger bolo_ctl '/var/vcap/jobs/bolo/bin/ctl start'"
-  stop program "/var/vcap/jobs/bolo/bin/monit_debugger bolo_ctl '/var/vcap/jobs/bolo/bin/ctl stop'"
+  start program "/var/vcap/jobs/bolo/bin/monit_debugger bolo_ctl '/var/vcap/jobs/bolo/bin/bolo start'"
+  stop program "/var/vcap/jobs/bolo/bin/monit_debugger bolo_ctl '/var/vcap/jobs/bolo/bin/bolo stop'"
+  group vcap
+
+check process bolo2meta
+  with pidfile /var/vcap/sys/run/bolo/bolo2meta.pid
+  start program "/var/vcap/jobs/bolo/bin/monit_debugger bolo_ctl '/var/vcap/jobs/bolo/bin/meta start'"
+  stop program "/var/vcap/jobs/bolo/bin/monit_debugger bolo_ctl '/var/vcap/jobs/bolo/bin/meta stop'"
   group vcap

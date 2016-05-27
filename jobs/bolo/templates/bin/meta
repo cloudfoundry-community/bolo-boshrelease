@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Setup env vars and folders for the webapp_ctl script
+source /var/vcap/jobs/bolo/helpers/ctl_setup.sh 'bolo' 'bolo2meta'
+
+export LANG=en_US.UTF-8
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE $JOB_NAME
+
+    PREFIX="<%= p('dbolo.prefix').gsub('(deployment)', spec.deployment.to_s)
+                                 .gsub('(job)',        spec.job.name.to_s)
+                                 .gsub('(index)',      spec.index.to_s) %>"
+    exec chpst -u vcap:vcap bolo2meta \
+         -p "${PIDFILE}" <% if p('bolo.debug') %>-vvvv<% end %> \
+         -S tcp://<%= p('bolo.submission.address') %>:<%= p('bolo.submission.port') %> \
+         -e tcp://<%= p('bolo.subscription.address') %>:<%= p('bolo.subscription.port') %> \
+         -P "${PREFIX}:sys:bolo" \
+         >>$LOG_DIR/bolo2meta.log 2>&1
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+  *)
+    echo "Usage: bolo_ctl {start|stop}"
+
+    ;;
+
+esac
+exit 0

@@ -534,6 +534,8 @@ This BOSH release provides the following graphs, out of the box:
 | fork_rate                  | `linux`     | Number of processes created, per unit time |
 | processes                  | `linux`     | Number of processes total, in various states |
 | openfiles                  | `linux`     | Number of open file descriptors, system-wide (includes maximum for perspective) |
+| bolo-bogons                | -           | Tracks the number of Bogon PDUs (malformed) received per minute. (this is an internal metric) |
+| bolo-throughput            | -           | Tracks the number of PDUs received per minute. (this is an internal metric) |
 | proc-$NAME-cpu             | `process`   | Per-process CPU utilization |
 | proc-$NAME-vmem            | `process`   | Per-process virtual memory utilization |
 | proc-$NAME-io              | `process`   | Per-process I/O throughput (bytes read/written) |
