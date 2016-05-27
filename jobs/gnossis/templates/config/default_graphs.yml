@@ -309,6 +309,24 @@ graphs:
 
       LINE:major<blue>
   # }}}
+  openfiles: # {{{
+    dps:
+      used: <HOST>:openfiles:used:mean
+      max:  <HOST>:openfiles:max:mean
+    script: |
+      --lower-limit 0
+      --title "Open Files on <HOSTNAME>"
+      --vertical-label "File Descriptors"
+
+      DEF:used=<DP used>
+      DEF:max=<DP max>
+
+      AREA:used<lightblue>:"Used\\g"
+      GPRINT:used:LAST:"%7.2lf%s now\\g"
+      GPRINT:used:MIN:"%7.2lf%s min\\g"
+      GPRINT:used:MAX:"%7.2lf%s max\\n"
+      GPRINT:max:LAST:"Max   %7.2lf%s\\n"
+  # }}}
 
   proc-<ITEM>-cpu: # {{{
     match: ^proc:(.*)
@@ -942,25 +960,6 @@ graphs:
       GPRINT:tx:LAST:"%7.2lf %sB now\\g"
       GPRINT:tx:MIN:"%7.2lf %sB min\\g"
       GPRINT:tx:MAX:"%7.2lf %sB max\\n"
-  # }}}
-
-  openfiles: # {{{
-    dps:
-      used: <HOST>:openfiles:used:mean
-      max:  <HOST>:openfiles:max:mean
-    script: |
-      --lower-limit 0
-      --title "Open Files on <HOSTNAME>"
-      --vertical-label "File Descriptors"
-
-      DEF:used=<DP used>
-      DEF:max=<DP max>
-
-      AREA:used<lightblue>:"Used\\g"
-      GPRINT:used:LAST:"%7.2lf%s now\\g"
-      GPRINT:used:MIN:"%7.2lf%s min\\g"
-      GPRINT:used:MAX:"%7.2lf%s max\\n"
-      GPRINT:max:LAST:"Max   %7.2lf%s\\n"
   # }}}
 
   nginx-connections: # {{{
