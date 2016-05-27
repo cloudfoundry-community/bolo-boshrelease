@@ -7,6 +7,7 @@ packages:
 templates:
   bin/ctl: bin/ctl
   bin/monit_debugger: bin/monit_debugger
+  config/rradefs: config/rradefs
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
@@ -35,3 +36,15 @@ properties:
   bolo.rrd.cached:
     description: "Whether or not to enable RRDcached (via the rrdcached job)"
     default: false
+
+  bolo.rrd.retention:
+    description: |
+      How long to keep data for.  Defaults to keeping 8 days of minutely data.
+      Example:
+
+          bolo:
+            rrd:
+              retention:
+                - { at: 1m,  for: 72h }
+                - { at: 5m,  for: 90d }
+                - { at: 60m, for: 540d }
