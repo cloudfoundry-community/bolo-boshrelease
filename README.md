@@ -330,7 +330,7 @@ The `linux` collector gathers the following metrics:
 | SAMPLE | $prefix:load:cpus      | Number of visible processing cores (taking into account hyperthreading, if available) |
 
 
-#### Process Cretaion / Context Switching Metrics
+#### Process Creation / Context Switching Metrics
 
 
 | Type   | Name                   | Description |
