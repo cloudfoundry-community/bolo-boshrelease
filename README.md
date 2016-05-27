@@ -192,9 +192,44 @@ RRD operations and such.  For that, specify the
 **bolo.rrd.submission.address** and **bolo.rrd.submission.port**
 properties.
 
+The default retention strategy (so-called Round-Robin Archives, or
+RRAs), is to keep 8 days worth of minutely data.  You can change
+this behavior via the **bolo.rrd.retention** parameter:
+
+    properties:
+      bolo:
+        rrd:
+          retention:
+            - { at: 1m, for: 8d }
+
+You can add more RRAs (retention periods) as well.  Here's a
+retention policy that keeps minutely data for the past week, but
+consolidates hourly for 90 days, and then daily for 10 years:
+
+    properties:
+      bolo:
+        rrd:
+          retention:
+            - { at: 1m, for: 7d }
+            - { at: 1h, for: 90d }
+            - { at: 1d, for: 3650d }
+
+Valid units are `m` (minutes), `h` (hours) or `d` (days).
+
 You need the `rrd` job/template wherever you are going to run
 `gnossis`, although that can be on a different VM from `bolo`
 itself.
+
+You may also want to look at the `rrdcached` job, that enables a
+memory cache for coalescing RRD updates so that they get sent to
+the underlying disk in batches, to improve I/O throughput:
+
+    properties:
+      bolo:
+        rrd:
+          cached: true   # bolo2rrd should use the cache...
+        gnossis:
+          cached: true   # let Gnossis control the cache too
 
 
 ### gnossis
