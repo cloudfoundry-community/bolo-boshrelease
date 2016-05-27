@@ -31,3 +31,7 @@ properties:
   bolo.rrd.root:
     description: "Root directory where RRD files should be stored.  Probably should be on persistent disk."
     default: "/var/vcap/store/rrd/data"
+
+  bolo.rrd.cached:
+    description: "Whether or not to enable RRDcached (via the rrdcached job)"
+    default: false

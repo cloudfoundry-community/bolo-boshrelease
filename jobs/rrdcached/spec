@@ -1,0 +1,21 @@
+---
+name: rrdcached
+packages:
+  - rrdtool
+templates:
+  bin/ctl: bin/ctl
+  bin/monit_debugger: bin/monit_debugger
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+
+properties:
+  bolo.rrdcached.interval:
+    description: "How frequently to flush data to disk."
+    default: 1h
+  bolo.rrdcached.delay:
+    description: "Delay writes for a random amoutn of time between 0 and delay.  Must be less than bolo.rrdcached.interval"
+    default: 1h
+  bolo.rrdcached.purge:
+    description: "How frequently to search the buffered data for old values and write them to disk (can be fairly high)"
+    default: 2h

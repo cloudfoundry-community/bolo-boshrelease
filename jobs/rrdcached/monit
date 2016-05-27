@@ -1,0 +1,5 @@
+check process rrdcached
+  with pidfile /var/vcap/sys/run/rrdcached/rrdcached.pid
+  start program "/var/vcap/jobs/rrdcached/bin/monit_debugger rrdcached_ctl '/var/vcap/jobs/rrdcached/bin/ctl start'"
+  stop program "/var/vcap/jobs/rrdcached/bin/monit_debugger rrdcached_ctl '/var/vcap/jobs/rrdcached/bin/ctl stop'"
+  group vcap
