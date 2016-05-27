@@ -538,5 +538,6 @@ This BOSH release provides the following graphs, out of the box:
 [bolo]:    https://bolo.niftylogic.com
 [plugins]: https://github.com/bolo/bolo-collectors
 [tpl]:     https://github.com/bolo/bolo-deployment
+[genesis]: https://github.com/starkandwayne/genesis
 
 [screen1]: https://raw.githubusercontent.com/cloudfoundry-community/bolo-boshrelease/master/doc/gnossis.png
