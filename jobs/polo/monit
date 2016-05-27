@@ -1,0 +1,5 @@
+check process polo
+  with pidfile /var/vcap/sys/run/polo/polo.pid
+  start program "/var/vcap/jobs/polo/bin/monit_debugger polo_ctl '/var/vcap/jobs/polo/bin/ctl start'"
+  stop program "/var/vcap/jobs/polo/bin/monit_debugger polo_ctl '/var/vcap/jobs/polo/bin/ctl stop'"
+  group vcap

@@ -1,0 +1,5 @@
+check process marco
+  with pidfile /var/vcap/sys/run/marco/marco.pid
+  start program "/var/vcap/jobs/marco/bin/monit_debugger marco_ctl '/var/vcap/jobs/marco/bin/ctl start'"
+  stop program "/var/vcap/jobs/marco/bin/monit_debugger marco_ctl '/var/vcap/jobs/marco/bin/ctl stop'"
+  group vcap

@@ -30,3 +30,7 @@ properties:
   dbolo.collectors:
     description: "What collectors to run, and how frequently.  A list of maps with 'every' and 'run' keys"
     default: []
+
+  dbolo.auto:
+    description: "Enable marco/polo-style automatic configuration"
+    default: false

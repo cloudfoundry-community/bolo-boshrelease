@@ -1,0 +1,23 @@
+---
+name: marco
+packages:
+  - marco
+templates:
+  bin/ctl: bin/ctl
+  bin/monit_debugger: bin/monit_debugger
+  config/marco.yml: config/marco.yml
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+properties:
+  marco.rules:
+    description: The configuration ruleset to serve via Marco (as a literal YAML string)
+    default: '{}'
+
+  marco.listen:
+    description: IP address and port to bind on
+    default: ":8080"
+  marco.auth.username:
+    description: Username required of clients for authentication
+  marco.auth.password:
+    description: Password required of clients for authentication

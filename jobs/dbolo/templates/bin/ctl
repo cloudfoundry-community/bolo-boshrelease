@@ -22,9 +22,10 @@ case $1 in
     # store pid in $PIDFILE
     echo $$ > $PIDFILE
 
+    <% if p('dbolo.auto') %>touch ${JOB_DIR}/config/auto.conf<% end %>
     exec dbolo \
          -F<% if p('dbolo.debug') %>vvvv<% end %> \
-         -c ${JOB_DIR}/config/dbolo.conf \
+         -c ${JOB_DIR}/config/<% if p('dbolo.auto') %>auto<% else %>dbolo<% end %>.conf \
          -e tcp://<%= p('dbolo.submission.address') %>:<%= p('dbolo.submission.port') %> \
          >>$LOG_DIR/$JOB_NAME.log 2>&1
 

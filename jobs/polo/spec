@@ -1,0 +1,22 @@
+---
+name: polo
+packages:
+  - marco
+templates:
+  bin/ctl: bin/ctl
+  bin/monit_debugger: bin/monit_debugger
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+properties:
+  polo.host:
+    description: URL of the remote Marco host to connect to
+
+  polo.auth.username:
+    description: Username required by Marco for authentication
+  polo.auth.password:
+    description: Password required by Marco for authentication
+
+  polo.interval:
+    description: How long to wait between config file checks (in seconds)
+    default: 30
