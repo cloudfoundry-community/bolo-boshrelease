@@ -87,19 +87,19 @@ rrdtool/freefont-otf-20120503.tar.gz:
   object_id: fce8ed90-ea21-415a-963a-3b417f65a5a9
   sha: dad7600fa9eed4116c2aaa561228e3879565f7aa
   size: 4487813
-gnossis/gnossis-linux-amd64-v0.2:
-  object_id: 75f6ed39-ba86-4206-94e3-6497ca966bda
-  sha: 9ce1fb28c2462492e86f5658373044f433a6ae8d
-  size: 10424872
-gnossis/gnossis-v0.2.tar.gz:
-  object_id: 782c6c3b-1d7f-4766-91ee-d1727fa52c67
-  sha: bf7ee2fb2f4f0b64f6e62c5b2173f1b96983b744
-  size: 1072422
-gnossis/gnossis-linux-amd64-v0.4:
-  object_id: 1a0d33f9-6155-46d2-bcbc-f480b9e8c4e6
-  sha: d8bf8d3f1b31969a2d78b69fba1208158a5e530c
-  size: 10425640
-gnossis/gnossis-v0.4.tar.gz:
-  object_id: 3b88e7e5-9a63-4c37-95d9-0a93cd80edb4
-  sha: 7c3def3c29c567d067ed300cc5c27e383f093d2b
-  size: 400164
+gnossis/gnossis-linux-amd64-v0.5:
+  object_id: 38771b3b-459a-4d75-8b8c-bbd4e9f6103e
+  sha: 5bb9e968bf2597984e0573b36504ef8226a1369f
+  size: 9228504
+gnossis/gnossis-ui-v0.5.tar.gz:
+  object_id: 5256d73f-c685-4b77-809f-eab102ea49d7
+  sha: e48491a4a385b341cf17fcf4a3c84008eaf5772f
+  size: 275114
+marco/marco:
+  object_id: c7627e99-b54c-4ee4-b478-d8acfc58acfe
+  sha: 498652fb1aa65aab6622b5442502069c8b6a3bea
+  size: 7697072
+marco/polo:
+  object_id: d1a576dc-5523-4930-96c4-6b115be8c655
+  sha: 1227c25d6bb1b590fe9282d168f140c3c3c66b07
+  size: 7690752
