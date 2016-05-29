@@ -572,7 +572,7 @@ This BOSH release provides the following graphs, out of the box:
 
 
 
-[bolo]:    https://bolo.niftylogic.com
+[bolo]:    http://bolo.niftylogic.com
 [plugins]: https://github.com/bolo/bolo-collectors
 [tpl]:     https://github.com/bolo/bolo-deployment
 [genesis]: https://github.com/starkandwayne/genesis
