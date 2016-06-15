@@ -57,7 +57,7 @@ From here, you'll want to make sure your name is correct in
     ---
     name: my-bolo
 
-and that your BOSH director's UUID is set in `directory.yml`:
+and that your BOSH director's UUID is set in `director.yml`:
 
     ---
     director_uuid: YOUR-DIRECTOR-UUID
@@ -77,7 +77,7 @@ Setting up Agents
 In order to submit metrics from a deployment to Bolo, you just
 need to add the release to the deployment manifest, add the
 `dbolo` template to the job(s) in question, and set up the
-`bolo.dbolo.submission` properties to maatch your installation.
+`bolo.dbolo.submission` properties to match your installation.
 
     ---
     releases:
