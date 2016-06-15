@@ -65,3 +65,7 @@ properties:
   bolo.subscription.port:
     description: "Port to subscribe on for broadcast monitoring information (meta stats)"
     default: 2997
+
+  dbolo.prefix:
+    description: "The prefix to prepend to submmitted metrics.  The keywords (deployment), (job) and (index) will be replaced by the configured deployment, job name, and instance index (i.e. 'concourse', 'worker' and '3')"
+    default: "(deployment)-(job)-(index)"
