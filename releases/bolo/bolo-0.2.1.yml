@@ -1,0 +1,78 @@
+---
+packages:
+- name: bolo-collectors
+  version: a62745ef88290c50077de1797a207fb045125da6
+  fingerprint: a62745ef88290c50077de1797a207fb045125da6
+  sha1: 0ae1d97b493885eff13c5a08622c2c37358b2e3d
+  dependencies:
+  - libvigor
+  - rrdtool
+- name: bolo
+  version: 25d8ebec71d3620fad0fb596b82a3be43f744430
+  fingerprint: 25d8ebec71d3620fad0fb596b82a3be43f744430
+  sha1: 58ae2ac4682c3164cd448118a0929474cc83d418
+  dependencies:
+  - libvigor
+  - rrdtool
+- name: gnossis
+  version: 2925a298784a7af9f7c622619c1a553ffafbb6ed
+  fingerprint: 2925a298784a7af9f7c622619c1a553ffafbb6ed
+  sha1: dc8a9a1d7b679ea2c387f6499cd8a29e4644aba3
+  dependencies: []
+- name: libvigor
+  version: 5519817c969b845ed4b512818cf8a85e0647695a
+  fingerprint: 5519817c969b845ed4b512818cf8a85e0647695a
+  sha1: 5f12c07c4a55cf58a0ba42cec643b3597769dd63
+  dependencies: []
+- name: marco
+  version: 30123f682970e2df83448e055764047af04dbc5d
+  fingerprint: 30123f682970e2df83448e055764047af04dbc5d
+  sha1: b1a702997e6858d4cef10ab8911beb4a8c75865f
+  dependencies: []
+- name: rrdtool
+  version: 089ffc20933e9b883ccdaf356bdaa4b50b41f369
+  fingerprint: 089ffc20933e9b883ccdaf356bdaa4b50b41f369
+  sha1: 7feda954a239ceb41bcf26d00efd628c843e0474
+  dependencies: []
+- name: spruce
+  version: 8515475f5f41262b9b0ccbdfc872930c2db6493d
+  fingerprint: 8515475f5f41262b9b0ccbdfc872930c2db6493d
+  sha1: a25034afafffe00d7a3def99422c355740384c9f
+  dependencies: []
+jobs:
+- name: bolo
+  version: ae84880efd551682e9129c48facf801c0b7b04ec
+  fingerprint: ae84880efd551682e9129c48facf801c0b7b04ec
+  sha1: c83f7e266dc31b36364a52a95cde5ecbc15af728
+- name: dbolo
+  version: ae24cb58c145135149fea7ac0b75e2d52df016b0
+  fingerprint: ae24cb58c145135149fea7ac0b75e2d52df016b0
+  sha1: dd6a97108f8fe4680df6747361f63feebf3c40e1
+- name: gnossis
+  version: abafac111268538be7956bd682f197d1cef275e3
+  fingerprint: abafac111268538be7956bd682f197d1cef275e3
+  sha1: a6232e04f90a143be7b5c5d0b0e83ae07ea5cc86
+- name: marco
+  version: 3bf613d30d9f3d71940373b6abec2573becf7b6f
+  fingerprint: 3bf613d30d9f3d71940373b6abec2573becf7b6f
+  sha1: 1f2e6b19ac6d7e0f1d4e069686539f8b42760cf3
+- name: polo
+  version: c654f05417bcfb1157ab12ad1e6c45b2c8deffc7
+  fingerprint: c654f05417bcfb1157ab12ad1e6c45b2c8deffc7
+  sha1: a51dd93a007073cabb965eefc4ca741d86200548
+- name: rrd
+  version: 9ddc7323520e9102a2649bcd8127f13a845bb623
+  fingerprint: 9ddc7323520e9102a2649bcd8127f13a845bb623
+  sha1: 97d3d77fd94c4d42a5bc63d3ddeb1a0d7ca4520f
+- name: rrdcached
+  version: 9deb3c26def1ac0718c7578711fbce3ab4242972
+  fingerprint: 9deb3c26def1ac0718c7578711fbce3ab4242972
+  sha1: 7ba9be91e0c499f77cf9f94abf5de71b3da12ab1
+license:
+  version: ec16b6c95de5c9122dcf472815239a76d1b6c9ea
+  fingerprint: ec16b6c95de5c9122dcf472815239a76d1b6c9ea
+  sha1: 8e940b6e82f19f8eca3ddb87d71e6b25eae6c6ed
+commit_hash: d87ffe22
+uncommitted_changes: true
+name: bolo
+version: 0.2.1
