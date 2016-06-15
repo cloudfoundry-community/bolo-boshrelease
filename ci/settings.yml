@@ -1,6 +1,6 @@
 ---
 meta:
-  name:    bolo-boshrelease
+  name:    bolo
   release: Bolo
   target:  sw
   url:     https://ci.vsphere.starkandwayne.com
