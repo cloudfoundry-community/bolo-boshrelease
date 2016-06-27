@@ -91,10 +91,9 @@ need to add the release to the deployment manifest, add the
             name:    dbolo
 
     properties:
-      bolo:
-        dbolo:
-          submission:
-            address: 10.0.0.1   # <--- change this
+      dbolo:
+        submission:
+          address: 10.0.0.1   # <--- change this
 
 
 Parts of a Bolo Deployment
