@@ -40,13 +40,13 @@ graphs:
   data-flow: # {{{
     match: memory
     dps:
-      n: <HOST>:memory:buffers:n
+      rate: <HOST>:memory:buffers:n
     script:
       --lower-limit 0
       --title 'Data Samples / minute'
       --vertical-label 'count'
 
-      DEF:n=<DP n>
+      DEF:n=<DP rate>
 
       LINE2:n#000000:"samples"
       GPRINT:n:LAST:"%4.2lf now"
