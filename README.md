@@ -21,7 +21,7 @@ Before you can deploy bolo, you're going to need to upload this
 BOSH release to your BOSH-lite, using the CLI:
 
     bosh target https://192.168.50.4:25555
-    bosh upload release https://bosh.io/d/github.com/cloudfoundry-community/bolo-boshrelease
+    bosh upload release https://github.com/cloudfoundry-community/bolo-boshrelease/releases/download/v0.2.1/bolo-0.2.1.tgz
 
 You can create a small, working manifest file from this git
 repository:
