@@ -24,6 +24,9 @@ jobs:
     properties:
       dbolo:
         submission: (( grab meta.bolo ))
+        collectors:
+          - { every: 20s, run: linux }
+          - { every: 20s, run: process -n dbolo -m dbolo }
       bolo:
         debug: true
         subscription: (( grab meta.bolo ))

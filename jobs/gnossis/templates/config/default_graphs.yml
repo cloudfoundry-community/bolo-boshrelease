@@ -329,7 +329,7 @@ graphs:
   # }}}
 
   proc-<ITEM>-cpu: # {{{
-    match: ^proc:(.*)
+    match: ^proc:(.*):utime$
     dps:
       user:   <HOST>:proc:<ITEM>:utime:value
       system: <HOST>:proc:<ITEM>:stime:value
@@ -379,7 +379,7 @@ graphs:
       LINE2:total
   # }}}
   proc-<ITEM>-vmem: # {{{
-    match: ^proc:(.*)
+    match: ^proc:(.*):vmrss$
     dps:
       rss:      <HOST>:proc:<ITEM>:vmrss:mean
       peak_rss: <HOST>:proc:<ITEM>:vmhwm:mean
@@ -421,7 +421,7 @@ graphs:
       LINE:vm#000000
   # }}}
   proc-<ITEM>-mem: # {{{
-    match: ^proc:(.*)
+    match: ^proc:(.*):mem_heap$
     dps:
       mem_heap:  <HOST>:proc:<ITEM>:mem_heap:mean
       swp_heap:  <HOST>:proc:<ITEM>:swp_heap:mean
@@ -498,7 +498,7 @@ graphs:
       COMMENT:"dark = swap / light = in-RAM\\l"
   # }}}
   proc-<ITEM>-io: # {{{
-    match: ^proc:(.*)
+    match: ^proc:(.*):io_all_rd$
     dps:
       all_rd:  <HOST>:proc:<ITEM>:io_all_rd:value
       all_wr:  <HOST>:proc:<ITEM>:io_all_rd:value
@@ -541,7 +541,7 @@ graphs:
       GPRINT:other_wr_:MAX:"%7.2lf%s max\\n"
   # }}}
   proc-<ITEM>-iorate: # {{{
-    match: ^proc:(.*)
+    match: ^proc:(.*):io_all_rd$
     dps:
       all_rd: <HOST>:proc:<ITEM>:io_all_rd:value
       all_wr: <HOST>:proc:<ITEM>:io_all_rd:value
@@ -577,7 +577,7 @@ graphs:
       GPRINT:avg_wr:LAST:"(last) average write op size %7.2lf%sB\\n"
   # }}}
   proc-<ITEM>-processes: # {{{
-    match: ^proc:(.*)
+    match: ^proc:(.*):processes$
     dps:
       procs:   <HOST>:proc:<ITEM>:processes:mean
       threads: <HOST>:proc:<ITEM>:threads:mean
@@ -602,7 +602,7 @@ graphs:
       GPRINT:procs:MAX:"%7.2lf%s max\\n"
   # }}}
   proc-<ITEM>-openfiles: # {{{
-    match: ^proc:(.*)
+    match: ^proc:(.*):openfiles$
     dps:
       used: <HOST>:proc:<ITEM>:openfiles:mean
     script: |
@@ -621,7 +621,7 @@ graphs:
   # }}}
 
   df-<ITEM>-bytes: # {{{
-    match: ^df:(.*)
+    match: ^df:(.*):bytes.free$
     dps:
       free:     <HOST>:df:<ITEM>:bytes.free:mean
       total:    <HOST>:df:<ITEM>:bytes.total:mean
@@ -659,7 +659,7 @@ graphs:
       LINE:upperlimit#00000000
   # }}}
   df-<ITEM>-inodes: # {{{
-    match: ^df:(.*)
+    match: ^df:(.*):inodes.free$
     dps:
       free:     <HOST>:df:<ITEM>:inodes.free:mean
       total:    <HOST>:df:<ITEM>:inodes.total:mean
@@ -1331,7 +1331,7 @@ graphs:
       LINE:size<blue>
   # }}}
   pg-<ITEM>-transactions: # {{{
-    match: ^postgres:(.*):db:txn$
+    match: ^postgres:(.*):db:txn:commits$
     dps:
       commit:   <HOST>:postgres:<ITEM>:db:txn:commits:value
       rollback: <HOST>:postgres:<ITEM>:db:txn:rollbacks:value
@@ -1353,7 +1353,7 @@ graphs:
       GPRINT:rollback:MAX:"%7.2lf%s max\\n"
   # }}}
   pg-<ITEM>-backends: # {{{
-    match: ^postgres:(.*):db$
+    match: ^postgres:(.*):db:backends$
     dps:
       backends: <HOST>:postgres:<ITEM>:db:backends:mean
     script: |
