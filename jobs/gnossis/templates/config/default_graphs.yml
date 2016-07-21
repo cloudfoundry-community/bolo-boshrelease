@@ -38,7 +38,7 @@ colors: # {{{
 
 graphs:
   data-flow: # {{{
-    match: memory
+    match: ^memory:buffers$
     dps:
       rate: <HOST>:memory:buffers:n
     script:
@@ -255,7 +255,7 @@ graphs:
       GPRINT:total:LAST:"   %7.2lf %sB\\n"
   # }}}
   paging: # {{{
-    match: ^vm$
+    match: ^vm:pgfault$
     dps:
       faults: <HOST>:vm:pgfault:value
       in:     <HOST>:vm:pgpgin:value
@@ -292,7 +292,7 @@ graphs:
       GPRINT:total:MAX:"%7.2lf%s max\\n"
   # }}}
   major-page-faults: # {{{
-    match: ^vm$
+    match: ^vm:pgmajfault$
     dps:
       major: <HOST>:vm:pgmajfault:value
     script: |
@@ -698,7 +698,7 @@ graphs:
   # }}}
 
   contextswitch: # {{{
-    match: ^ctxt$
+    match: ^ctxt:cswch-s$
     dps:
       switches: <HOST>:ctxt:cswch-s:value
     script: |
@@ -714,9 +714,9 @@ graphs:
       GPRINT:switches:MAX:"%5.1lf%s max\\n"
   # }}}
   fork_rate: # {{{
-    match: ^ctxt$
+    match: ^ctxt:forks-s$
     dps:
-      fork_rate: <HOST>:ctxt:fork-s:value
+      fork_rate: <HOST>:ctxt:forks-s:value
     script: |
       --lower-limit 0
       --title "Fork Rate for <HOSTNAME>"
@@ -730,7 +730,7 @@ graphs:
       GPRINT:fr:MAX:"%5.1lf%s max\\n"
   # }}}
   processes: # {{{
-    match: ^procs$
+    match: ^procs:blocked$
     dps:
       blocked:  <HOST>:procs:blocked:mean
       paging:   <HOST>:procs:paging:mean
@@ -789,7 +789,7 @@ graphs:
   # }}}
 
   <ITEM>-disk-io: # {{{
-    match: ^diskio:(.*)
+    match: ^diskio:(.*):(rd|wr)-bytes$
     dps:
       read:  <HOST>:diskio:<ITEM>:rd-bytes:value
       write: <HOST>:diskio:<ITEM>:wr-bytes:value
@@ -818,7 +818,7 @@ graphs:
       GPRINT:write:MAX:"%7.2lf %sB max\\n"
   # }}}
   <ITEM>-disk-iops: # {{{
-    match: ^diskio:(.*)
+    match: ^diskio:(.*):(rd|wr)-iops$
     dps:
       read:  <HOST>:diskio:<ITEM>:rd-iops:value
       write: <HOST>:diskio:<ITEM>:wr-iops:value
@@ -846,7 +846,7 @@ graphs:
       GPRINT:write:MAX:"%7.2lf%s max\\n"
   # }}}
   <ITEM>-disk-await: # {{{
-    match: diskio:(.*)
+    match: ^diskio:(.*):(rd|wr)-msec$
     dps:
       read:  <HOST>:diskio:<ITEM>:rd-msec:value
       write: <HOST>:diskio:<ITEM>:wr-msec:value
@@ -877,7 +877,7 @@ graphs:
       GPRINT:write:MAX:"%7.2lf %ss max\\n"
   # }}}
   <ITEM>-inet-packets: # {{{
-    match: ^net:(.*)
+    match: ^net:(.*):[tr]x.packets$
     dps:
       rx: <HOST>:net:<ITEM>:rx.packets:value
       tx: <HOST>:net:<ITEM>:tx.packets:value
@@ -905,7 +905,7 @@ graphs:
       GPRINT:tx:MAX:"%7.2lf%s max\\n"
   # }}}
   <ITEM>-inet-errors: # {{{
-    match: net:(.*)
+    match: ^net:(.*):[tr]x.errors$
     dps:
       rx: <HOST>:net:<ITEM>:rx.errors:value
       tx: <HOST>:net:<ITEM>:tx.errors:value
@@ -933,7 +933,7 @@ graphs:
       GPRINT:tx:MAX:"%7.2lf%s max\\n"
   # }}}
   <ITEM>-inet-traffic: # {{{
-    match: net:(.*)
+    match: ^net:(.*):[tr]x.bytes$
     dps:
       rx: <HOST>:net:<ITEM>:rx.bytes:value
       tx: <HOST>:net:<ITEM>:tx.bytes:value
@@ -963,7 +963,7 @@ graphs:
   # }}}
 
   bolo-bogons: # {{{
-    match: '^sys:bolo'
+    match: ^sys:bolo:bogon.counter$
     dps:
       counters:    <HOST>:sys:bolo:bogon.counter:x
       events:      <HOST>:sys:bolo:bogon.event:x
@@ -1021,7 +1021,7 @@ graphs:
       GPRINT:unknown:MAX:"  %7.2lf%s max\\n"
   # }}}
   bolo-throughput: # {{{
-    match: '^sys:bolo'
+    match: ^sys:bolo:counter$
     dps:
       counters:    <HOST>:sys:bolo:counter:x
       events:      <HOST>:sys:bolo:event:x
@@ -1073,7 +1073,7 @@ graphs:
   # }}}
 
   nginx-connections: # {{{
-    match: ^nginx$
+    match: ^nginx:connections.active$
     dps:
       active:  <HOST>:nginx:connections.active:mean
       reading: <HOST>:nginx:connections.reading:mean
@@ -1107,7 +1107,7 @@ graphs:
       GPRINT:active:MAX:"%7.2lf%s max\\n"
   # }}}
   nginx-throughput: #{{{
-    match: ^nginx$
+    match: ^nginx:requests.total$
     dps:
       requests: <HOST>:nginx:requests.total:value
     script: |
@@ -1123,7 +1123,7 @@ graphs:
       GPRINT:requests:MAX:"%7.2lf%s max\\n"
   # }}}
   nginx-connection-issues: # {{{
-    match: ^nginx$
+    match: ^nginx:requests.accepted$
     dps:
       accepted: <HOST>:nginx:requests.accepted:value
       handled:  <HOST>:nginx:requests.handled:value
@@ -1143,7 +1143,7 @@ graphs:
       LINE:dropped<red>
   # }}}
   nginx-connection-reuse: # {{{
-    match: ^nginx$
+    match: ^nginx:requests.accepted$
     dps:
       accepted: <HOST>:nginx:requests.accepted:value
       requests: <HOST>:nginx:requests.total:value
@@ -1164,7 +1164,7 @@ graphs:
   # }}}
 
   pg-queries: # {{{
-    match: ^postgres:queries$
+    match: ^postgres:queries:delete$
     dps:
       deletes:     <HOST>:postgres:queries:delete:value
       inserts:     <HOST>:postgres:queries:insert:value
@@ -1199,7 +1199,7 @@ graphs:
       GPRINT:hot_updates:MAX:"%7.2lf%s max\\n"
   # }}}
   pg-query-plans: # {{{
-    match: ^postgres:plan$
+    match: ^postgres:plan:seq$
     dps:
       seq_scan:  <HOST>:postgres:plan:seq:value
       seq_fetch: <HOST>:postgres:plan:seq.tup.read:value
@@ -1233,7 +1233,7 @@ graphs:
       GPRINT:idx_fetch:MAX:"%7.2lf%s max\\n"
   # }}}
   pg-io: # {{{
-    match: ^postgres:io$
+    match: ^postgres:io:heap.read$
     dps:
       heap_reads:              <HOST>:postgres:io:heap.read:value
       heap_buffer_hits:        <HOST>:postgres:io:heap.hit:value
@@ -1292,7 +1292,7 @@ graphs:
       GPRINT:toast_index_buffer_hits:MAX:"%7.2lf%s max\\n"
   # }}}
   pg-table-states: # {{{
-    match: ^postgres:tables$
+    match: ^postgres:tables:live$
     dps:
       live: <HOST>:postgres:tables:live:mean
       dead: <HOST>:postgres:tables:dead:mean
@@ -1314,7 +1314,7 @@ graphs:
       GPRINT:live:MAX:"%7.2lf%s max\\n"
   # }}}
   pg-<ITEM>-dbsize: # {{{
-    match: ^postgres:(.*):db$
+    match: ^postgres:(.*):db:size$
     dps:
       size: <HOST>:postgres:<ITEM>:db:size:mean
     script: |
@@ -1387,7 +1387,7 @@ graphs:
       GPRINT:writes:MAX:"%7.2lf%s max\\n"
   # }}}
   rrdcached-flush-requests: # {{{
-    match: ^rrdcache$
+    match: ^rrdcache:FlushesReceived$
     dps:
       flushes: <HOST>:rrdcache:FlushesReceived:value
     script: |
@@ -1403,7 +1403,7 @@ graphs:
       GPRINT:flushes:MAX:"%7.2lf%s max\\n"
   # }}}
   rrdcached-updates-requests: # {{{
-    match: ^rrdcache$
+    match: ^rrdcache:DataSetsWritten$
     dps:
       writes:   <HOST>:rrdcache:DataSetsWritten:value
       requests: <HOST>:rrdcache:UpdatesReceived:value
@@ -1425,7 +1425,7 @@ graphs:
       GPRINT:requests:MAX:"%7.2lf%s max\\n"
   # }}}
   rrdcached-journal-size: # {{{
-    match: ^rrdcache$
+    match: ^rrdcache:JournalBytes$
     dps:
       journal: <HOST>:rrdcache:JournalBytes:value
     script: |
@@ -1441,7 +1441,7 @@ graphs:
       GPRINT:journal:MAX:"%7.2lf%sB max\\n"
   # }}}
   rrdcached-journal-rotates: # {{{
-    match: ^rrdcache$
+    match: ^rrdcache:JournalRotate$
     dps:
       journal: <HOST>:rrdcache:JournalRotate:value
     script: |
@@ -1457,7 +1457,7 @@ graphs:
       GPRINT:journal:MAX:"%7.2lf%s max\\n"
   # }}}
   rrdcached-rrds-cached: # {{{
-    match: ^rrdcache$
+    match: ^rrdcache:TreeNodesNumber$
     dps:
       nodes: <HOST>:rrdcache:TreeNodesNumber:mean
     script: |
@@ -1473,7 +1473,7 @@ graphs:
       GPRINT:nodes:MAX:"%7.2lf%s max\\n"
   # }}}
   rrdcached-tree-depth: # {{{
-    match: ^rrdcache$
+    match: ^rrdcache:TreeDepth$
     dps:
       depth: <HOST>:rrdcache:TreeDepth:mean
     script: |
@@ -1489,7 +1489,7 @@ graphs:
       GPRINT:depth:MAX:"%7.2lf%s max\\n"
   # }}}
   rrdcached-queue-length: # {{{
-    match: ^rrdcache$
+    match: ^rrdcache:QueueLength$
     dps:
       queued: <HOST>:rrdcache:QueueLength:mean
     script: |
