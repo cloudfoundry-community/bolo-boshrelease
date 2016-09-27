@@ -107,3 +107,7 @@ gnossis/gnossis-ui-v0.6.tar.gz:
   object_id: 57f273f6-e427-46f3-acfe-5fb22f06d550
   sha: 67afc6a5694a878904e197b5791870fd953c8c0b
   size: 275084
+gnossis/gnossis-linux-amd64-v0.6:
+  object_id: 0d58cb0a-2cb7-4c5f-ba35-474262cfb092
+  sha: f1c6c642e8d22f19df263f3147d346f75ec9800d
+  size: 10436944
