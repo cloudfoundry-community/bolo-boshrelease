@@ -5,3 +5,4 @@ dependencies:
   - rrdtool
 files:
   - bolo-collectors/bolo-collectors-*
+  - perl/*

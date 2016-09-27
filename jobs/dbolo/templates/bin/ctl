@@ -5,6 +5,7 @@ set -u # report the usage of uninitialized variables
 
 # Setup env vars and folders for the webapp_ctl script
 source /var/vcap/jobs/dbolo/helpers/ctl_setup.sh 'dbolo'
+export PERL5LIB=/var/vcap/packages/bolo-collectors/share/bolo-collectors/perl
 
 export LANG=en_US.UTF-8
 

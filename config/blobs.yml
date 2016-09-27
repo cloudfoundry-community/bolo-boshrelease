@@ -111,3 +111,27 @@ gnossis/gnossis-linux-amd64-v0.6:
   object_id: 0d58cb0a-2cb7-4c5f-ba35-474262cfb092
   sha: f1c6c642e8d22f19df263f3147d346f75ec9800d
   size: 10436944
+perl/HTTP-Date-6.02.tar.gz:
+  object_id: 0ca1e74e-0ff3-4804-be99-8ee2c82d7db4
+  sha: 85f8dbcad22f2680775a185ce91a42c89e0ad2a8
+  size: 7319
+perl/HTTP-Message-6.11.tar.gz:
+  object_id: 1e0a26f8-6d08-4853-a94f-18e5da8a6638
+  sha: 74999f3f33c22f88d0b489970109b9d16eca5853
+  size: 59981
+perl/libwww-perl-6.15.tar.gz:
+  object_id: 5a3320a3-f6cb-419d-bff1-b77e0083df79
+  sha: 9e27f58108135b7871bbe406e39353a1dbc99462
+  size: 141936
+perl/Net-SNMP-v6.0.1.tar.gz:
+  object_id: ac145f1e-8e5b-4707-a7fd-96acf77be518
+  sha: 492073bcf5206b56783e07c0603ff3b1f12707fa
+  size: 94664
+perl/URI-1.71.tar.gz:
+  object_id: e562b9fd-85a1-44de-a409-84f495ed740f
+  sha: c609c5830899176b61100fce8f10436128471064
+  size: 100141
+perl/YAML-1.18.tar.gz:
+  object_id: a913b0ce-cf5a-4d09-833e-e2764aabc123
+  sha: b062ac6d2cdcc332daf3d7fc3290c008bd174d89
+  size: 80678

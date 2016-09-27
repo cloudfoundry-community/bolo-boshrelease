@@ -26,3 +26,16 @@ cd ${file//.tar*}
 ./configure --prefix=${BOSH_INSTALL_TARGET}
 make
 make install
+
+# Perl dependencies:
+#  - HTTP::Date     http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/HTTP-Date-6.02.tar.gz
+#  - HTTP::Message  http://search.cpan.org/CPAN/authors/id/E/ET/ETHER/HTTP-Message-6.11.tar.gz
+#  - libwww-perl    http://search.cpan.org/CPAN/authors/id/E/ET/ETHER/libwww-perl-6.15.tar.gz
+#  - Net::SNMP      http://search.cpan.org/CPAN/authors/id/D/DT/DTOWN/Net-SNMP-v6.0.1.tar.gz
+#  - URI            http://search.cpan.org/CPAN/authors/id/E/ET/ETHER/URI-1.71.tar.gz
+#  - YAML           http://search.cpan.org/CPAN/authors/id/T/TI/TINITA/YAML-1.18.tar.gz
+cd ../perl
+for archive in *.tar.gz; do
+	tar -xzvf ${archive}
+done
+cp -a */lib/*  ${BOSH_INSTALL_TARGET}/share/bolo-collectors/perl/
