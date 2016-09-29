@@ -1,0 +1,25 @@
+#!/bin/bash
+ROOT=$(cd $(dirname $BASH_SOURCE[0])/../.. ; pwd)
+
+org="bolo"
+package="gnossis"
+version="0.7"
+cd ${ROOT}/blobs
+
+file="${package}-linux-amd64-v${version}"
+url="https://github.com/${org}/${package}/releases/download/v${version}/${file}"
+if [[ ! -s "${package}/${file}" ]]
+then
+  mkdir -p ${package}
+  echo ">> downloading ${package}/${file}"
+  curl -Ls "${url}" -o "${package}/${file}"
+fi
+
+file="${package}-ui-v${version}.tar.gz"
+url="https://github.com/${org}/${package}/releases/download/v${version}/${file}"
+if [[ ! -s "${package}/${file}" ]]
+then
+  mkdir -p ${package}
+  echo ">> downloading ${package}/${file}"
+  curl -Ls "${url}" -o "${package}/${file}"
+fi

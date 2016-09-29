@@ -2,7 +2,7 @@
 set -e
 
 package="gnossis"
-version="0.6"
+version="0.7"
 
 tar -C $BOSH_INSTALL_TARGET -xzf ${package}/${package}-ui-v${version}.tar.gz
 

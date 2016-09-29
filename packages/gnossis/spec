@@ -2,4 +2,5 @@
 name: gnossis
 dependencies: []
 files:
-- gnossis/gnossis-*
+- gnossis/gnossis-linux-amd64-v0.7
+- gnossis/gnossis-ui-v0.7.tar.gz
