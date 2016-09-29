@@ -2,7 +2,7 @@
 set -e
 
 package="bolo"
-version="0.2.17"
+version="0.2.20"
 file="${package}-${version}.tar.gz"
 
 tar zxvf ${package}/${file}
