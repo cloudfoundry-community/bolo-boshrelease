@@ -1,8 +1,4 @@
 ---
-bolo/bolo-0.2.17.tar.gz:
-  object_id: 50f8d521-690d-40a2-b4c0-b1aa9adcd6a0
-  sha: b5c8f9a5c25c073ba650429956ab0dc4e9d02789
-  size: 202553
 bolo-collectors/bolo-collectors-0.4.11.tar.gz:
   object_id: 1a6f0b04-1619-48c7-85ec-74114ebf7581
   sha: e4bd74dbc064b277f123f3f45f37a7699c1e9e4e
@@ -95,14 +91,6 @@ marco/polo:
   object_id: d1a576dc-5523-4930-96c4-6b115be8c655
   sha: 1227c25d6bb1b590fe9282d168f140c3c3c66b07
   size: 7690752
-gnossis/gnossis-ui-v0.6.tar.gz:
-  object_id: 57f273f6-e427-46f3-acfe-5fb22f06d550
-  sha: 67afc6a5694a878904e197b5791870fd953c8c0b
-  size: 275084
-gnossis/gnossis-linux-amd64-v0.6:
-  object_id: 0d58cb0a-2cb7-4c5f-ba35-474262cfb092
-  sha: f1c6c642e8d22f19df263f3147d346f75ec9800d
-  size: 10436944
 perl/HTTP-Date-6.02.tar.gz:
   object_id: 0ca1e74e-0ff3-4804-be99-8ee2c82d7db4
   sha: 85f8dbcad22f2680775a185ce91a42c89e0ad2a8
@@ -127,3 +115,15 @@ perl/YAML-1.18.tar.gz:
   object_id: a913b0ce-cf5a-4d09-833e-e2764aabc123
   sha: b062ac6d2cdcc332daf3d7fc3290c008bd174d89
   size: 80678
+bolo/bolo-0.2.20.tar.gz:
+  object_id: c4b4c1f4-ac79-47b7-82e0-688367b0ec37
+  sha: 3110e1ebd3391dfd8a5709564ca6feb7e776f985
+  size: 448750
+gnossis/gnossis-linux-amd64-v0.7:
+  object_id: d67d816f-8aef-4fca-9d7f-6c49593e5ceb
+  sha: 4ff442096222c3ed409a8236d08f08bf31cad3b7
+  size: 10436776
+gnossis/gnossis-ui-v0.7.tar.gz:
+  object_id: d300ac90-01bd-4214-9823-48608f793120
+  sha: e42aafe6994e24296d212395eac56f48aeaa773f
+  size: 275114
