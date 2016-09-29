@@ -971,6 +971,7 @@ graphs:
       samples:     <HOST>:sys:bolo:bogon.sample:x
       states:      <HOST>:sys:bolo:bogon.state:x
       transitions: <HOST>:sys:bolo:bogon.transition:x
+      keys:        <HOST>:sys:bolo:bogon.setkeys:x
       unknown:     <HOST>:sys:bolo:bogon.unknown:x
     script: |
       --lower-limit 0
@@ -983,6 +984,7 @@ graphs:
       DEF:samples=<DP samples>
       DEF:states=<DP states>
       DEF:transitions=<DP transitions>
+      DEF:keys=<DP keys>
       DEF:unknown=<DP unknown>
 
       AREA:counters<blue>:"counter\\g"
@@ -1015,6 +1017,11 @@ graphs:
       GPRINT:transitions:MIN:"  %7.2lf%s min\\g"
       GPRINT:transitions:MAX:"  %7.2lf%s max\\n"
 
+      STACK:keys<cyan>:"keys\\g"
+      GPRINT:keys:LAST:"      %7.2lf%s now\\g"
+      GPRINT:keys:MIN:"  %7.2lf%s min\\g"
+      GPRINT:keys:MAX:"  %7.2lf%s max\\n"
+
       STACK:unknown<grey>:"(unknown)\\g"
       GPRINT:unknown:LAST:" %7.2lf%s now\\g"
       GPRINT:unknown:MIN:"  %7.2lf%s min\\g"
@@ -1029,6 +1036,7 @@ graphs:
       samples:     <HOST>:sys:bolo:sample:x
       states:      <HOST>:sys:bolo:state:x
       transitions: <HOST>:sys:bolo:transition:x
+      keys:        <HOST>:sys:bolo:setkeys:x
     script: |
       --lower-limit 0
       --title "<HOSTNAME> Throughput"
@@ -1040,6 +1048,7 @@ graphs:
       DEF:samples=<DP samples>
       DEF:states=<DP states>
       DEF:transitions=<DP transitions>
+      DEF:keys=<DP keys>
 
       AREA:counters<lightblue>:"counter\\g"
       GPRINT:counters:LAST:"  %7.2lf%s now\\g"
@@ -1070,6 +1079,12 @@ graphs:
       GPRINT:transitions:LAST:"   %7.2lf%s now\\g"
       GPRINT:transitions:MIN:"  %7.2lf%s min\\g"
       GPRINT:transitions:MAX:"  %7.2lf%s max\\n"
+
+      STACK:keys<cyan>:"keys\\g"
+      GPRINT:keys:LAST:"      %7.2lf%s now\\g"
+      GPRINT:keys:MIN:"  %7.2lf%s min\\g"
+      GPRINT:keys:MAX:"  %7.2lf%s max\\n"
+
   # }}}
 
   nginx-connections: # {{{
