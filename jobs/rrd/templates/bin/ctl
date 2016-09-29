@@ -20,7 +20,7 @@ case $1 in
     mkdir -p ${datadir}
     chown vcap:vcap ${datadir}
     exec chpst -u vcap:vcap bolo2rrd \
-         <% if p('bolo.rrd.cached') %>--rrdcached unix:/var/vcap/sys/run/rrdtool/socket<% end %> \
+         <% if p('bolo.rrd.cached') %>--rrdcached unix:/var/vcap/sys/run/rrdcached/socket<% end %> \
          --root ${datadir} \
          -F<% if p('bolo.rrd.debug') %>vvvv<% end %> \
          -e tcp://<%= p('bolo.rrd.subscription.address') %>:<%= p('bolo.rrd.subscription.port') %> \
