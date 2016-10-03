@@ -3,6 +3,7 @@ set -e
 
 package="rrdtool"
 
+CPUS=$(grep -c ^processor /proc/cpuinfo)
 LD_LIBRARY_PATH="/var/vcap/packages/${package}/lib"
 PKG_CONFIG_PATH="/var/vcap/packages/${package}/lib/pkgconfig"
 LDFLAGS="-L/var/vcap/packages/${package}/lib"
@@ -22,7 +23,7 @@ package() {
 
   (cd ${file//.tar*}
    ./configure --prefix=${BOSH_INSTALL_TARGET} $*
-   make
+   make -j${CPUS}
    make install)
 }
 

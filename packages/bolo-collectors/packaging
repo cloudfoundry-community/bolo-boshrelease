@@ -4,6 +4,7 @@ set -e
 package="bolo-collectors"
 version="0.4.11"
 
+CPUS=$(grep -c ^processor /proc/cpuinfo)
 LD_LIBRARY_PATH="/var/vcap/packages/${package}/lib"
 PKG_CONFIG_PATH="/var/vcap/packages/${package}/lib/pkgconfig"
 LDFLAGS="-L/var/vcap/packages/${package}/lib"
@@ -24,7 +25,7 @@ tar zxvf ${package}/${file}
 cd ${file//.tar*}
 
 ./configure --prefix=${BOSH_INSTALL_TARGET}
-make
+make -j${CPUS}
 make install
 
 # Perl dependencies:
