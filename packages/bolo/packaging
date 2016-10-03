@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+CPUS=$(grep -c ^processor /proc/cpuinfo)
 package="bolo"
 version="0.2.20"
 file="${package}-${version}.tar.gz"
@@ -24,6 +25,6 @@ export LD_LIBRARY_PATH LDFLAGS CPPFLAGS
 ./configure --prefix=${BOSH_INSTALL_TARGET} \
     --with-rrd-subscriber
 
-make
+make -j${CPUS}
 
 make install
