@@ -115,10 +115,6 @@ perl/YAML-1.18.tar.gz:
   object_id: a913b0ce-cf5a-4d09-833e-e2764aabc123
   sha: b062ac6d2cdcc332daf3d7fc3290c008bd174d89
   size: 80678
-bolo/bolo-0.2.20.tar.gz:
-  object_id: c4b4c1f4-ac79-47b7-82e0-688367b0ec37
-  sha: 3110e1ebd3391dfd8a5709564ca6feb7e776f985
-  size: 448750
 gnossis/gnossis-linux-amd64-v0.7:
   object_id: d67d816f-8aef-4fca-9d7f-6c49593e5ceb
   sha: 4ff442096222c3ed409a8236d08f08bf31cad3b7
@@ -127,3 +123,15 @@ gnossis/gnossis-ui-v0.7.tar.gz:
   object_id: d300ac90-01bd-4214-9823-48608f793120
   sha: e42aafe6994e24296d212395eac56f48aeaa773f
   size: 275114
+bolo/bolo-0.3.0.tar.gz:
+  object_id: b6908f7e-af1a-46ee-9ab2-33589e1a0601
+  sha: f0eee38101686cc852e4607e9adbcb47f89335a6
+  size: 464613
+grafana/grafana-3.1.1-1470047149.linux-x64.tar.gz:
+  object_id: ab35fb30-11be-42dd-9ae0-df9c284874ab
+  sha: c281f6612ba93cd3233f70e45823adc7801d8cc1
+  size: 40570215
+influxdb/influxdb-1.0.2_linux_amd64.tar.gz:
+  object_id: 6fae683c-9dbf-4581-8034-28589823e7d1
+  sha: a899e70046d91193cc92dc38af23f31840e24062
+  size: 17786632
