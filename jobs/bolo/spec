@@ -55,15 +55,15 @@ properties:
     default: no result from monitoring system
 
   bolo.submission.address:
-    description: "Address of the Bolo Listener, for submitting monitoring data (meta stats)"
+    description: "Address of the Bolo Listener, for submitting monitoring data"
   bolo.submission.port:
-    description: "Port of the Bolo Listener, for submitting monitoring data (meta stats)"
+    description: "Port of the Bolo Listener, for submitting monitoring data"
     default: 2999
 
   bolo.subscription.address:
-    description: "Address to subscribe to for broadcast monitoring information (meta stats)"
+    description: "Address to subscribe to for broadcast monitoring information"
   bolo.subscription.port:
-    description: "Port to subscribe on for broadcast monitoring information (meta stats)"
+    description: "Port to subscribe on for broadcast monitoring information"
     default: 2997
 
   dbolo.prefix:
