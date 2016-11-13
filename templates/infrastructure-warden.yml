@@ -1,6 +1,5 @@
 meta:
   environment: bolo-warden
-
   stemcell:
     name: bosh-warden-boshlite-ubuntu-trusty-go_agent
     version: latest
@@ -11,27 +10,20 @@ update:
   canary_watch_time: 1000-30000
   update_watch_time: 1000-30000
 
-jobs:
-  - name: bolo
-    networks:
-      - name: bolo1
-        static_ips: (( static_ips 0 1 2 ))
-
 compilation:
   cloud_properties:
     name: random
 
 resource_pools:
-  - name: small_z1
+  - name: small
     cloud_properties:
       name: random
 
 networks:
-- name: bolo1
+- name: internal
   type: manual
   subnets:
   - range: 10.244.151.0/24
-    name: bolo1
     gateway: 10.244.151.1
     static:
       - 10.244.151.2 - 10.244.151.60

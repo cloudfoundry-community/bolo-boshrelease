@@ -11,7 +11,7 @@ meta:
 jobs:
   - name: bolo
     networks:
-      - name: bolo1
+      - name: internal
     persistent_disk: (( grab meta.persistent_disk ))
 
 compilation:
@@ -19,7 +19,7 @@ compilation:
     instance_type: m3.medium
 
 resource_pools:
-  - name: small_z1
+  - name: small
     cloud_properties:
       instance_type: m3.medium
 
@@ -27,7 +27,7 @@ networks:
   - name: floating
     type: vip
     cloud_properties: {}
-  - name: bolo1
+  - name: internal
     type: dynamic
     cloud_properties:
       security_groups: (( grab meta.security_groups ))

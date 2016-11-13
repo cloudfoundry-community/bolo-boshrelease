@@ -1,6 +1,6 @@
 meta:
   bolo:
-    address: (( grab jobs.bolo.networks.bolo1.static_ips[0] ))
+    address: (( grab jobs.bolo.networks.internal.static_ips[0] ))
 
 update:
   canaries: 1
@@ -11,33 +11,67 @@ update:
 
 jobs:
   - name: bolo
-    templates:
-    - { release: bolo, name: bolo  }
-    - { release: bolo, name: dbolo }
-    - { release: bolo, name: rrd   }
-    - { release: bolo, name: rrdcached }
-    - { release: bolo, name: gnossis }
     instances: 1
+    templates:
+      - { release: bolo, name: dbolo     }
+      - { release: bolo, name: opentsdb  }
+      - { release: bolo, name: bolo      }
+
+    resource_pool: small
     persistent_disk: 0
-    resource_pool: small_z1
-    networks: (( param "please set bolo networks" ))
+
+    networks:
+      - name: internal
+        static_ips: (( static_ips 0 ))
+
+  - name: gnossis
+    instances: 1
+    templates:
+      - { release: bolo, name: dbolo     }
+      - { release: bolo, name: gnossis   }
+      - { release: bolo, name: rrd       }
+      - { release: bolo, name: rrdcached }
+
+    resource_pool: small
+    persistent_disk: 4096
+
+    networks:
+      - name: internal
+        static_ips: (( static_ips 1 ))
+
     properties:
-      dbolo:
-        submission: (( grab meta.bolo ))
-        collectors:
-          - { every: 20s, run: linux }
-          - { every: 20s, run: process -n dbolo -m dbolo }
       bolo:
-        debug: true
-        subscription: (( grab meta.bolo ))
-        submission:   (( grab meta.bolo ))
-        rrd:
-          cached: true
-          subscription: (( grab meta.bolo ))
-          submission:   (( grab meta.bolo ))
-        gnossis:
-          cached: true
+        rrd:     { cached: true }
+        gnossis: { cached: true }
 
-networks: (( param "please set networks" ))
+  - name: grafana
+    instances: 1
+    templates:
+      - { release: bolo, name: dbolo     }
+      - { release: bolo, name: grafana   }
+      - { release: bolo, name: influxdb  }
 
-properties: {}
+    resource_pool: small
+    persistent_disk: 4096
+
+    networks:
+      - name: internal
+        static_ips: (( static_ips 2 ))
+
+    properties:
+      bolo:
+        influx:
+          grafana_secret: fakepassword
+
+properties:
+  bolo:
+    submission:   (( grab meta.bolo ))
+    subscription: (( grab meta.bolo ))
+  dbolo:
+    collectors:
+      - { every: 20s, run: linux }
+      - { every: 20s, run: process -n dbolo -m dbolo }
+
+networks:
+  - name: internal
+    subnets: (( param "Please define your Network Subnets" ))
