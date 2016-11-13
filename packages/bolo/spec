@@ -4,4 +4,4 @@ dependencies:
   - rrdtool
   - libvigor
 files:
-  - bolo/bolo-0.2.20.tar.gz
+  - bolo/bolo-0.3.0.tar.gz

@@ -3,7 +3,7 @@ set -e
 
 CPUS=$(grep -c ^processor /proc/cpuinfo)
 package="bolo"
-version="0.2.20"
+version="0.3.0"
 file="${package}-${version}.tar.gz"
 
 tar zxvf ${package}/${file}
