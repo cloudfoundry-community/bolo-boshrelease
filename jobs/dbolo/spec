@@ -18,9 +18,9 @@ properties:
     description: "Turn on extra debugging / verbose logging where appropriate"
     default: false
 
-  dbolo.submission.address:
+  bolo.submission.address:
     description: "Address of the Bolo Listener, for submitting monitoring data"
-  dbolo.submission.port:
+  bolo.submission.port:
     description: "Port of the Bolo Listener, for submitting monitoring data"
     default: 2999
 

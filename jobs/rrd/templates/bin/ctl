@@ -23,8 +23,8 @@ case $1 in
          <% if p('bolo.rrd.cached') %>--rrdcached unix:/var/vcap/sys/run/rrdcached/socket<% end %> \
          --root ${datadir} \
          -F<% if p('bolo.rrd.debug') %>vvvv<% end %> \
-         -e tcp://<%= p('bolo.rrd.subscription.address') %>:<%= p('bolo.rrd.subscription.port') %> \
-         --submit tcp://<%= p('bolo.rrd.submission.address') %>:<%= p('bolo.rrd.submission.port') %>
+         -e tcp://<%= p('bolo.subscription.address') %>:<%= p('bolo.subscription.port') %> \
+         --submit tcp://<%= p('bolo.submission.address') %>:<%= p('bolo.submission.port') %>
          >>$LOG_DIR/$JOB_NAME.log 2>&1
 
     ;;
