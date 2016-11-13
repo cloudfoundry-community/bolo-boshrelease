@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Setup env vars and folders for the webapp_ctl script
+source /var/vcap/jobs/slack/helpers/ctl_setup.sh 'slack'
+
+export LANG=en_US.UTF-8
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE $JOB_NAME
+
+    # store pid in $PIDFILE
+    echo $$ > $PIDFILE
+
+    exec chpst -u vcap:vcap bolo2slack \
+         -F<% if p('bolo.slack.debug') %>vvvv<% end %> \
+         -e tcp://<%= p('bolo.subscription.address') %>:<%= p('bolo.subscription.port') %> \
+         --webhook "<%= p('bolo.slack.webhook') %>" \
+         --channel "#<%= p('bolo.slack.channel').gsub(/^#/, '') %>" \
+         --botname "<%= p('bolo.slack.botname') %>" \
+         --avatar  ":<%= p('bolo.slack.avatar').gsub(/^:/, '').gsub(/:$/, '') %>:" \
+         >>$LOG_DIR/$JOB_NAME.log 2>&1
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+  *)
+    echo "Usage: slack_ctl {start|stop}"
+
+    ;;
+
+esac
+exit 0

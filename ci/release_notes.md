@@ -19,5 +19,8 @@
 - New `grafana` job can provide better visualization of data in
   bolo (by way of native OpenTSDB integration).
 
+- New `slack` job let you get all those TRANSITION messages in
+  your favorite Slack channel!
+
 
 [bolo-release]: https://github.com/bolo/bolo/releases/tag/v0.3.0

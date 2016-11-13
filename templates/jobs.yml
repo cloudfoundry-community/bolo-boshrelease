@@ -63,6 +63,26 @@ jobs:
         influx:
           grafana_secret: fakepassword
 
+  - name: slack
+    instances: 1
+    templates:
+      - { release: bolo, name: dbolo }
+      - { release: bolo, name: slack }
+
+    resource_pool: small
+    persistent_disk: 0
+
+    networks:
+      - name: internal
+
+    properties:
+      bolo:
+        slack:
+          webhook: (( grab $WEBHOOK || "https://localhost/you/need/a/real/webhook/here" ))
+          channel: (( grab $CHANNEL || "botspam" ))
+          botname: Marco Bolo
+          avatar:  robot_face
+
 properties:
   bolo:
     submission:   (( grab meta.bolo ))

@@ -1,0 +1,5 @@
+check process slack
+  with pidfile /var/vcap/sys/run/slack/slack.pid
+  start program "/var/vcap/jobs/slack/bin/monit_debugger slack_ctl '/var/vcap/jobs/slack/bin/ctl start'"
+  stop program "/var/vcap/jobs/slack/bin/monit_debugger slack_ctl '/var/vcap/jobs/slack/bin/ctl stop'"
+  group vcap

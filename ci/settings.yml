@@ -25,3 +25,16 @@ meta:
   slack:
     webhook: (( vault "secret/pipelines/bolo-boshrelease/slack:webhook" ))
     channel: '#botspam'
+
+# custom env vars that the build needs
+# THIS IS VERY BRITTLE, BUT IT DOES WORK...
+jobs:
+  - name: testflight
+    plan:
+      - do:
+        - {}
+        - task: testflight
+          config:
+            params:
+              WEBHOOK: (( vault "secret/pipelines/bolo-boshrelease/slack:webhook" ))
+              CHANNEL: botspam
