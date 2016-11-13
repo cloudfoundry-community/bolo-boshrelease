@@ -1,0 +1,104 @@
+---
+packages:
+- name: bolo-collectors
+  version: a431482cc22c89abe8aebe5422a142208c665565
+  fingerprint: a431482cc22c89abe8aebe5422a142208c665565
+  sha1: 0588e5af1ad097cea550dfbb42f92ce9f5a54ad5
+  dependencies:
+  - libvigor
+  - rrdtool
+- name: bolo
+  version: f5f94b94daa2d7c96ab50aa68557fd2c445f7e28
+  fingerprint: f5f94b94daa2d7c96ab50aa68557fd2c445f7e28
+  sha1: bf2d0260298cf8bf6c5ab157035e528bd79350d8
+  dependencies:
+  - libvigor
+  - rrdtool
+- name: gnossis
+  version: 0d00e37b94b642b85cb35ddf1d64f906bc7a867e
+  fingerprint: 0d00e37b94b642b85cb35ddf1d64f906bc7a867e
+  sha1: fb9896e5d42549c16f5ba90ced8a3b69a04b920d
+  dependencies: []
+- name: grafana
+  version: b2beff3e028ec5bcbef0520e89ea2abb9eb2b96a
+  fingerprint: b2beff3e028ec5bcbef0520e89ea2abb9eb2b96a
+  sha1: a4c39e079bdb510f8f2d09b69f59eab529dba863
+  dependencies: []
+- name: influxdb
+  version: eab3adf9d0106ca3057fd7f194b491b9164b8dbf
+  fingerprint: eab3adf9d0106ca3057fd7f194b491b9164b8dbf
+  sha1: 862a45b10999a38e8fd2ed6f7a1c497155100ab8
+  dependencies: []
+- name: libvigor
+  version: 6bd6d28d36710d18aa6b29cc07b40936687cc760
+  fingerprint: 6bd6d28d36710d18aa6b29cc07b40936687cc760
+  sha1: 32807859164843e76c9baea61459cd9615605da5
+  dependencies: []
+- name: marco
+  version: 30123f682970e2df83448e055764047af04dbc5d
+  fingerprint: 30123f682970e2df83448e055764047af04dbc5d
+  sha1: b1a702997e6858d4cef10ab8911beb4a8c75865f
+  dependencies: []
+- name: rrdtool
+  version: eb73b50c49167e8de70064d92f69a121d382afdf
+  fingerprint: eb73b50c49167e8de70064d92f69a121d382afdf
+  sha1: 648fa2ce6527f64404bd7685868b30fa20250d5c
+  dependencies: []
+- name: spruce
+  version: 8515475f5f41262b9b0ccbdfc872930c2db6493d
+  fingerprint: 8515475f5f41262b9b0ccbdfc872930c2db6493d
+  sha1: a25034afafffe00d7a3def99422c355740384c9f
+  dependencies: []
+jobs:
+- name: bolo
+  version: 381f2fed1891e4b8b92714c0e517300f1caa7ef5
+  fingerprint: 381f2fed1891e4b8b92714c0e517300f1caa7ef5
+  sha1: 58ee61c4b06a1e68656fa27024b0634a67fab740
+- name: dbolo
+  version: b6ea8b0993253abf57015cd28beebe0bb8fa55e9
+  fingerprint: b6ea8b0993253abf57015cd28beebe0bb8fa55e9
+  sha1: ee60499d2b6ede874b8d91e3102b57934328f0d9
+- name: gnossis
+  version: 7df6d0080a09f6343885bf99899b0a3b9b3e1950
+  fingerprint: 7df6d0080a09f6343885bf99899b0a3b9b3e1950
+  sha1: 056a42e9cf3704c3cc669dc18cdf6f5e6b2f17cf
+- name: grafana
+  version: 0fdc6c0aad4269d69fd60bf1c7754cda674c320b
+  fingerprint: 0fdc6c0aad4269d69fd60bf1c7754cda674c320b
+  sha1: bc11e43869cedc980aa9685d0d30a8f2999c38cf
+- name: influxdb
+  version: 25fc18a19b88ce469e38efdc72b756670b1bb95c
+  fingerprint: 25fc18a19b88ce469e38efdc72b756670b1bb95c
+  sha1: 28c06553e2943e6effb8ce44f95088abe1766686
+- name: marco
+  version: 3bf613d30d9f3d71940373b6abec2573becf7b6f
+  fingerprint: 3bf613d30d9f3d71940373b6abec2573becf7b6f
+  sha1: 1f2e6b19ac6d7e0f1d4e069686539f8b42760cf3
+- name: opentsdb
+  version: a929e4a60617510f749a9777a5ce0ca147863da7
+  fingerprint: a929e4a60617510f749a9777a5ce0ca147863da7
+  sha1: 1e2d536b807637f1e82a6ab396a9c68081ee50c4
+- name: polo
+  version: c654f05417bcfb1157ab12ad1e6c45b2c8deffc7
+  fingerprint: c654f05417bcfb1157ab12ad1e6c45b2c8deffc7
+  sha1: a51dd93a007073cabb965eefc4ca741d86200548
+- name: rrd
+  version: b12457f3b14d5d91b8dd0357d8c9414c82624f96
+  fingerprint: b12457f3b14d5d91b8dd0357d8c9414c82624f96
+  sha1: 2517ae2b232a3ea26c283145d91276dfb44069ce
+- name: rrdcached
+  version: 9deb3c26def1ac0718c7578711fbce3ab4242972
+  fingerprint: 9deb3c26def1ac0718c7578711fbce3ab4242972
+  sha1: 7ba9be91e0c499f77cf9f94abf5de71b3da12ab1
+- name: slack
+  version: 7e23dae3de8da9d611baeef05c0a90536566c912
+  fingerprint: 7e23dae3de8da9d611baeef05c0a90536566c912
+  sha1: 35d31ce7203f047529f14ec5ad7c9f896291be8d
+license:
+  version: ec16b6c95de5c9122dcf472815239a76d1b6c9ea
+  fingerprint: ec16b6c95de5c9122dcf472815239a76d1b6c9ea
+  sha1: 8e940b6e82f19f8eca3ddb87d71e6b25eae6c6ed
+commit_hash: 070a7830
+uncommitted_changes: true
+name: bolo
+version: 0.3.0
