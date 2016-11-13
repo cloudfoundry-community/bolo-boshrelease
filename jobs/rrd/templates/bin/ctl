@@ -24,7 +24,7 @@ case $1 in
          --root ${datadir} \
          -F<% if p('bolo.rrd.debug') %>vvvv<% end %> \
          -e tcp://<%= p('bolo.subscription.address') %>:<%= p('bolo.subscription.port') %> \
-         --submit tcp://<%= p('bolo.submission.address') %>:<%= p('bolo.submission.port') %>
+         --submit tcp://<%= p('bolo.submission.address') %>:<%= p('bolo.submission.port') %> \
          >>$LOG_DIR/$JOB_NAME.log 2>&1
 
     ;;
