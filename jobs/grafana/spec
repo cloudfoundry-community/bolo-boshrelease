@@ -1,0 +1,50 @@
+---
+name: grafana
+packages:
+  - grafana
+
+templates:
+  bin/ctl: bin/ctl
+  bin/monit_debugger: bin/monit_debugger
+  config/grafana.ini: config/grafana.ini
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+
+properties:
+  grafana.name:
+    description: "Name of the Grafana web instance"
+    default: ''
+  grafana.port:
+    description: "Port that the Grafana Web UI will listen on"
+    default: 3000
+  grafana.log_level:
+    description: "Grafana Web UI logging level, one of trace, debug, info, warn, error, or critical"
+    default: info
+
+  grafana.admin.username:
+    description: "Username for the Grafana administrator account"
+    default: admin
+  grafana.admin.password:
+    description: "Password for the Grafana administrator account"
+    default: admin
+
+  grafana.auth.type:
+    description: "How to authenticate users.   One of basic, github or google"
+    default: basic
+
+  grafana.auth.client_id:
+    description: "Authentication Client ID, for 'github' and 'google' authentication types"
+  grafana.auth.client_secret:
+    description: "Authentication Client Secret, for 'github' and 'google' authentication types"
+  grafana.auth.extra:
+    description: "A set of additional configuration directives (in INI format) for the chosen authentication type"
+    default: ""
+
+  grafana.auth.github.organizations:
+    description: "List of Github organizations whose members are allowed to log in"
+  grafana.auth.github.teams:
+    description: "List of Github teams whose members are allowed to log in"
+
+  grafana.auth.google.domains:
+    description: "List of Google Apps domains whose members are allowed to log in"

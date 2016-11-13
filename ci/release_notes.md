@@ -12,6 +12,12 @@
   This can be used to pull health metrics from BOSH's TSDB
   submitter plugin.
 
+- New `influxdb` job allows site operators to run a dedicated
+  InfluxDB node in their bolo installation, and feed data from
+  bolo into it.
+
+- New `grafana` job can provide better visualization of data in
+  bolo (by way of native OpenTSDB integration).
 
 
 [bolo-release]: https://github.com/bolo/bolo/releases/tag/v0.3.0
