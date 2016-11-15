@@ -87,10 +87,6 @@ properties:
   bolo:
     submission:   (( grab meta.bolo ))
     subscription: (( grab meta.bolo ))
-  dbolo:
-    collectors:
-      - { every: 20s, run: linux }
-      - { every: 20s, run: process -n dbolo -m dbolo }
 
 networks:
   - name: internal
