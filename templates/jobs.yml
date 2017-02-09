@@ -14,7 +14,6 @@ jobs:
     instances: 1
     templates:
       - { release: bolo, name: dbolo     }
-      - { release: bolo, name: opentsdb  }
       - { release: bolo, name: bolo      }
 
     resource_pool: small
@@ -24,13 +23,12 @@ jobs:
       - name: internal
         static_ips: (( static_ips 0 ))
 
-  - name: gnossis
+  - name: ui
     instances: 1
     templates:
-      - { release: bolo, name: dbolo     }
-      - { release: bolo, name: gnossis   }
-      - { release: bolo, name: rrd       }
-      - { release: bolo, name: rrdcached }
+      - { release: bolo, name: ui    }
+      - { release: bolo, name: ffd   }
+      - { release: bolo, name: dbolo }
 
     resource_pool: small
     persistent_disk: 4096
@@ -38,30 +36,6 @@ jobs:
     networks:
       - name: internal
         static_ips: (( static_ips 1 ))
-
-    properties:
-      bolo:
-        rrd:     { cached: true }
-        gnossis: { cached: true }
-
-  - name: grafana
-    instances: 1
-    templates:
-      - { release: bolo, name: dbolo     }
-      - { release: bolo, name: grafana   }
-      - { release: bolo, name: influxdb  }
-
-    resource_pool: small
-    persistent_disk: 4096
-
-    networks:
-      - name: internal
-        static_ips: (( static_ips 2 ))
-
-    properties:
-      bolo:
-        influx:
-          grafana_secret: fakepassword
 
   - name: slack
     instances: 1

@@ -1,0 +1,5 @@
+check process ui
+  with pidfile /var/vcap/sys/run/ui/ui.pid
+  start program "/var/vcap/jobs/ui/bin/monit_debugger ui_ctl '/var/vcap/jobs/ui/bin/ctl start'"
+  stop program "/var/vcap/jobs/ui/bin/monit_debugger ui_ctl '/var/vcap/jobs/ui/bin/ctl stop'"
+  group vcap

@@ -1,0 +1,32 @@
+---
+name: ffd
+packages:
+  - bolo
+  - libvigor
+templates:
+  bin/ctl: bin/ctl
+  bin/monit_debugger: bin/monit_debugger
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+
+properties:
+  bolo.ffd.debug:
+    description: "Turn on extra debugging / verbose logging where appropriate"
+    default: false
+
+  bolo.subscription.address:
+    description: "Address to subscribe to for broadcast monitoring information"
+  bolo.subscription.port:
+    description: "Port to subscribe on for broadcast monitoring information"
+    default: 2997
+
+  bolo.submission.address:
+    description: "Address of the Bolo Listener, for submitting back health and meta-metrics"
+  bolo.submission.port:
+    description: "Port of the Bolo Listener, for submitting back health and meta-metrics"
+    default: 2999
+
+  bolo.ffd.root:
+    description: "Root directory where FFD files should be stored.  Probably should be on persistent disk."
+    default: "/var/vcap/store/ffd/data"

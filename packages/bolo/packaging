@@ -3,7 +3,7 @@ set -e
 
 CPUS=$(grep -c ^processor /proc/cpuinfo)
 package="bolo"
-version="0.3.0"
+version="0.3.1-rc1"
 file="${package}-${version}.tar.gz"
 
 tar zxvf ${package}/${file}
@@ -23,7 +23,8 @@ done
 export LD_LIBRARY_PATH LDFLAGS CPPFLAGS
 
 ./configure --prefix=${BOSH_INSTALL_TARGET} \
-    --with-rrd-subscriber
+    --with-rrd-subscriber \
+    --with-ffd-subscriber
 
 make -j${CPUS}
 

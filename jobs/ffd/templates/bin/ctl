@@ -1,0 +1,39 @@
+#!/bin/bash
+set -eu
+
+# Setup env vars and folders
+source /var/vcap/jobs/ffd/helpers/ctl_setup.sh 'ffd'
+
+export LANG=en_US.UTF-8
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE $JOB_NAME
+
+    # store pid in $PIDFILE
+    echo $$ > $PIDFILE
+
+    datadir=<%= p('bolo.ffd.root') %>
+    mkdir -p ${datadir}
+    chown vcap:vcap ${datadir}
+
+    exec chpst -u vcap:vcap bolo2ffd \
+         --root ${datadir} \
+         -F<% if p('bolo.ffd.debug') %>vvvv<% end %> \
+         -e tcp://<%= p('bolo.subscription.address') %>:<%= p('bolo.subscription.port') %> \
+         --submit tcp://<%= p('bolo.submission.address') %>:<%= p('bolo.submission.port') %> \
+         >>$LOG_DIR/$JOB_NAME.log 2>&1
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+    ;;
+
+  *)
+    echo "Usage: ffd {start|stop}"
+
+    ;;
+
+esac
+exit 0

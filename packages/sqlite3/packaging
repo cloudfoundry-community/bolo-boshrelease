@@ -1,0 +1,10 @@
+#!/bin/bash
+set -eu
+
+# $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
+
+tar -xvf sqlite3/sqlite-autoconf-3160200.tar.gz
+cd sqlite-autoconf-3160200
+./configure --prefix $BOSH_INSTALL_TARGET
+make
+make install

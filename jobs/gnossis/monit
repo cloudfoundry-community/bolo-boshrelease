@@ -1,5 +1,0 @@
-check process gnossis
-  with pidfile /var/vcap/sys/run/gnossis/gnossis.pid
-  start program "/var/vcap/jobs/gnossis/bin/monit_debugger gnossis_ctl '/var/vcap/jobs/gnossis/bin/ctl start'"
-  stop program "/var/vcap/jobs/gnossis/bin/monit_debugger gnossis_ctl '/var/vcap/jobs/gnossis/bin/ctl stop'"
-  group vcap

@@ -1,0 +1,51 @@
+---
+name: ui
+packages:
+  - bolo-ui
+  - sqlite3
+
+templates:
+  bin/ctl: bin/ctl
+  bin/post-start: bin/post-start
+  bin/monit_debugger: bin/monit_debugger
+  config/ui.yml: config/ui.yml
+  config/setup.sql: config/setup.sql
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+
+properties:
+  port:
+    description: TCP port that bolo-ui should bind to listen for inbound requests.
+    default: 80
+
+  readonly:
+    description: Disallow access to modify (create / edit / delete) boards
+    default: false
+
+  datadir:
+    description: Where to find the FFD files containing all of the monitoring data.
+    default: /var/vcap/store/ffd/data
+
+  boards:
+    description: A list of board definitions to pre-populate the database with.  If 'readonly' is set, this is the only way to configure boards.
+    example: |
+      boards:
+        - name: Home
+          link: home
+          code: |
+            ; boardcode
+            metric { ... }
+
+  realm:
+    description: The Authentication Realm name to use for HTTP Basic Authentication
+    default: Bolo Monitoring
+
+  users:
+    description: A list of users to provision access for.  Valid acccess levels are none, view, admin.
+    default: []
+    example: |
+      users:
+       - name: admin
+         password: secret
+         access: admin

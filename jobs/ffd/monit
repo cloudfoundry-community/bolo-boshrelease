@@ -1,0 +1,5 @@
+check process ffd
+  with pidfile /var/vcap/sys/run/ffd/ffd.pid
+  start program "/var/vcap/jobs/ffd/bin/monit_debugger ffd_ctl '/var/vcap/jobs/ffd/bin/ctl start'"
+  stop program "/var/vcap/jobs/ffd/bin/monit_debugger ffd_ctl '/var/vcap/jobs/ffd/bin/ctl stop'"
+  group vcap

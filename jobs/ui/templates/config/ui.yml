@@ -1,0 +1,24 @@
+---
+# bolo ui configuration
+<%
+  def access(l)
+    if p('readonly') and l == 'admin'
+      return 'view'
+    end
+    return l
+  end
+%>
+listen: ":<%= p('port') %>"
+database: /var/vcap/store/ui/ui.db
+datadir:  <%= p('datadir') %>
+realm:    <%= p('realm') %>
+<% if p('users', []).size == 0 %>
+users: []
+<% else %>
+users:
+<% p('users', []).each do |user| %>
+  - name:     <%= user[:name] %>
+    password: <%= user[:password] %>
+    access:   <%= access(user[:access] || 'view') %>
+<% end %>
+<% end %>

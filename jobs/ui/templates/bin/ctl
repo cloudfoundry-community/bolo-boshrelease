@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Setup env vars and folders for the webapp_ctl script
+source /var/vcap/jobs/ui/helpers/ctl_setup.sh 'ui'
+exec >>$LOG_DIR/$JOB_NAME.log 2>&1
+
+case $1 in
+  start)
+    pid_guard $PIDFILE $JOB_NAME
+    echo $$ > $PIDFILE
+    exec bolo-ui -c $JOB_DIR/config/ui.yml
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+    ;;
+
+  *)
+    echo "Usage: ui {start|stop}"
+    ;;
+
+esac
+exit 0

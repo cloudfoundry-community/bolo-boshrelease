@@ -1,0 +1,7 @@
+#!/bin/bash
+set -eu
+
+# $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
+mkdir $BOSH_INSTALL_TARGET/bin
+cp bolo-ui/bolo-ui-0.1.0 $BOSH_INSTALL_TARGET/bin/bolo-ui
+chmod 755 $BOSH_INSTALL_TARGET/bin/bolo-ui

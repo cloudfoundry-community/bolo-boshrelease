@@ -1,0 +1,14 @@
+#!/bin/bash
+source /var/vcap/jobs/ui/helpers/ctl_setup.sh 'ui' 'post-start'
+exec >>$LOG_DIR/$JOB_NAME.post-start.log 2>&1
+
+<% if p('readonly') %>
+# always initialize the database
+rm $STORE_DIR/ui.db
+sqlite3 $STORE_DIR/ui.db < $JOB_DIR/config/setup.sql
+<% else %>
+# initialize the database if it doesn't already exist
+if [[ ! -f $STORE_DIR/ui.db ]]; then
+  sqlite3 $STORE_DIR/ui.db < $JOB_DIR/config/setup.sql
+fi
+<% end %>
