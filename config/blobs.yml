@@ -135,3 +135,15 @@ influxdb/influxdb-1.0.2_linux_amd64.tar.gz:
   object_id: 6fae683c-9dbf-4581-8034-28589823e7d1
   sha: a899e70046d91193cc92dc38af23f31840e24062
   size: 17786632
+bolo/bolo-0.3.1-rc1.tar.gz:
+  object_id: 920b1273-397a-42fe-a053-b4b3280e6082
+  sha: ec87c339de552e00194a654607c54cf06011a056
+  size: 472925
+bolo-ui/bolo-ui-0.1.0:
+  object_id: b7ca4acd-6676-4b30-af8e-5f502a13608e
+  sha: 3eae799deef394671b97459990c5ef334056ed2a
+  size: 12997072
+sqlite3/sqlite-autoconf-3160200.tar.gz:
+  object_id: c5236ae3-e8c5-43b3-a64b-13467dfe1fd1
+  sha: 64ca578ad44a94115b1db0406740e14288f74bb8
+  size: 2508179
